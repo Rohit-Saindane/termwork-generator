@@ -31,6 +31,8 @@ FIELDS = {
     # Name of Experiment — two zones
     "exp_z1":       (283,  494.9, 523),   # inline after label
     "exp_z2":       (73,   469.9, 526),   # full-width below
+    # Checked By (faculty name) — underline x0=136.2 top=582.3 x1=524.4
+    "checked_by":   (136,  263.2, 524),
     # Practical No.
     "practical_no": (407,  406.6, 531),
     # Conducted On (DD / MM / YYYY)
@@ -45,9 +47,11 @@ FIELDS = {
     "act_dd":       (414,  337.7, 447),
     "act_mm":       (451,  337.7, 484),
     "act_yyyy":     (488,  337.7, 518),
-    # Bottom row
-    "sign_date":    (287,   99.9, 355),
-    "marks":        (478,  101.1, 525),
+    # Bottom row — Date: DD/MM/YYYY slots + Marks
+    "sign_date_dd":   (290,   97.5, 322),   # DD  slot (before first /)
+    "sign_date_mm":   (327,   97.5, 357),   # MM  slot (between / and /)
+    "sign_date_yyyy": (363,   97.9, 392),   # YYYY slot (after second /)
+    "marks":          (478,  102.1, 525),   # Marks value
 }
 
 # ── Helpers ────────────────────────────────────────────────────────────────────
@@ -111,6 +115,7 @@ def build_pdf(pdf_b_bytes, title, form):
     put("student_name", form.get("student_name", ""))
     put("class_name",   form.get("class_name", ""))
     put("batch",        form.get("batch", ""))
+    put("checked_by",   form.get("checked_by", ""))
     put("practical_no", form.get("practical_no", ""))
 
     # Date fields — split DD/MM/YYYY from a single date string
@@ -126,8 +131,16 @@ def build_pdf(pdf_b_bytes, title, form):
     put_date("sub",  form.get("date_of_sub", ""))
     put_date("act",  form.get("actual_sub", ""))
 
-    put("sign_date", form.get("sign_date", ""))
-    put("marks",     form.get("marks", ""))
+    # Bottom row — signature date split into DD / MM / YYYY slots
+    sign_raw = form.get("sign_date", "")
+    if sign_raw:
+        parts = re.split(r"[/\-\.]", sign_raw.strip())
+        if len(parts) == 3:
+            put("sign_date_dd",   parts[0].zfill(2))
+            put("sign_date_mm",   parts[1].zfill(2))
+            put("sign_date_yyyy", parts[2])
+
+    put("marks", form.get("marks", ""))
 
     # Experiment title (two zones)
     if l1: c.drawString(FIELDS["exp_z1"][0], FIELDS["exp_z1"][1], l1)

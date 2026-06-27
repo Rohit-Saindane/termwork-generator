@@ -1,943 +1,306 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Fill Details — Term Work Generator</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-:root {
-  --primary: #4f46e5;
-  --primary-light: #f5f3ff;
-  --primary-mid: #c7d2fe;
-  --primary-hover: #4338ca;
-  --success: #10b981;
-  --success-light: #ecfdf5;
-  --success-mid: #a7f3d0;
-  --success-hover: #059669;
-  --danger: #ef4444;
-  --danger-light: #fef2f2;
-  --danger-hover: #dc2626;
-  --orange: #d97706;
-  --orange-light: #fffbeb;
-  --bg: #f8fafc;
-  --card-bg: #ffffff;
-  --border: #e2e8f0;
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-muted: #94a3b8;
-  --radius-lg: 16px;
-  --radius-md: 12px;
-  --radius-sm: 8px;
-  --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.08), 0 2px 4px -2px rgba(0,0,0,0.08);
-  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.05);
-}
-
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  -webkit-tap-highlight-color: transparent;
-  scroll-behavior: smooth;
-}
-
-body {
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: var(--bg);
-  color: var(--text-primary);
-  min-height: 100vh;
-  padding-bottom: 110px;
-  line-height: 1.5;
-}
-
-/* ── Topbar (Centered Layout) ── */
-.topbar {
-  background: var(--card-bg);
-  border-bottom: 1px solid var(--border);
-  padding: 0 16px;
-  height: 60px;
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-
-.back-btn {
-  width: 36px;
-  height: 36px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
-  background: var(--card-bg);
-  color: var(--text-secondary);
-  cursor: pointer;
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-}
-
-.back-btn:hover {
-  background: var(--bg);
-  color: var(--text-primary);
-}
-
-.topbar-center {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-
-.topbar-title {
-  font-size: 15px;
-  font-weight: 800;
-  color: var(--text-primary);
-}
-
-.topbar-sub {
-  font-size: 11px;
-  color: var(--text-muted);
-}
-
-/* ── Summary bar ── */
-.summary-bar {
-  background: var(--primary-light);
-  border-bottom: 1px solid var(--primary-mid);
-  padding: 10px 16px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-  overflow-x: auto;
-}
-
-.sum-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 4px 10px;
-  background: #fff;
-  border: 1px solid var(--primary-mid);
-  border-radius: 99px;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--primary);
-  white-space: nowrap;
-}
-
-/* ── Page ── */
-.page {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 16px;
-}
-
-/* ── Section header ── */
-.sec-head {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 20px 0 10px;
-}
-
-.sec-icon {
-  width: 30px;
-  height: 30px;
-  border-radius: var(--radius-sm);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  flex-shrink: 0;
-}
-
-.sec-icon.blue { background: var(--primary-light); }
-.sec-icon.green { background: var(--success-light); }
-.sec-icon.orange { background: var(--orange-light); }
-
-.sec-label {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--text-secondary);
-}
-
-.sec-optional {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--text-muted);
-  background: var(--bg);
-  border: 1px solid var(--border);
-  padding: 2px 8px;
-  border-radius: 99px;
-  margin-left: auto;
-}
-
-/* ── Card ── */
-.card {
-  background: var(--card-bg);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-sm);
-  padding: 18px;
-  margin-bottom: 12px;
-}
-
-/* ── Form fields ── */
-.field {
-  margin-bottom: 14px;
-}
-
-.field:last-child {
-  margin-bottom: 0;
-}
-
-.field label {
-  display: block;
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--text-secondary);
-  margin-bottom: 6px;
-  letter-spacing: 0.05em;
-}
-
-.field input, .field select {
-  width: 100%;
-  padding: 11px 14px;
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius-sm);
-  font-size: 14px;
-  color: var(--text-primary);
-  background: #fff;
-  transition: all 0.2s ease;
-  font-family: inherit;
-}
-
-.field input::placeholder {
-  color: var(--text-muted);
-}
-
-.field input:focus, .field select:focus {
-  outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
-}
-
-/* ── Two & Three col rows (responsive stack) ── */
-.row-2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-.row-3 {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 8px;
-}
-
-/* ── Optional badge on inputs ── */
-.opt-hint {
-  font-size: 11px;
-  color: var(--text-secondary);
-  margin-top: 4px;
-  display: block;
-}
-
-/* ── Info banner ── */
-.info-banner {
-  background: var(--orange-light);
-  border: 1px solid #fde68a;
-  border-radius: var(--radius-sm);
-  padding: 12px 14px;
-  font-size: 12px;
-  color: var(--orange);
-  line-height: 1.5;
-  display: flex;
-  gap: 8px;
-  align-items: flex-start;
-  margin-bottom: 14px;
-}
-
-.info-banner .ii {
-  font-size: 15px;
-  flex-shrink: 0;
-  margin-top: 1px;
-}
-
-/* ── Generate button / CTA ── */
-.cta-bar {
-  background: var(--card-bg);
-  border-top: 1px solid var(--border);
-  padding: 12px 16px;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-  box-shadow: 0 -4px 10px rgba(0,0,0,0.03);
-}
-
-.cta-inner {
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 13px 22px;
-  border-radius: var(--radius-sm);
-  font-size: 15px;
-  font-weight: 700;
-  cursor: pointer;
-  border: none;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  width: 100%;
-}
-
-.btn:active {
-  transform: scale(0.98);
-}
-
-.btn-success {
-  background: var(--success);
-  color: #fff;
-  box-shadow: var(--shadow-sm);
-}
-
-.btn-success:hover {
-  background: var(--success-hover);
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
-}
-
-.btn:disabled {
-  opacity: .4;
-  pointer-events: none;
-}
-
-.cta-hint {
-  font-size: 11px;
-  color: var(--text-secondary);
-  text-align: center;
-  margin-top: 6px;
-}
-
-/* ── Spinner ── */
-.spin {
-  width: 16px;
-  height: 16px;
-  border: 2px solid rgba(255,255,255,.35);
-  border-top-color: #fff;
-  border-radius: 50%;
-  animation: spin .65s linear infinite;
-  display: none;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-/* ── Modal overlay (Mobile Bottom Sheet Pattern) ── */
-.modal-bg {
-  position: fixed;
-  inset: 0;
-  background: rgba(15, 23, 42, 0.6);
-  z-index: 200;
-  display: none;
-  align-items: flex-end;
-  justify-content: center;
-  backdrop-filter: blur(4px);
-}
-
-.modal-bg.show {
-  display: flex;
-}
-
-.modal {
-  background: var(--card-bg);
-  border-radius: 16px 16px 0 0;
-  padding: 24px 20px 32px;
-  width: 100%;
-  max-width: 600px;
-  box-shadow: var(--shadow-lg);
-  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes slideUp {
-  from { transform: translateY(100%); }
-  to { transform: translateY(0); }
-}
-
-.modal-handle {
-  width: 36px;
-  height: 4px;
-  background: var(--border);
-  border-radius: 99px;
-  margin: 0 auto 20px;
-}
-
-.modal-title {
-  font-size: 17px;
-  font-weight: 800;
-  color: var(--text-primary);
-  margin-bottom: 8px;
-}
-
-.modal-body {
-  font-size: 13px;
-  color: var(--text-secondary);
-  line-height: 1.6;
-  margin-bottom: 20px;
-}
-
-.modal-empty-fields {
-  background: var(--orange-light);
-  border-radius: var(--radius-sm);
-  padding: 12px 14px;
-  margin-bottom: 20px;
-  font-size: 13px;
-  color: var(--orange);
-  max-height: 150px;
-  overflow-y: auto;
-  line-height: 1.6;
-}
-
-.modal-btns {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.btn-modal-confirm {
-  background: var(--success);
-  color: #fff;
-  font-weight: 700;
-  padding: 13px;
-  border-radius: var(--radius-sm);
-  border: none;
-  font-size: 15px;
-  cursor: pointer;
-  transition: background 0.2s ease;
-  text-align: center;
-}
-
-.btn-modal-confirm:hover {
-  background: var(--success-hover);
-}
-
-.btn-modal-cancel {
-  background: var(--bg);
-  color: var(--text-secondary);
-  font-weight: 600;
-  padding: 12px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
-  font-size: 14px;
-  cursor: pointer;
-  text-align: center;
-  transition: all 0.2s ease;
-}
-
-.btn-modal-cancel:hover {
-  background: var(--border);
-  color: var(--text-primary);
-}
-
-/* ── Progress overlay ── */
-.prog-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(255, 255, 255, 0.95);
-  z-index: 300;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.prog-overlay.show {
-  display: flex;
-}
-
-.prog-icon {
-  font-size: 40px;
-  animation: bounce 0.8s ease infinite alternate;
-}
-
-@keyframes bounce {
-  from { transform: translateY(0); }
-  to { transform: translateY(-8px); }
-}
-
-.prog-title {
-  font-size: 17px;
-  font-weight: 800;
-  color: var(--text-primary);
-}
-
-.prog-sub {
-  font-size: 13px;
-  color: var(--text-secondary);
-  text-align: center;
-  max-width: 260px;
-  line-height: 1.5;
-}
-
-.prog-bar-wrap {
-  width: 220px;
-  height: 6px;
-  background: var(--border);
-  border-radius: 99px;
-  overflow: hidden;
-}
-
-.prog-bar-fill {
-  height: 100%;
-  border-radius: 99px;
-  background: linear-gradient(90deg, var(--primary), #06b6d4);
-  transition: width 0.4s ease;
-}
-
-/* ── Success state ── */
-.success-overlay {
-  position: fixed;
-  inset: 0;
-  background: var(--bg);
-  z-index: 400;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 12px;
-  padding: 32px;
-  text-align: center;
-}
-
-.success-overlay.show {
-  display: flex;
-}
-
-.success-icon {
-  font-size: 64px;
-  animation: checkPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
-}
-
-@keyframes checkPop {
-  0% { transform: scale(0.5); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
-}
-
-.success-title {
-  font-size: 22px;
-  font-weight: 800;
-  color: var(--text-primary);
-}
-
-.success-sub {
-  font-size: 14px;
-  color: var(--text-secondary);
-  line-height: 1.6;
-  max-width: 280px;
-}
-
-.btn-again {
-  margin-top: 16px;
-  padding: 13px 32px;
-  background: var(--primary);
-  color: #fff;
-  border-radius: var(--radius-sm);
-  border: none;
-  font-size: 15px;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
-  transition: background 0.2s ease;
-}
-
-.btn-again:hover {
-  background: var(--primary-hover);
-}
-
-/* ── Divider ── */
-.divider {
-  height: 1px;
-  background: var(--border);
-  margin: 4px 0 14px;
-}
-
-/* ── Mobile responsiveness adjustments ── */
-@media (max-width: 480px) {
-  .page {
-    padding: 12px;
-  }
-  .card {
-    padding: 14px;
-  }
-  .row-2, .row-3 {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-  .date-group {
-    grid-template-columns: 1fr;
-    gap: 8px;
-  }
-  .modal {
-    border-radius: 12px 12px 0 0;
-    padding: 20px 16px 24px;
-  }
-  .btn {
-    padding: 12px 18px;
-  }
-}
-</style>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fill Details — Term Work Generator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css"/>
 </head>
 <body>
 
-<!-- Topbar -->
-<div class="topbar">
-  <button class="back-btn" onclick="window.location.href='/'">←</button>
-  <div class="topbar-center">
-    <div class="topbar-title">Fill in Details</div>
-    <div class="topbar-sub" id="topbar-sub">Loading…</div>
-  </div>
-  <div style="width: 36px"></div> <!-- Balanced spacer -->
-</div>
-
-<!-- Summary bar -->
-<div class="summary-bar" id="summary-bar"></div>
-
-<div class="page">
-
-  <div class="info-banner">
-    <span class="ii">💡</span>
-    <span>All fields are <strong>optional</strong> — you can skip any or all. You'll be asked to confirm before generating blank fields.</span>
-  </div>
-
-  <!-- Student Info -->
-  <div class="sec-head">
-    <div class="sec-icon blue">👤</div>
-    <div class="sec-label">Student Information</div>
-    <div class="sec-optional">Optional</div>
-  </div>
-  <div class="card">
-    <div class="field">
-      <label>FULL NAME</label>
-      <input type="text" id="f-student" placeholder="e.g. Rahul Patel" autocomplete="name"/>
-    </div>
-    <div class="divider"></div>
-    <div class="row-2">
-      <div class="field">
-        <label>PEN NUMBER</label>
-        <input type="text" id="f-pen" placeholder="e.g. 22CS001"/>
+  <div class="app-container">
+    <!-- Navbar -->
+    <header class="navbar">
+      <div class="navbar-inner">
+        <button class="back-btn" onclick="window.location.href='/'" title="Go back">
+          <i data-lucide="arrow-left" style="width:18px;height:18px;"></i>
+        </button>
+        <div class="topbar-center text-center">
+          <span class="brand-title" style="font-size:15px;">Fill details</span>
+          <div class="card-subtitle" id="topbar-count">Loading practicals...</div>
+        </div>
+        <div class="nav-stepper">
+          <div class="nav-step-dot done"></div>
+          <div class="nav-step-dot done"></div>
+          <div class="nav-step-dot done"></div>
+          <div class="nav-step-dot active"></div>
+          <div class="nav-step-dot"></div>
+        </div>
       </div>
-      <div class="field">
-        <label>SEMESTER</label>
-        <input type="text" id="f-semester" placeholder="e.g. III"/>
+    </header>
+
+    <!-- Selected Practicals Summary Bar -->
+    <div class="summary-bar" id="summary-bar" style="background:var(--primary-light);border-bottom:1px solid var(--border);padding:10px 24px;display:flex;gap:8px;overflow-x:auto;"></div>
+
+    <main class="page" style="padding-top:20px;">
+      <!-- Stepper Component -->
+      <section class="stepper-container animate-fade-in" style="animation-delay: 0.02s;">
+        <div class="stepper">
+          <div class="step-progress-bar">
+            <div class="step-progress-fill" id="step-progress-fill" style="width: 80%;"></div>
+          </div>
+          <div class="step-node done" id="step-node-1">
+            <div class="step-circle"><i data-lucide="check" style="width:16px;height:16px;"></i></div>
+            <div class="step-label">Upload Index</div>
+          </div>
+          <div class="step-node done" id="step-node-2">
+            <div class="step-circle"><i data-lucide="check" style="width:16px;height:16px;"></i></div>
+            <div class="step-label">Select Items</div>
+          </div>
+          <div class="step-node done" id="step-node-3">
+            <div class="step-circle"><i data-lucide="check" style="width:16px;height:16px;"></i></div>
+            <div class="step-label">Blank Form</div>
+          </div>
+          <div class="step-node active" id="step-node-4">
+            <div class="step-circle">4</div>
+            <div class="step-label">Fill Details</div>
+          </div>
+          <div class="step-node" id="step-node-5">
+            <div class="step-circle">5</div>
+            <div class="step-label">Done!</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Optional Fields Notice -->
+      <section class="info-alert animate-fade-in" style="animation-delay:0.05s;">
+        <div class="info-alert-icon"><i data-lucide="info" style="width:16px;height:16px;"></i></div>
+        <div class="info-alert-text">
+          All fields below are <strong>optional</strong>. You can skip any field and it will simply be left blank in the output PDF. You will be asked to confirm before generating.
+        </div>
+      </section>
+
+      <form id="details-form" onsubmit="event.preventDefault();">
+        
+        <!-- Section 1: Student Information -->
+        <section class="animate-fade-in" style="animation-delay:0.1s;">
+          <div class="form-section-head">
+            <div class="form-section-icon"><i data-lucide="user"></i></div>
+            <h3 class="form-section-label">Student Information</h3>
+            <span class="form-section-badge">Optional</span>
+          </div>
+          <div class="card">
+            <div class="card-body" style="padding-top:20px;">
+              <div class="field-group">
+                <label for="f-student">Full Name</label>
+                <input type="text" id="f-student" autocomplete="name"/>
+              </div>
+              <div class="form-divider"></div>
+              <div class="field-grid-2">
+                <div class="field-group">
+                  <label for="f-pen">PEN Number</label>
+                  <input type="text" id="f-pen"/>
+                </div>
+                <div class="field-group">
+                  <label for="f-semester">Semester</label>
+                  <input type="text" id="f-semester"/>
+                </div>
+              </div>
+              <div class="form-divider"></div>
+              <div class="field-grid-2">
+                <div class="field-group">
+                  <label for="f-class">Class</label>
+                  <input type="text" id="f-class"/>
+                </div>
+                <div class="field-group">
+                  <label for="f-batch">Batch</label>
+                  <input type="text" id="f-batch"/>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 2: Faculty -->
+        <section class="animate-fade-in" style="animation-delay:0.13s;">
+          <div class="form-section-head">
+            <div class="form-section-icon"><i data-lucide="user-check"></i></div>
+            <h3 class="form-section-label">Faculty</h3>
+            <span class="form-section-badge">Optional</span>
+          </div>
+          <div class="card">
+            <div class="card-body" style="padding-top:20px;">
+              <div class="field-group">
+                <label for="f-faculty">Checked By (Faculty Name)</label>
+                <input type="text" id="f-faculty" autocomplete="off"/>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 3: Subject & Term -->
+        <section class="animate-fade-in" style="animation-delay:0.15s;">
+          <div class="form-section-head">
+            <div class="form-section-icon"><i data-lucide="book-open"></i></div>
+            <h3 class="form-section-label">Subject & Term</h3>
+            <span class="form-section-badge">Optional</span>
+          </div>
+          <div class="card">
+            <div class="card-body" style="padding-top:20px;">
+              <div class="field-group">
+                <label for="f-subject">Subject Title</label>
+                <input type="text" id="f-subject"/>
+              </div>
+              <div class="form-divider"></div>
+              <div class="field-group">
+                <label for="f-term">Term</label>
+                <input type="text" id="f-term"/>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 3: Dates -->
+        <section class="animate-fade-in" style="animation-delay:0.2s;">
+          <div class="form-section-head">
+            <div class="form-section-icon warning-accent"><i data-lucide="calendar"></i></div>
+            <h3 class="form-section-label">Key Dates</h3>
+            <span class="form-section-badge">Optional</span>
+          </div>
+          <div class="card">
+            <div class="card-body" style="padding-top:20px;">
+              <div class="field-group">
+                <label for="f-cond">Conducted On</label>
+                <input type="date" id="f-cond"/>
+              </div>
+              <div class="form-divider"></div>
+              <div class="field-group">
+                <label for="f-sub">Date of Submission</label>
+                <input type="date" id="f-sub"/>
+              </div>
+              <div class="form-divider"></div>
+              <div class="field-group">
+                <label for="f-actsub">Actual Date of Submission</label>
+                <input type="date" id="f-actsub"/>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 4: Assessment -->
+        <section class="animate-fade-in" style="animation-delay:0.25s;">
+          <div class="form-section-head">
+            <div class="form-section-icon success-accent"><i data-lucide="check-square"></i></div>
+            <h3 class="form-section-label">Assessment & Marks</h3>
+            <span class="form-section-badge">Optional</span>
+          </div>
+          <div class="card">
+            <div class="card-body" style="padding-top:20px;">
+              <div class="field-grid-2">
+                <div class="field-group">
+                  <label for="f-marks">Marks (Out of 10)</label>
+                  <input type="text" id="f-marks"/>
+                </div>
+                <div class="field-group">
+                  <label for="f-signdate">Assessor Signature Date</label>
+                  <input type="date" id="f-signdate"/>
+                </div>
+              </div>
+              <div class="card-subtitle mt-4">
+                These will overlay on the bottom grading row of the Term Work sheet.
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </form>
+
+      <!-- Handwritten Notice Footer -->
+      <section class="text-center animate-fade-in" style="animation-delay:0.3s;margin-top:20px;">
+        <p style="font-size:12.5px;color:var(--text-muted);line-height:1.6;max-width:480px;margin:0 auto;">
+          Note: Fields like <em>Checked By</em>, <em>Remarks</em>, and <em>Assessor Signature</em> must be physically handwritten. Leave them blank here.
+        </p>
+      </section>
+
+      <!-- Bottom Action CTA -->
+      <div class="action-bar">
+        <div class="action-bar-inner">
+          <button class="btn btn-success btn-full" id="btn-generate">
+            <i data-lucide="download" style="width:16px;height:16px;"></i> Generate Term Work PDFs
+          </button>
+          <div class="action-hint" id="cta-qty-hint">Calculating pages...</div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-inner">
+        <div class="footer-logo">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-square"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          Term Work Generator
+        </div>
+        <p class="footer-credit">Designed & Developed by <strong><a href="https://github.com/Rohit-Saindane" target="_blank" rel="noopener noreferrer">Saindane Rohit</a></strong></p>
+        <p class="footer-copy">&copy; 2026 Saindane Rohit. All Rights Reserved.</p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Confirmation Modal Overlay -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal-sheet">
+      <div class="modal-drag-bar"></div>
+      <div class="modal-header">
+        <div class="modal-icon"><i data-lucide="alert-triangle"></i></div>
+        <div class="modal-title-wrap">
+          <h4 class="modal-title">Confirm Empty Fields</h4>
+          <p class="modal-subtitle">Verify before document compilation</p>
+        </div>
+      </div>
+      <div class="modal-body" id="modal-body-text">
+        Some fields are currently empty. PDFs will be compiled leaving these sections blank. Do you want to proceed?
+      </div>
+      <div class="modal-list-card" id="modal-empty-list"></div>
+      <div class="modal-buttons">
+        <button class="btn btn-success btn-full" id="modal-confirm">Yes, Generate Document</button>
+        <button class="btn btn-secondary btn-full" onclick="closeModal()">Go Back and Fill</button>
       </div>
     </div>
-    <div class="divider"></div>
-    <div class="row-2">
-      <div class="field">
-        <label>CLASS</label>
-        <input type="text" id="f-class" placeholder="e.g. SE-CS"/>
-      </div>
-      <div class="field">
-        <label>BATCH</label>
-        <input type="text" id="f-batch" placeholder="e.g. A1"/>
-      </div>
+  </div>
+
+  <!-- Progress Overlay Loader -->
+  <div class="progress-overlay" id="progress-overlay">
+    <div class="progress-spinner"></div>
+    <h3 class="progress-title">Generating PDFs...</h3>
+    <p class="progress-message" id="progress-message">Preparing files...</p>
+    <div class="progress-bar-container">
+      <div class="progress-bar-fill" id="progress-fill"></div>
     </div>
   </div>
 
-  <!-- Subject Info -->
-  <div class="sec-head">
-    <div class="sec-icon blue">📚</div>
-    <div class="sec-label">Subject & Term</div>
-    <div class="sec-optional">Optional</div>
-  </div>
-  <div class="card">
-    <div class="field">
-      <label>SUBJECT</label>
-      <input type="text" id="f-subject" placeholder="e.g. Operating Systems (1CS)"/>
-    </div>
-    <div class="divider"></div>
-    <div class="field">
-      <label>TERM</label>
-      <input type="text" id="f-term" placeholder="e.g. ODD / EVEN"/>
-    </div>
-  </div>
-
-  <!-- Dates -->
-  <div class="sec-head">
-    <div class="sec-icon orange">📅</div>
-    <div class="sec-label">Dates</div>
-    <div class="sec-optional">Optional</div>
-  </div>
-  <div class="card">
-    <div class="field">
-      <label>CONDUCTED ON</label>
-      <input type="date" id="f-cond"/>
-    </div>
-    <div class="divider"></div>
-    <div class="field">
-      <label>DATE OF SUBMISSION</label>
-      <input type="date" id="f-sub"/>
-    </div>
-    <div class="divider"></div>
-    <div class="field">
-      <label>ACTUAL DATE OF SUBMISSION</label>
-      <input type="date" id="f-actsub"/>
-    </div>
-  </div>
-
-  <!-- Marks -->
-  <div class="sec-head">
-    <div class="sec-icon green">✅</div>
-    <div class="sec-label">Assessment</div>
-    <div class="sec-optional">Optional</div>
-  </div>
-  <div class="card">
-    <div class="row-2">
-      <div class="field">
-        <label>MARKS</label>
-        <input type="text" id="f-marks" placeholder="e.g. 09"/>
+  <!-- Success Screen View Overlay -->
+  <div class="success-screen" id="success-screen-overlay">
+    <div class="success-card">
+      <div class="success-lottie-wrap">
+        <i data-lucide="check" style="width:36px;height:36px;stroke-width:3px;"></i>
       </div>
-      <div class="field">
-        <label>SIGNATURE DATE</label>
-        <input type="date" id="f-signdate"/>
+      <h2 class="success-title">PDF Generated Successfully!</h2>
+      <p class="success-message">Your custom overlay term-work files have compiled and downloaded to your device.</p>
+      
+      <div class="success-details">
+        <div class="success-details-row">
+          <span>Documents Compiled:</span>
+          <span class="success-details-val" id="success-qty">10 pages</span>
+        </div>
+        <div class="success-details-row" style="margin-top:4px;">
+          <span>Merged File Size:</span>
+          <span class="success-details-val" id="success-size">4.2 MB</span>
+        </div>
+      </div>
+      
+      <div class="success-actions">
+        <button class="btn btn-primary btn-full" onclick="window.location.href='/'">
+          <i data-lucide="refresh-cw" style="width:16px;height:16px;"></i> Generate More Documents
+        </button>
       </div>
     </div>
-    <div class="opt-hint">These will appear in the bottom row of the term work form.</div>
   </div>
 
-  <!-- Checked By / Remarks (display only notice) -->
-  <p style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:4px;line-height:1.6">
-    Fields like <em>Checked By</em>, <em>Remarks</em>, and <em>Signature</em> are handwritten — leave them blank here.
-  </p>
-
-</div><!-- /page -->
-
-<!-- CTA bar -->
-<div class="cta-bar">
-  <div class="cta-inner">
-    <button class="btn btn-success" id="btn-generate">
-      <span class="spin" id="sp-gen"></span>
-      ⬇ Generate Term Work PDFs
-    </button>
-    <div class="cta-hint" id="gen-hint"></div>
-  </div>
-</div>
-
-<!-- Confirmation Modal -->
-<div class="modal-bg" id="modal-bg">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-title">⚠️ Some fields are empty</div>
-    <div class="modal-body" id="modal-body"></div>
-    <div class="modal-empty-fields" id="modal-empty-list"></div>
-    <div class="modal-btns">
-      <button class="btn-modal-confirm" id="modal-confirm">Yes, generate anyway</button>
-      <button class="btn-modal-cancel" onclick="closeModal()">Go back & fill details</button>
-    </div>
-  </div>
-</div>
-
-<!-- Progress overlay -->
-<div class="prog-overlay" id="prog-overlay">
-  <div class="prog-icon">⚙️</div>
-  <div class="prog-title">Generating PDFs…</div>
-  <div class="prog-sub" id="prog-sub">Preparing your term work files</div>
-  <div class="prog-bar-wrap">
-    <div class="prog-bar-fill" id="prog-fill" style="width:0%"></div>
-  </div>
-</div>
-
-<!-- Success overlay -->
-<div class="success-overlay" id="success-overlay">
-  <div class="success-icon">🎉</div>
-  <div class="success-title">All Done!</div>
-  <div class="success-sub" id="success-sub"></div>
-  <button class="btn-again" onclick="window.location.href='/'">Generate More</button>
-</div>
-
-<script>
-// ── Load state from sessionStorage ────────────────────────────────────────
-const titles  = JSON.parse(sessionStorage.getItem('twf_titles')  || '[]');
-const pdfBb64 = sessionStorage.getItem('twf_pdf_b') || '';
-
-if (!titles.length || !pdfBb64) {
-  window.location.href = '/';
-}
-
-// ── Populate topbar & summary ──────────────────────────────────────────────
-document.getElementById('topbar-sub').textContent =
-  `${titles.length} practical${titles.length > 1 ? 's' : ''} selected`;
-
-const bar = document.getElementById('summary-bar');
-titles.forEach(t => {
-  const pill = document.createElement('div');
-  pill.className = 'sum-pill';
-  pill.innerHTML = `📌 P${t.sr_no}`;
-  bar.appendChild(pill);
-});
-
-// Update CTA hint
-document.getElementById('gen-hint').textContent =
-  `Will generate ${titles.length} page${titles.length > 1 ? 's' : ''} as one merged PDF`;
-
-// ── Field map ──────────────────────────────────────────────────────────────
-const FIELD_LABELS = {
-  'f-student':  'Name of Student',
-  'f-pen':      'PEN Number',
-  'f-semester': 'Semester',
-  'f-class':    'Class',
-  'f-batch':    'Batch',
-  'f-subject':  'Subject',
-  'f-term':     'Term',
-  'f-cond':     'Conducted On',
-  'f-sub':      'Date of Submission',
-  'f-actsub':   'Actual Date of Submission',
-  'f-marks':    'Marks',
-  'f-signdate': 'Signature Date',
-};
-
-function getFormValues() {
-  return {
-    student_name: document.getElementById('f-student').value.trim(),
-    pen:          document.getElementById('f-pen').value.trim(),
-    semester:     document.getElementById('f-semester').value.trim(),
-    class_name:   document.getElementById('f-class').value.trim(),
-    batch:        document.getElementById('f-batch').value.trim(),
-    subject:      document.getElementById('f-subject').value.trim(),
-    term:         document.getElementById('f-term').value.trim(),
-    conducted_on: formatDate(document.getElementById('f-cond').value),
-    date_of_sub:  formatDate(document.getElementById('f-sub').value),
-    actual_sub:   formatDate(document.getElementById('f-actsub').value),
-    marks:        document.getElementById('f-marks').value.trim(),
-    sign_date:    formatDate(document.getElementById('f-signdate').value),
-  };
-}
-
-function formatDate(val) {
-  // Convert YYYY-MM-DD to DD/MM/YYYY for the PDF
-  if (!val) return '';
-  const [y, m, d] = val.split('-');
-  return `${d}/${m}/${y}`;
-}
-
-function getEmptyFields() {
-  const empty = [];
-  Object.entries(FIELD_LABELS).forEach(([id, label]) => {
-    if (!document.getElementById(id).value.trim()) empty.push(label);
-  });
-  return empty;
-}
-
-// ── Modal ──────────────────────────────────────────────────────────────────
-function closeModal() {
-  document.getElementById('modal-bg').classList.remove('show');
-}
-document.getElementById('modal-bg').addEventListener('click', e => {
-  if (e.target === document.getElementById('modal-bg')) closeModal();
-});
-
-// ── Generate ───────────────────────────────────────────────────────────────
-document.getElementById('btn-generate').addEventListener('click', () => {
-  const empty = getEmptyFields();
-  if (empty.length > 0) {
-    // Show confirmation modal
-    const count = empty.length;
-    document.getElementById('modal-body').textContent =
-      `${count} field${count > 1 ? 's are' : ' is'} empty. Do you really want to continue with blank details?`;
-    document.getElementById('modal-empty-list').innerHTML =
-      empty.map(f => `• ${f}`).join('<br>');
-    document.getElementById('modal-bg').classList.add('show');
-    document.getElementById('modal-confirm').onclick = () => {
-      closeModal();
-      doGenerate();
-    };
-  } else {
-    doGenerate();
-  }
-});
-
-async function doGenerate() {
-  // Show progress
-  const prog = document.getElementById('prog-overlay');
-  const fill = document.getElementById('prog-fill');
-  const sub  = document.getElementById('prog-sub');
-  prog.classList.add('show');
-
-  fill.style.width = '15%';
-  sub.textContent  = 'Preparing files…';
-
-  try {
-    // Convert base64 PDF B back to Blob
-    const b64    = pdfBb64.split(',')[1];
-    const binary = atob(b64);
-    const bytes  = new Uint8Array(binary.length);
-    for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
-    const pdfBlob = new Blob([bytes], { type: 'application/pdf' });
-
-    fill.style.width = '35%';
-    sub.textContent  = `Filling ${titles.length} term work page${titles.length > 1 ? 's' : ''}…`;
-
-    const formValues = getFormValues();
-    const fd = new FormData();
-    fd.append('pdf_b',       pdfBlob, 'term_work.pdf');
-    fd.append('titles_json', JSON.stringify(titles));
-    fd.append('form_json',   JSON.stringify(formValues));
-
-    fill.style.width = '60%';
-    sub.textContent  = 'Server is generating your PDFs…';
-
-    const res = await fetch('/api/generate', { method: 'POST', body: fd });
-
-    fill.style.width = '90%';
-
-    if (!res.ok) {
-      const d = await res.json().catch(() => ({}));
-      throw new Error(d.error || 'Server error');
-    }
-
-    const blob = await res.blob();
-    fill.style.width = '100%';
-    sub.textContent  = 'Done!';
-
-    // Trigger download
-    const url = URL.createObjectURL(blob);
-    const a   = document.createElement('a');
-    a.href     = url;
-    const srList = titles.map(t => t.sr_no).join('-');
-    a.download = `TermWork_Practicals_${srList}.pdf`;
-    a.click();
-    URL.revokeObjectURL(url);
-
-    // Show success
-    setTimeout(() => {
-      prog.classList.remove('show');
-      document.getElementById('success-sub').textContent =
-        `${titles.length} term work page${titles.length > 1 ? 's' : ''} downloaded as one PDF. Check your Downloads folder.`;
-      document.getElementById('success-overlay').classList.add('show');
-    }, 600);
-
-  } catch (err) {
-    prog.classList.remove('show');
-    alert('❌ Error: ' + err.message);
-  }
-}
-</script>
+  <!-- Script block dependencies -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="/static/js/form.js" defer></script>
 </body>
 </html>
