@@ -1,4 +1,4 @@
-// Retrieve State from sessionStorage
+// ── Retrieve State from sessionStorage ───────────────────────────────────
 const titles  = JSON.parse(sessionStorage.getItem('twf_titles')  || '[]');
 const pdfBb64 = sessionStorage.getItem('twf_pdf_b') || '';
 
@@ -8,7 +8,9 @@ if (!titles.length || !pdfBb64) {
 
 const $ = id => document.getElementById(id);
 
-// ── Field Labels ─────────────────────────────────────────────────────────────
+// ── localStorage keys for remembering user's details ─────────────────────
+const LS_KEY = 'twf_saved_form';
+
 const FIELD_LABELS = {
   'f-student':  'Student Name',
   'f-pen':      'PEN Number',
@@ -25,10 +27,8 @@ const FIELD_LABELS = {
   'f-signdate': 'Signature Date',
 };
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
+// ── Helpers ───────────────────────────────────────────────────────────────
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 function formatDate(val) {
   if (!val) return '';
@@ -38,11 +38,45 @@ function formatDate(val) {
 
 function formatBytes(bytes, decimals = 2) {
   if (bytes === 0) return '0 Bytes';
-  const k = 1024;
-  const dm = decimals < 0 ? 0 : decimals;
+  const k = 1024, dm = decimals < 0 ? 0 : decimals;
   const sizes = ['Bytes', 'KB', 'MB'];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+}
+
+// ── localStorage: save & load form values ────────────────────────────────
+function saveFormToLocalStorage() {
+  const data = {};
+  Object.keys(FIELD_LABELS).forEach(id => {
+    const el = $(id);
+    if (el) data[id] = el.value;
+  });
+  try { localStorage.setItem(LS_KEY, JSON.stringify(data)); } catch (_) {}
+}
+
+function loadFormFromLocalStorage() {
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    if (!raw) return;
+    const data = JSON.parse(raw);
+    let loaded = 0;
+    Object.keys(FIELD_LABELS).forEach(id => {
+      const el = $(id);
+      if (el && data[id]) { el.value = data[id]; loaded++; }
+    });
+    if (loaded > 0) {
+      // Show a subtle "remembered" toast
+      const toast = document.getElementById('toast-remembered');
+      if (toast) {
+        toast.style.display = 'flex';
+        setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 400); }, 3000);
+      }
+    }
+  } catch (_) {}
+}
+
+function clearSavedForm() {
+  try { localStorage.removeItem(LS_KEY); } catch (_) {}
 }
 
 function getFormValues() {
@@ -72,36 +106,50 @@ function getEmptyFields() {
   return empty;
 }
 
-// ── Modal ─────────────────────────────────────────────────────────────────────
+// ── Modal ─────────────────────────────────────────────────────────────────
 function openModal()  { $('modal-overlay').classList.add('show');    }
 function closeModal() { $('modal-overlay').classList.remove('show'); }
 window.closeModal = closeModal;
 
-// ── PDF Generation ─────────────────────────────────────────────────────────────
+// ── Back navigation guard (prevents losing selected practicals by accident)
+window.confirmGoBack = function () {
+  const sure = confirm(
+    `Going back will clear your ${titles.length} selected practical${titles.length > 1 ? 's' : ''} and uploaded files. Continue?`
+  );
+  if (sure) {
+    sessionStorage.removeItem('twf_titles');
+    sessionStorage.removeItem('twf_pdf_b');
+    sessionStorage.removeItem('twf_sel_count');
+    window.location.href = '/';
+  }
+};
+
+// ── PDF Generation ─────────────────────────────────────────────────────────
 async function doGenerate() {
   const overlay = $('progress-overlay');
   const bar     = $('progress-fill');
-  const msg     = $('progress-message');
+  const sub     = $('progress-message');
 
   overlay.classList.add('show');
   bar.style.width = '10%';
-  msg.textContent = 'Reading template PDF…';
+  sub.textContent = 'Reading template PDF…';
 
   try {
-    await sleep(300);
+    await sleep(250);
+
+    // Save form to localStorage before generating
+    saveFormToLocalStorage();
 
     // Convert base64 → Blob
     const base64Data   = pdfBb64.split(',')[1];
     const binaryString = atob(base64Data);
     const bytes        = new Uint8Array(binaryString.length);
-    for (let i = 0; i < binaryString.length; i++) {
-      bytes[i] = binaryString.charCodeAt(i);
-    }
+    for (let i = 0; i < binaryString.length; i++) bytes[i] = binaryString.charCodeAt(i);
     const pdfBlob = new Blob([bytes], { type: 'application/pdf' });
 
     bar.style.width = '35%';
-    msg.textContent = 'Mapping form fields…';
-    await sleep(300);
+    sub.textContent = `Filling ${titles.length} term work page${titles.length > 1 ? 's' : ''}…`;
+    await sleep(250);
 
     const formValues = getFormValues();
     const fd = new FormData();
@@ -110,12 +158,12 @@ async function doGenerate() {
     fd.append('form_json',   JSON.stringify(formValues));
 
     bar.style.width = '60%';
-    msg.textContent = 'Generating PDFs on server…';
+    sub.textContent = 'Server is generating your PDFs…';
 
     const response = await fetch('/api/generate', { method: 'POST', body: fd });
 
     bar.style.width = '85%';
-    msg.textContent = 'Preparing download…';
+    sub.textContent = 'Preparing download…';
 
     if (!response.ok) {
       let errMsg = 'Server error';
@@ -125,10 +173,10 @@ async function doGenerate() {
 
     const outputBlob = await response.blob();
     bar.style.width  = '100%';
-    msg.textContent  = 'Done!';
-    await sleep(400);
+    sub.textContent  = 'Done!';
+    await sleep(350);
 
-    // ── Trigger download ──────────────────────────────────────────────────────
+    // ── Trigger download ────────────────────────────────────────────────
     const downloadUrl = URL.createObjectURL(outputBlob);
     const a           = document.createElement('a');
     a.href            = downloadUrl;
@@ -138,7 +186,7 @@ async function doGenerate() {
     document.body.removeChild(a);
     setTimeout(() => URL.revokeObjectURL(downloadUrl), 1000);
 
-    // ── Show success screen ───────────────────────────────────────────────────
+    // ── Show success screen ─────────────────────────────────────────────
     overlay.classList.remove('show');
     $('success-qty').textContent  = `${titles.length} page${titles.length > 1 ? 's' : ''}`;
     $('success-size').textContent = formatBytes(outputBlob.size);
@@ -150,7 +198,7 @@ async function doGenerate() {
   }
 }
 
-// ── Initialise everything after DOM is ready ────────────────────────────────
+// ── Init after DOM ─────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   if (window.lucide) window.lucide.createIcons();
 
@@ -163,20 +211,29 @@ document.addEventListener('DOMContentLoaded', () => {
   titles.forEach(item => {
     const pill = document.createElement('div');
     pill.className = 'sum-pill';
-    pill.innerHTML = `<i data-lucide="bookmark" style="width:12px;height:12px;color:var(--primary);"></i> P${item.sr_no}`;
+    pill.innerHTML = `<i data-lucide="bookmark" style="width:12px;height:12px;color:var(--clr-primary);"></i> P${item.sr_no}`;
     summaryBar.appendChild(pill);
   });
   if (window.lucide) window.lucide.createIcons();
 
-  // ── Generate button ────────────────────────────────────────────────────────
+  // Auto-fill saved form values from localStorage
+  loadFormFromLocalStorage();
+
+  // Save on every input change
+  Object.keys(FIELD_LABELS).forEach(id => {
+    const el = $(id);
+    if (el) el.addEventListener('input', saveFormToLocalStorage);
+    if (el) el.addEventListener('change', saveFormToLocalStorage);
+  });
+
+  // ── Generate button ─────────────────────────────────────────────────────
   $('btn-generate').addEventListener('click', () => {
     const empty = getEmptyFields();
     if (empty.length > 0) {
       $('modal-body-text').textContent =
-        `${empty.length} field${empty.length > 1 ? 's are' : ' is'} empty. Blank spaces will appear in those positions. Do you want to proceed?`;
+        `${empty.length} field${empty.length > 1 ? 's are' : ' is'} empty. Blank spaces will appear in those positions on the PDF. Do you want to proceed?`;
       $('modal-empty-list').innerHTML = empty.map(f => `• ${f}`).join('<br>');
       openModal();
-      // Assign confirm action fresh each open
       $('modal-confirm').onclick = () => { closeModal(); doGenerate(); };
     } else {
       doGenerate();
@@ -187,4 +244,16 @@ document.addEventListener('DOMContentLoaded', () => {
   $('modal-overlay').addEventListener('click', e => {
     if (e.target === $('modal-overlay')) closeModal();
   });
+
+  // ── "Clear saved details" button (if present in the HTML) ───────────────
+  const clearBtn = $('btn-clear-saved');
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      clearSavedForm();
+      Object.keys(FIELD_LABELS).forEach(id => {
+        const el = $(id);
+        if (el) el.value = '';
+      });
+    });
+  }
 });

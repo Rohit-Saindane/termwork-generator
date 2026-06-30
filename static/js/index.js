@@ -9,11 +9,9 @@ const $ = id => document.getElementById(id);
 function showMsg(id, message, type) {
   const el = $(id);
   if (!el) return;
-  
   let iconName = 'info';
-  if (type === 'ok') iconName = 'check-circle-2';
+  if (type === 'ok')  iconName = 'check-circle-2';
   if (type === 'err') iconName = 'alert-triangle';
-  
   el.className = `toast-msg toast-msg-${type} show`;
   el.innerHTML = `
     <div class="toast-msg-icon"><i data-lucide="${iconName}"></i></div>
@@ -30,7 +28,6 @@ function hideMsg(id) {
 function updateStepper(step, status) {
   const node = $(`step-node-${step}`);
   if (!node) return;
-  
   if (status === 'active') {
     node.className = 'step-node active';
   } else if (status === 'done') {
@@ -42,17 +39,13 @@ function updateStepper(step, status) {
     const circle = node.querySelector('.step-circle');
     if (circle) circle.textContent = step;
   }
-  
-  // Calculate horizontal progress bar width
   let doneCount = 0;
   for (let i = 1; i <= 5; i++) {
     const n = $(`step-node-${i}`);
     if (n && n.classList.contains('done')) doneCount++;
   }
-  
   const fill = $('step-progress-fill');
   if (fill) {
-    // 5 nodes mean 4 intervals. Each step represents 25% progress.
     let pct = 0;
     if (doneCount === 1) pct = 10;
     if (doneCount === 2) pct = 35;
@@ -61,7 +54,6 @@ function updateStepper(step, status) {
     if (doneCount === 5) pct = 100;
     fill.style.width = `${pct}%`;
   }
-  
   if (window.lucide) window.lucide.createIcons();
 }
 
@@ -74,48 +66,75 @@ function formatBytes(bytes, decimals = 2) {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 }
 
-// ── Drag & Drop Event Listeners ──────────────────────────────────────────
+// ── Cold-start banner (Render.com free tier sleeps after 15 min) ──────────
+(function initColdStartBanner() {
+  const startTime = Date.now();
+  const banner = document.createElement('div');
+  banner.id = 'cold-banner';
+  banner.innerHTML = `
+    <span style="font-size:16px">⏳</span>
+    <span>Server is waking up — this takes ~20 seconds on first visit. Almost there!</span>
+    <button onclick="document.getElementById('cold-banner').remove()" style="background:none;border:none;cursor:pointer;color:inherit;font-size:16px;line-height:1;padding:0;margin-left:4px">✕</button>
+  `;
+  banner.style.cssText = [
+    'display:none','position:fixed','top:0','left:0','right:0','z-index:9999',
+    'background:#FEF3C7','color:#92400E','padding:10px 16px',
+    'font-size:13px','font-weight:500','text-align:center',
+    'align-items:center','justify-content:center','gap:8px',
+    'box-shadow:0 2px 8px rgba(0,0,0,.1)'
+  ].join(';');
+  document.body.prepend(banner);
+
+  // Show banner only if page takes > 4 seconds to respond (cold start)
+  const checkTimer = setTimeout(() => {
+    if (!document.body.dataset.serverReady) {
+      banner.style.display = 'flex';
+      // Auto-remove after 30s
+      setTimeout(() => banner.remove(), 30000);
+    }
+  }, 4000);
+
+  window.addEventListener('load', () => {
+    document.body.dataset.serverReady = '1';
+    clearTimeout(checkTimer);
+    if (Date.now() - startTime < 4000) {
+      banner.remove(); // fast load — never show
+    }
+  });
+})();
+
+// ── Drag & Drop Event Listeners ───────────────────────────────────────────
 ['dz-a', 'dz-b'].forEach(dzId => {
   const dz = $(dzId);
   if (!dz) return;
-  
-  dz.addEventListener('dragover', e => {
-    e.preventDefault();
-    dz.classList.add('over');
-  });
-  
-  dz.addEventListener('dragleave', () => {
-    dz.classList.remove('over');
-  });
-  
+  dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('over'); });
+  dz.addEventListener('dragleave', () => dz.classList.remove('over'));
   dz.addEventListener('drop', e => {
     e.preventDefault();
     dz.classList.remove('over');
     const inp = dz.querySelector('input[type=file]');
     if (e.dataTransfer.files[0]) {
-      try {
-        const dt = new DataTransfer();
-        dt.items.add(e.dataTransfer.files[0]);
-        inp.files = dt.files;
-      } catch (_) {}
+      try { const dt = new DataTransfer(); dt.items.add(e.dataTransfer.files[0]); inp.files = dt.files; } catch (_) {}
       inp.dispatchEvent(new Event('change', { bubbles: true }));
     }
   });
 });
 
-// ── File A Handling (Practical Index) ────────────────────────────────────
+// ── File A Handling ───────────────────────────────────────────────────────
 $('file-a').addEventListener('change', () => {
   const file = $('file-a').files[0];
   if (!file) return;
-  
+  // Validate it's actually a PDF
+  if (file.type && file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
+    showMsg('msg-parse', 'Please upload a PDF file, not a ' + (file.type || 'unknown') + ' file.', 'err');
+    $('file-a').value = '';
+    return;
+  }
   $('fn-a').textContent = file.name;
   $('fs-a').textContent = formatBytes(file.size);
   $('fp-a').classList.add('show');
-  
-  // Hide dropzone label
   $('dz-a-text').style.display = 'none';
   $('dz-a-icon').style.display = 'none';
-  
   $('btn-parse').disabled = false;
   hideMsg('msg-parse');
 });
@@ -128,13 +147,9 @@ $('btn-remove-a').addEventListener('click', e => {
   $('dz-a-icon').style.display = 'block';
   $('btn-parse').disabled = true;
   hideMsg('msg-parse');
-  
-  // Revert stepper
   updateStepper(1, 'active');
   updateStepper(2, 'upcoming');
   $('card1').classList.remove('done');
-  
-  // Lock Card 2
   $('card2').classList.add('locked');
   practicals = {};
   selected.clear();
@@ -142,24 +157,25 @@ $('btn-remove-a').addEventListener('click', e => {
   updateSel();
 });
 
-// ── File B Handling (Blank Term Work PDF) ───────────────────────────────
+// ── File B Handling ───────────────────────────────────────────────────────
 $('file-b').addEventListener('change', () => {
   const file = $('file-b').files[0];
   if (!file) return;
-  
+  // Validate PDF
+  if (file.type && file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
+    showMsg('msg-parse', 'Term Work file must be a PDF.', 'err');
+    $('file-b').value = '';
+    return;
+  }
   fileBObj = file;
   $('fn-b').textContent = file.name;
   $('fs-b').textContent = formatBytes(file.size);
   $('fp-b').classList.add('show');
-  
-  // Hide dropzone labels
   $('dz-b-text').style.display = 'none';
   $('dz-b-icon').style.display = 'none';
-  
   $('card3').classList.add('done');
   updateStepper(3, 'done');
   updateStepper(4, 'active');
-  
   tryEnableNext();
 });
 
@@ -170,90 +186,101 @@ $('btn-remove-b').addEventListener('click', e => {
   $('fp-b').classList.remove('show');
   $('dz-b-text').style.display = 'block';
   $('dz-b-icon').style.display = 'block';
-  
   $('card3').classList.remove('done');
   updateStepper(3, 'active');
   updateStepper(4, 'upcoming');
-  
   tryEnableNext();
 });
 
-// ── Parse Index PDF Endpoint ─────────────────────────────────────────────
+// ── Parse Index PDF ───────────────────────────────────────────────────────
 $('btn-parse').addEventListener('click', async () => {
   const file = $('file-a').files[0];
   if (!file) return;
-  
+
   $('btn-parse').disabled = true;
   $('sp-parse').style.display = 'inline-block';
   hideMsg('msg-parse');
-  
+
+  // Add a timeout so user gets clear feedback if server is cold-starting
+  const controller  = new AbortController();
+  const timeoutId   = setTimeout(() => {
+    showMsg('msg-parse', '⏳ Server is taking a moment to wake up — still working…', 'info');
+  }, 6000);
+
   const fd = new FormData();
   fd.append('pdf_a', file);
-  
+
   try {
-    const res = await fetch('/api/parse-index', { method: 'POST', body: fd });
+    const res  = await fetch('/api/parse-index', { method: 'POST', body: fd, signal: controller.signal });
+    clearTimeout(timeoutId);
     const data = await res.json();
-    
+
     if (!res.ok || data.error) {
       showMsg('msg-parse', `Parsing failed: ${data.error || 'Unknown server error'}`, 'err');
       return;
     }
-    
+
     practicals = data.practicals;
     selected.clear();
     renderGrid();
-    
-    // Unlock card 2
+
     $('card2').classList.remove('locked');
     $('card1').classList.add('done');
     updateStepper(1, 'done');
     updateStepper(2, 'active');
-    
+
     showMsg('msg-parse', `Successfully extracted <b>${Object.keys(practicals).length} practicals</b> from index.`, 'ok');
   } catch (e) {
-    showMsg('msg-parse', `Network error: ${e.message}`, 'err');
+    clearTimeout(timeoutId);
+    if (e.name === 'AbortError') return;
+    showMsg('msg-parse', `Network error: ${e.message}. Try refreshing if the server was sleeping.`, 'err');
   } finally {
     $('sp-parse').style.display = 'none';
     $('btn-parse').disabled = false;
   }
 });
 
-// ── Render Selection Grid ────────────────────────────────────────────────
+// ── Render Grid ───────────────────────────────────────────────────────────
 function renderGrid() {
   const grid = $('prac-grid');
   grid.innerHTML = '';
-  
-  Object.keys(practicals).sort((a, b) => +a - +b).forEach(num => {
-    const card = document.createElement('div');
-    card.className = `prac-card${selected.has(num) ? ' selected' : ''}`;
-    card.dataset.num = num;
-    
-    card.innerHTML = `
-      <div class="prac-card-checkbox">
-        <i data-lucide="check" style="width:12px;height:12px;"></i>
-      </div>
-      <div class="prac-card-num">Practical ${num}</div>
-      <div class="prac-card-title">${practicals[num]}</div>
-    `;
-    
-    card.addEventListener('click', () => togglePractical(num));
-    grid.appendChild(card);
-  });
-  
-  updateSel();
+
+  // Show skeleton cards briefly for visual polish
+  const count = Object.keys(practicals).length;
+  for (let i = 0; i < Math.min(count, 4); i++) {
+    const sk = document.createElement('div');
+    sk.className = 'prac-card skeleton-card';
+    sk.style.cssText = 'animation:pulse 1s ease infinite;background:var(--clr-surface-alt);border:none;min-height:72px;';
+    grid.appendChild(sk);
+  }
+
+  // Replace with real cards after a brief moment
+  setTimeout(() => {
+    grid.innerHTML = '';
+    Object.keys(practicals).sort((a, b) => +a - +b).forEach(num => {
+      const card = document.createElement('div');
+      card.className = `prac-card${selected.has(num) ? ' selected' : ''}`;
+      card.dataset.num = num;
+      card.innerHTML = `
+        <div class="prac-card-checkbox">
+          <i data-lucide="check" style="width:12px;height:12px;"></i>
+        </div>
+        <div class="prac-card-num">Practical ${num}</div>
+        <div class="prac-card-title">${practicals[num]}</div>
+      `;
+      card.addEventListener('click', () => togglePractical(num));
+      grid.appendChild(card);
+    });
+    updateSel();
+    if (window.lucide) window.lucide.createIcons();
+  }, 300);
 }
 
 function togglePractical(num) {
-  if (selected.has(num)) {
-    selected.delete(num);
-  } else {
-    selected.add(num);
-  }
-  
+  if (selected.has(num)) selected.delete(num);
+  else selected.add(num);
   const card = document.querySelector(`.prac-card[data-num="${num}"]`);
-  if (card) {
-    card.classList.toggle('selected', selected.has(num));
-  }
+  if (card) card.classList.toggle('selected', selected.has(num));
   updateSel();
 }
 
@@ -267,15 +294,13 @@ $('btn-none').addEventListener('click', () => {
   renderGrid();
 });
 
-// ── Selected Items State Tracking ────────────────────────────────────────
+// ── Selection State ───────────────────────────────────────────────────────
 function updateSel() {
   $('sel-count').textContent = selected.size;
-  
+
   const chips = $('chips');
   chips.innerHTML = '';
-  
-  const sortedSelected = [...selected].sort((a, b) => +a - +b);
-  sortedSelected.forEach(num => {
+  [...selected].sort((a, b) => +a - +b).forEach(num => {
     const chip = document.createElement('div');
     chip.className = 'chip';
     chip.innerHTML = `
@@ -286,12 +311,10 @@ function updateSel() {
     `;
     chips.appendChild(chip);
   });
-  
+
   if (selected.size > 0) {
     $('card2').classList.add('done');
     updateStepper(2, 'done');
-    
-    // Unlock card 3 if it was locked
     if ($('card3').classList.contains('locked')) {
       $('card3').classList.remove('locked');
       updateStepper(3, 'active');
@@ -299,12 +322,10 @@ function updateSel() {
   } else {
     $('card2').classList.remove('done');
     updateStepper(2, 'active');
-    
-    // Lock card 3
     $('card3').classList.add('locked');
     updateStepper(3, 'upcoming');
   }
-  
+
   tryEnableNext();
   if (window.lucide) window.lucide.createIcons();
 }
@@ -312,39 +333,33 @@ function updateSel() {
 window.removeSel = function(num) {
   selected.delete(num);
   const card = document.querySelector(`.prac-card[data-num="${num}"]`);
-  if (card) {
-    card.classList.remove('selected');
-  }
+  if (card) card.classList.remove('selected');
   updateSel();
 };
 
-// ── Enable/Disable Continue Button ───────────────────────────────────────
+// ── Continue Button ───────────────────────────────────────────────────────
 function tryEnableNext() {
   const ready = selected.size > 0 && fileBObj !== null;
   $('btn-next').disabled = !ready;
-  
   $('cta-hint').innerHTML = ready
     ? `<b>${selected.size} practical${selected.size > 1 ? 's' : ''}</b> selected — ready to continue.`
     : 'Please complete steps 1, 2, and 3 to proceed.';
 }
 
-// ── Continue Button Navigation ───────────────────────────────────────────
 $('btn-next').addEventListener('click', () => {
   if (selected.size === 0 || !fileBObj) return;
-  
-  const srNos = [...selected].sort((a, b) => +a - +b);
+
+  const srNos  = [...selected].sort((a, b) => +a - +b);
   const titles = srNos.map(n => ({ sr_no: n, title: practicals[n] }));
-  
-  sessionStorage.setItem('twf_titles', JSON.stringify(titles));
+
+  sessionStorage.setItem('twf_titles',    JSON.stringify(titles));
   sessionStorage.setItem('twf_sel_count', srNos.length);
-  
-  // Show spinner on primary button
+
   $('btn-next').disabled = true;
   $('btn-next').innerHTML = '<span class="progress-spinner" style="width:14px;height:14px;border-width:2px;margin-right:4px;"></span> Reading Form PDF…';
-  
-  // Read PDF B as base64 data url for Page 2
-  const reader = new FileReader();
-  reader.onload = e => {
+
+  const reader   = new FileReader();
+  reader.onload  = e => {
     sessionStorage.setItem('twf_pdf_b', e.target.result);
     window.location.href = '/form';
   };
@@ -357,7 +372,7 @@ $('btn-next').addEventListener('click', () => {
   reader.readAsDataURL(fileBObj);
 });
 
-// Initialization
+// ── Init ──────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   if (window.lucide) window.lucide.createIcons();
   updateStepper(1, 'active');

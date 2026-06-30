@@ -180,7 +180,10 @@ def parse_index():
             return jsonify({"error": "No practicals found"}), 422
         return jsonify({"practicals": data})
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        msg = str(e)
+        if "Root object" in msg or "PDF" in msg or "EOF" in msg:
+            msg = "This file doesn't look like a valid PDF. Please check the file and try again."
+        return jsonify({"error": msg}), 500
 
 @app.route("/api/generate", methods=["POST"])
 def generate():
@@ -220,7 +223,10 @@ def generate():
                          as_attachment=True,
                          download_name=f"TermWork_{sr_list}.pdf")
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        msg = str(e)
+        if "Root object" in msg or "EOF" in msg:
+            msg = "Your Term Work PDF appears to be corrupted or invalid. Please re-upload it."
+        return jsonify({"error": msg}), 500
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)

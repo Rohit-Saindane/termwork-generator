@@ -1474,3 +1474,45 @@ body {
     max-width: 180px;
   }
 }
+
+/* ── Skeleton loading pulse (used while parsing practicals) ──────────── */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.4; }
+}
+
+/* ── Toast message variants (used by showMsg in index.js) ────────────── */
+.toast-msg {
+  display: none;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm, 10px);
+  font-size: 13px;
+  line-height: 1.5;
+  margin-top: 10px;
+}
+.toast-msg.show { display: flex; }
+.toast-msg-icon { flex-shrink: 0; margin-top: 1px; }
+.toast-msg-content { flex: 1; }
+
+.toast-msg-ok {
+  background: #ECFDF5;
+  border: 1px solid #A7F3D0;
+  color: #047857;
+}
+.toast-msg-ok .toast-msg-icon { color: #059669; }
+
+.toast-msg-err {
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+  color: #B91C1C;
+}
+.toast-msg-err .toast-msg-icon { color: #DC2626; }
+
+.toast-msg-info {
+  background: #EFF6FF;
+  border: 1px solid #BFDBFE;
+  color: #1D4ED8;
+}
+.toast-msg-info .toast-msg-icon { color: #2563EB; }
