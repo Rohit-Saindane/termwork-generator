@@ -178,6 +178,14 @@
               </div>
             </div>
           </div>
+
+          <!-- Predefined template trigger -->
+          <div class="tpl-trigger-row">
+            <button class="tpl-trigger-btn" id="btn-open-templates" type="button">
+              <i data-lucide="layout-template" style="width:15px;height:15px;"></i>
+              Use a Predefined Template
+            </button>
+          </div>
         </div>
       </section>
 
@@ -203,6 +211,61 @@
         <p class="footer-copy">&copy; 2026 Saindane Rohit. All Rights Reserved.</p>
       </div>
     </footer>
+  </div>
+
+  <!-- ── Template Picker Modal ───────────────────────────────────── -->
+  <div class="tpl-modal-backdrop" id="tpl-backdrop" role="dialog" aria-modal="true" aria-label="Choose a predefined template">
+    <div class="tpl-modal" id="tpl-modal">
+
+      <div class="tpl-modal-header">
+        <div class="tpl-modal-handle"></div>
+        <div class="tpl-modal-title">Choose a Template</div>
+        <div class="tpl-modal-sub">Select your college's blank Term Work form</div>
+      </div>
+
+      <div class="tpl-list" id="tpl-list">
+
+        <!-- R.N.G. Patel Institute -->
+        <div class="tpl-card" data-key="rngpatel_termwork" data-label="R.N.G. Patel Institute of Technology — Term Work.pdf" data-size="68 KB">
+          <div class="tpl-thumb-wrap">
+            <img src="/static/templates/rngpatel_thumb.png" alt="R.N.G. Patel Term Work preview" loading="lazy"/>
+          </div>
+          <div class="tpl-info">
+            <div class="tpl-college">R.N.G. Patel Institute of Technology</div>
+            <div class="tpl-meta">Isroli, Bardoli · Computer Science &amp; Engineering</div>
+            <span class="tpl-badge">✓ Verified</span>
+          </div>
+          <button class="tpl-select-btn" aria-label="Select this template">
+            <i data-lucide="check"></i>
+          </button>
+        </div>
+
+        <!-- Placeholder for future colleges -->
+        <div class="tpl-card" style="opacity:.45;pointer-events:none;">
+          <div class="tpl-thumb-wrap">
+            <div class="tpl-thumb-placeholder">
+              <i data-lucide="clock" style="width:22px;height:22px;"></i>
+            </div>
+          </div>
+          <div class="tpl-info">
+            <div class="tpl-college" style="color:#94a3b8;">More colleges coming soon</div>
+            <div class="tpl-meta">Submit your template via GitHub</div>
+            <span class="tpl-badge" style="background:#f1f5f9;color:#94a3b8;">Coming Soon</span>
+          </div>
+          <button class="tpl-select-btn" disabled aria-hidden="true">
+            <i data-lucide="plus"></i>
+          </button>
+        </div>
+
+      </div>
+
+      <div class="tpl-modal-footer">
+        <button class="tpl-use-btn" id="tpl-use-btn" disabled>
+          Select a template to continue
+        </button>
+      </div>
+
+    </div>
   </div>
 
   <!-- Script block dependencies -->

@@ -162,6 +162,16 @@ def build_pdf(pdf_b_bytes, title, form):
     return out.getvalue()
 
 # ── Routes ─────────────────────────────────────────────────────────────────────
+@app.route("/template/<name>")
+def get_template(name):
+    """Serve a predefined Term Work template PDF from static/templates/."""
+    import os
+    safe = re.sub(r"[^a-zA-Z0-9_\-]", "", name)   # sanitise filename
+    path = os.path.join(app.root_path, "static", "templates", safe + ".pdf")
+    if not os.path.exists(path):
+        return jsonify({"error": "Template not found"}), 404
+    return send_file(path, mimetype="application/pdf")
+
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -169,6 +179,22 @@ def index():
 @app.route("/form")
 def form_page():
     return render_template("form.html")
+
+@app.route("/health")
+def health():
+    """
+    Lightweight readiness probe used by the standalone splash page to detect
+    when the Flask app (not just Render's proxy) is actually responding.
+    Returns a small JSON payload with CORS enabled so the splash page —
+    hosted on a different origin — can read the response, not just an
+    opaque no-cors signal that would false-positive on Render's own
+    wake-up placeholder.
+    """
+    resp = jsonify({"status": "ok", "service": "termworkforge"})
+    resp.headers["Access-Control-Allow-Origin"]  = "*"
+    resp.headers["Access-Control-Allow-Methods"] = "GET, HEAD, OPTIONS"
+    resp.headers["Cache-Control"] = "no-store"
+    return resp
 
 @app.route("/api/parse-index", methods=["POST"])
 def parse_index():

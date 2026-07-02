@@ -377,3 +377,87 @@ document.addEventListener('DOMContentLoaded', () => {
   if (window.lucide) window.lucide.createIcons();
   updateStepper(1, 'active');
 });
+
+// ═══════════════════════════════════════════════════════════════
+// TEMPLATE PICKER MODAL
+// ═══════════════════════════════════════════════════════════════
+
+let selectedTemplateKey  = null;
+let selectedTemplateLabel = null;
+
+// ── Open / Close ─────────────────────────────────────────────
+function openTemplateModal() {
+  $('tpl-backdrop').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeTemplateModal() {
+  $('tpl-backdrop').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+window.openTemplateModal  = openTemplateModal;
+window.closeTemplateModal = closeTemplateModal;
+
+// ── Trigger button ────────────────────────────────────────────
+const openBtn = $('btn-open-templates');
+if (openBtn) openBtn.addEventListener('click', openTemplateModal);
+
+// ── Close on backdrop click (not on modal itself) ─────────────
+$('tpl-backdrop').addEventListener('click', e => {
+  if (e.target === $('tpl-backdrop')) closeTemplateModal();
+});
+
+// ── Card selection logic ──────────────────────────────────────
+document.querySelectorAll('.tpl-card[data-key]').forEach(card => {
+  card.addEventListener('click', () => {
+    // Deselect all
+    document.querySelectorAll('.tpl-card').forEach(c => c.classList.remove('active'));
+    // Select this one
+    card.classList.add('active');
+    selectedTemplateKey   = card.dataset.key;
+    selectedTemplateLabel = card.dataset.label;
+    // Update CTA
+    const useBtn = $('tpl-use-btn');
+    useBtn.disabled = false;
+    useBtn.textContent = 'Use this template';
+    if (window.lucide) window.lucide.createIcons();
+  });
+});
+
+// ── "Use this template" button ────────────────────────────────
+$('tpl-use-btn').addEventListener('click', async () => {
+  if (!selectedTemplateKey) return;
+
+  const useBtn = $('tpl-use-btn');
+  useBtn.disabled  = true;
+  useBtn.textContent = 'Loading template…';
+
+  try {
+    const res = await fetch(`/template/${selectedTemplateKey}`, { cache: 'no-store' });
+    if (!res.ok) throw new Error('Template not found on server');
+
+    const blob    = await res.blob();
+    const file    = new File([blob], selectedTemplateLabel || 'term_work.pdf', { type: 'application/pdf' });
+
+    // Inject into the file-b input via DataTransfer
+    const dt = new DataTransfer();
+    dt.items.add(file);
+    const fileInput = $('file-b');
+    fileInput.files  = dt.files;
+
+    // Fire change event so existing file-b handler picks it up
+    fileInput.dispatchEvent(new Event('change', { bubbles: true }));
+
+    closeTemplateModal();
+    useBtn.textContent  = 'Use this template';
+    useBtn.disabled     = false;
+    selectedTemplateKey = null;
+    document.querySelectorAll('.tpl-card').forEach(c => c.classList.remove('active'));
+
+  } catch (err) {
+    useBtn.disabled     = false;
+    useBtn.textContent  = 'Failed — tap to retry';
+    console.error('Template load error:', err);
+  }
+});
