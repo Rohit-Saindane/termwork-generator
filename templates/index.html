@@ -219,8 +219,15 @@
 
       <div class="tpl-modal-header">
         <div class="tpl-modal-handle"></div>
-        <div class="tpl-modal-title">Choose a Template</div>
-        <div class="tpl-modal-sub">Select your college's blank Term Work form</div>
+        <div class="tpl-modal-title-row">
+          <div>
+            <div class="tpl-modal-title">Choose a Template</div>
+            <div class="tpl-modal-sub">Select your college's blank Term Work form</div>
+          </div>
+          <button class="tpl-modal-close" onclick="closeTemplateModal()" aria-label="Close">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
       </div>
 
       <div class="tpl-list" id="tpl-list">
@@ -233,27 +240,31 @@
           <div class="tpl-info">
             <div class="tpl-college">R.N.G. Patel Institute of Technology</div>
             <div class="tpl-meta">Isroli, Bardoli · Computer Science &amp; Engineering</div>
-            <span class="tpl-badge">✓ Verified</span>
+            <div class="tpl-badges">
+              <span class="tpl-badge tpl-badge-verified">✓ Verified</span>
+            </div>
           </div>
           <button class="tpl-select-btn" aria-label="Select this template">
-            <i data-lucide="check"></i>
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
           </button>
         </div>
 
         <!-- Placeholder for future colleges -->
-        <div class="tpl-card" style="opacity:.45;pointer-events:none;">
+        <div class="tpl-card" style="opacity:.4;pointer-events:none;cursor:default;">
           <div class="tpl-thumb-wrap">
             <div class="tpl-thumb-placeholder">
-              <i data-lucide="clock" style="width:22px;height:22px;"></i>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
             </div>
           </div>
           <div class="tpl-info">
             <div class="tpl-college" style="color:#94a3b8;">More colleges coming soon</div>
-            <div class="tpl-meta">Submit your template via GitHub</div>
-            <span class="tpl-badge" style="background:#f1f5f9;color:#94a3b8;">Coming Soon</span>
+            <div class="tpl-meta" style="color:#cbd5e1;">Submit your template via GitHub Issues</div>
+            <div class="tpl-badges">
+              <span class="tpl-badge tpl-badge-soon">Coming Soon</span>
+            </div>
           </div>
-          <button class="tpl-select-btn" disabled aria-hidden="true">
-            <i data-lucide="plus"></i>
+          <button class="tpl-select-btn" disabled aria-hidden="true" style="pointer-events:none;">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           </button>
         </div>
 
