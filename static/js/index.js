@@ -121,30 +121,34 @@ function formatBytes(bytes, decimals = 2) {
 });
 
 // ── File A Handling ───────────────────────────────────────────────────────
-$('file-a').addEventListener('change', () => {
-  const file = $('file-a').files[0];
-  if (!file) return;
-  // Validate it's actually a PDF
-  if (file.type && file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
-    showMsg('msg-parse', 'Please upload a PDF file, not a ' + (file.type || 'unknown') + ' file.', 'err');
-    $('file-a').value = '';
-    return;
-  }
-  $('fn-a').textContent = file.name;
-  $('fs-a').textContent = formatBytes(file.size);
-  $('fp-a').classList.add('show');
-  $('dz-a-text').style.display = 'none';
-  $('dz-a-icon').style.display = 'none';
-  $('btn-parse').disabled = false;
-  hideMsg('msg-parse');
-});
+  // Validate - PDF or image
+  const ALLOWED_INDEX  = ['.pdf','.jpg','.jpeg','.png','.bmp','.webp'];
+  const ALLOWED_TERMWK = ['.pdf','.jpg','.jpeg','.png','.bmp','.webp','.docx','.doc'];
 
-$('btn-remove-a').addEventListener('click', e => {
-  e.stopPropagation();
+  function getExt(name) { return name.toLowerCase().slice(name.lastIndexOf('.')); }
+
+  $('file-a').addEventListener('change', () => {
+    const file = $('file-a').files[0];
+    if (!file) return;
+    if (!ALLOWED_INDEX.includes(getExt(file.name))) {
+      showMsg('msg-parse', `Unsupported file type. Please upload: ${ALLOWED_INDEX.join(', ')}`, 'err');
+      $('file-a').value = '';
+      return;
+    }
+    $('fn-a').textContent = file.name;
+    $('fs-a').textContent = formatBytes(file.size);
+    $('fp-a').classList.add('show');
+    $('dz-a-text').style.display = 'none';
+    $('dz-a-icon').style.display = 'none';
+    $('btn-parse').disabled = false;
+    hideMsg('msg-parse');
+  });
+
+$('btn-remove-a').addEventListener('click', () => {
   $('file-a').value = '';
   $('fp-a').classList.remove('show');
-  $('dz-a-text').style.display = 'block';
-  $('dz-a-icon').style.display = 'block';
+  $('dz-a-text').style.display = '';
+  $('dz-a-icon').style.display = '';
   $('btn-parse').disabled = true;
   hideMsg('msg-parse');
   updateStepper(1, 'active');
@@ -158,34 +162,32 @@ $('btn-remove-a').addEventListener('click', e => {
 });
 
 // ── File B Handling ───────────────────────────────────────────────────────
-$('file-b').addEventListener('change', () => {
-  const file = $('file-b').files[0];
-  if (!file) return;
-  // Validate PDF
-  if (file.type && file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
-    showMsg('msg-parse', 'Term Work file must be a PDF.', 'err');
-    $('file-b').value = '';
-    return;
-  }
-  fileBObj = file;
-  $('fn-b').textContent = file.name;
-  $('fs-b').textContent = formatBytes(file.size);
-  $('fp-b').classList.add('show');
-  $('dz-b-text').style.display = 'none';
-  $('dz-b-icon').style.display = 'none';
-  $('card3').classList.add('done');
-  updateStepper(3, 'done');
-  updateStepper(4, 'active');
-  tryEnableNext();
-});
+  $('file-b').addEventListener('change', () => {
+    const file = $('file-b').files[0];
+    if (!file) return;
+    if (!ALLOWED_TERMWK.includes(getExt(file.name))) {
+      showMsg('msg-parse', `Unsupported file type. Please upload: ${ALLOWED_TERMWK.join(', ')}`, 'err');
+      $('file-b').value = '';
+      return;
+    }
+    fileBObj = file;
+    $('fn-b').textContent = file.name;
+    $('fs-b').textContent = formatBytes(file.size);
+    $('fp-b').classList.add('show');
+    $('dz-b-text').style.display = 'none';
+    $('dz-b-icon').style.display = 'none';
+    $('card3').classList.add('done');
+    updateStepper(3, 'done');
+    updateStepper(4, 'active');
+    tryEnableNext();
+  });
 
-$('btn-remove-b').addEventListener('click', e => {
-  e.stopPropagation();
+$('btn-remove-b').addEventListener('click', () => {
   $('file-b').value = '';
   fileBObj = null;
   $('fp-b').classList.remove('show');
-  $('dz-b-text').style.display = 'block';
-  $('dz-b-icon').style.display = 'block';
+  $('dz-b-text').style.display = '';
+  $('dz-b-icon').style.display = '';
   $('card3').classList.remove('done');
   updateStepper(3, 'active');
   updateStepper(4, 'upcoming');

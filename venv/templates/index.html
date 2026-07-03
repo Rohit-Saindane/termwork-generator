@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Term Work Generator — Fill PDF Forms Instantly</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+  <link rel="icon" type="image/png" sizes="192x192" href="/static/favicon-192.png">
+  <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
+  <link rel="stylesheet" href="/static/css/style.css"/>
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Navbar -->
+    <header class="navbar">
+      <div class="navbar-inner">
+        <a href="/" class="brand">
+          <div class="brand-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-files"><path d="M20 7h-3a2 2 0 0 1-2-2V2"/><path d="M9 18a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h7l4 4v10a2 2 0 0 1-2 2Z"/><path d="M3 7.6v12.8A1.6 1.6 0 0 0 4.6 22h9.8"/></svg>
+          </div>
+          <span class="brand-title">Term Work Generator</span>
+        </a>
+        <div class="nav-stepper">
+          <div class="nav-step-dot active"></div>
+          <div class="nav-step-dot"></div>
+          <div class="nav-step-dot"></div>
+          <div class="nav-step-dot"></div>
+          <div class="nav-step-dot"></div>
+        </div>
+      </div>
+    </header>
+
+    <main class="page">
+      <!-- Stepper Component -->
+      <section class="stepper-container animate-fade-in" style="animation-delay: 0.05s;">
+        <div class="stepper">
+          <div class="step-progress-bar">
+            <div class="step-progress-fill" id="step-progress-fill" style="width: 0%;"></div>
+          </div>
+          <div class="step-node active" id="step-node-1">
+            <div class="step-circle">1</div>
+            <div class="step-label">Upload Index</div>
+          </div>
+          <div class="step-node" id="step-node-2">
+            <div class="step-circle">2</div>
+            <div class="step-label">Select Items</div>
+          </div>
+          <div class="step-node" id="step-node-3">
+            <div class="step-circle">3</div>
+            <div class="step-label">Blank Form</div>
+          </div>
+          <div class="step-node" id="step-node-4">
+            <div class="step-circle">4</div>
+            <div class="step-label">Fill Details</div>
+          </div>
+          <div class="step-node" id="step-node-5">
+            <div class="step-circle">5</div>
+            <div class="step-label">Done!</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Hero Section -->
+      <section class="hero animate-fade-in" style="animation-delay: 0.1s;">
+        <h1>Generate Term Work PDFs in Seconds</h1>
+        <p>Upload your Practical Index, select the experiments you completed, upload a blank form, and generate perfect student PDFs instantly.</p>
+        <div class="hero-badges">
+          <span class="hero-badge"><i data-lucide="check-circle"></i> Automatic Index Parsing</span>
+          <span class="hero-badge"><i data-lucide="check-circle"></i> Smart Coordinate Mapping</span>
+          <span class="hero-badge"><i data-lucide="check-circle"></i> Auto Merged PDF</span>
+          <span class="hero-badge"><i data-lucide="check-circle"></i> Mobile Friendly</span>
+          <span class="hero-badge"><i data-lucide="check-circle"></i> Fully Client-Cached</span>
+        </div>
+      </section>
+
+      <!-- Step 1 Card: Upload Practical Index -->
+      <section class="card animate-fade-in" id="card1" style="animation-delay: 0.15s;">
+        <div class="card-header-area">
+          <div class="card-title-group">
+            <div class="card-icon-wrap"><i data-lucide="file-text"></i></div>
+            <div class="card-title-wrap">
+              <h2 class="card-title">1. Upload Practical Index</h2>
+              <p class="card-subtitle">Extract experiment numbers & titles from PDF tables</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="dropzone" id="dz-a">
+            <input type="file" id="file-a" accept=".pdf,.jpg,.jpeg,.png,.bmp,.webp"/>
+            <div class="dropzone-icon" id="dz-a-icon"><i data-lucide="upload-cloud" style="width:36px;height:36px;"></i></div>
+            <div class="dropzone-text" id="dz-a-text">
+              <b>Tap to upload</b> or drag and drop<br>
+              <span>Practical Index PDF file</span>
+            </div>
+          </div>
+          <p class="upload-hint">Supports: PDF, JPG, JPEG, PNG, BMP, WEBP</p>
+
+          <div class="file-pill" id="fp-a">
+            <div class="file-card">
+              <div class="file-details">
+                <i data-lucide="file" style="width:16px;height:16px;"></i>
+                <span class="file-name" id="fn-a"></span>
+                <span class="file-size" id="fs-a"></span>
+              </div>
+              <button class="btn-remove-file" id="btn-remove-a" type="button">
+                <i data-lucide="trash-2" style="width:16px;height:16px;"></i>
+              </button>
+            </div>
+          </div>
+          
+          <div class="mt-4">
+            <button class="btn btn-primary btn-full" id="btn-parse" disabled>
+              <span class="progress-spinner" id="sp-parse" style="width:14px;height:14px;border-width:2px;display:none;margin-right:4px;"></span>
+              Parse Practicals
+            </button>
+          </div>
+          <div class="toast-msg" id="msg-parse"></div>
+        </div>
+      </section>
+
+      <!-- Step 2 Card: Select Practicals -->
+      <section class="card locked animate-fade-in" id="card2" style="animation-delay: 0.2s;">
+        <div class="card-header-area">
+          <div class="card-title-group">
+            <div class="card-icon-wrap"><i data-lucide="list-checks"></i></div>
+            <div class="card-title-wrap">
+              <h2 class="card-title">2. Select Practicals</h2>
+              <p class="card-subtitle">Choose the practicals to populate in final PDF</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="grid-toolbar">
+            <span class="count-badge"><span id="sel-count">0</span> Selected</span>
+            <div class="toolbar-actions">
+              <button class="btn btn-outline" id="btn-all">Select All</button>
+              <button class="btn btn-outline" id="btn-none">Clear Selections</button>
+            </div>
+          </div>
+          <div class="prac-grid" id="prac-grid"></div>
+          <div class="chips-container" id="chips"></div>
+        </div>
+      </section>
+
+      <!-- Step 3 Card: Upload Term Work Template -->
+      <section class="card locked animate-fade-in" id="card3" style="animation-delay: 0.25s;">
+        <div class="card-header-area">
+          <div class="card-title-group">
+            <div class="card-icon-wrap"><i data-lucide="file-edit"></i></div>
+            <div class="card-title-wrap">
+              <h2 class="card-title">3. Upload Blank Term Work Template</h2>
+              <p class="card-subtitle">Empty PDF form where coordinates are overlayed</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="dropzone" id="dz-b">
+            <input type="file" id="file-b" accept=".pdf,.jpg,.jpeg,.png,.bmp,.webp,.docx,.doc"/>
+            <div class="dropzone-icon" id="dz-b-icon"><i data-lucide="upload-cloud" style="width:36px;height:36px;"></i></div>
+            <div class="dropzone-text" id="dz-b-text">
+              <b>Tap to upload</b> or drag and drop<br>
+              <span>Blank Term Work Form</span>
+            </div>
+          </div>
+          <p class="upload-hint">Supports: PDF, JPG, JPEG, PNG, BMP, WEBP, DOCX</p>
+
+          <div class="file-pill" id="fp-b">
+            <div class="file-card">
+              <div class="file-details">
+                <i data-lucide="file" style="width:16px;height:16px;"></i>
+                <span class="file-name" id="fn-b"></span>
+                <span class="file-size" id="fs-b"></span>
+              </div>
+              <button class="btn-remove-file" id="btn-remove-b" type="button">
+                <i data-lucide="trash-2" style="width:16px;height:16px;"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Predefined template trigger -->
+          <div class="tpl-trigger-row">
+            <button class="tpl-trigger-btn" id="btn-open-templates" type="button">
+              <i data-lucide="layout-template" style="width:15px;height:15px;"></i>
+              Use a Predefined Template
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bottom Action CTA -->
+      <div class="action-bar">
+        <div class="action-bar-inner">
+          <button class="btn btn-success btn-full" id="btn-next" disabled>
+            Continue to Fill Details <i data-lucide="arrow-right" style="width:16px;height:16px;"></i>
+          </button>
+          <div class="action-hint" id="cta-hint">Please complete steps 1, 2, and 3 to proceed.</div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-inner">
+        <div class="footer-logo">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-square"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          Term Work Generator
+        </div>
+        <p class="footer-credit">Designed & Developed by <strong><a href="https://github.com/Rohit-Saindane" target="_blank" rel="noopener noreferrer">Saindane Rohit</a></strong></p>
+        <p class="footer-copy">&copy; 2026 Saindane Rohit. All Rights Reserved.</p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ── Template Picker Modal ───────────────────────────────────── -->
+  <div class="tpl-modal-backdrop" id="tpl-backdrop" role="dialog" aria-modal="true" aria-label="Choose a predefined template">
+    <div class="tpl-modal" id="tpl-modal">
+
+      <div class="tpl-modal-header">
+        <div class="tpl-modal-handle"></div>
+        <div class="tpl-modal-title-row">
+          <div>
+            <div class="tpl-modal-title">Choose a Template</div>
+            <div class="tpl-modal-sub">Select your college's blank Term Work form</div>
+          </div>
+          <button class="tpl-modal-close" onclick="closeTemplateModal()" aria-label="Close">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="tpl-list" id="tpl-list">
+
+        <!-- R.N.G. Patel Institute -->
+        <div class="tpl-card" data-key="rngpatel_termwork" data-label="R.N.G. Patel Institute of Technology — Term Work.pdf" data-size="68 KB">
+          <div class="tpl-thumb-wrap">
+            <img src="/static/templates/rngpatel_thumb.png" alt="R.N.G. Patel Term Work preview" loading="lazy"/>
+          </div>
+          <div class="tpl-info">
+            <div class="tpl-college">R.N.G. Patel Institute of Technology</div>
+            <div class="tpl-meta">Isroli, Bardoli · Computer Science &amp; Engineering</div>
+            <div class="tpl-badges">
+              <span class="tpl-badge tpl-badge-verified">✓ Verified</span>
+            </div>
+          </div>
+          <button class="tpl-select-btn" aria-label="Select this template">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </button>
+        </div>
+
+        <!-- Placeholder for future colleges -->
+        <div class="tpl-card" style="opacity:.4;pointer-events:none;cursor:default;">
+          <div class="tpl-thumb-wrap">
+            <div class="tpl-thumb-placeholder">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+          </div>
+          <div class="tpl-info">
+            <div class="tpl-college" style="color:#94a3b8;">More colleges coming soon</div>
+            <div class="tpl-meta" style="color:#cbd5e1;">Additional templates will appear here</div>
+            <div class="tpl-badges">
+              <span class="tpl-badge tpl-badge-soon">Coming Soon</span>
+            </div>
+          </div>
+          <button class="tpl-select-btn" disabled aria-hidden="true" style="pointer-events:none;">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+        </div>
+
+      </div>
+
+      <div class="tpl-modal-footer">
+        <button class="tpl-use-btn" id="tpl-use-btn" disabled>
+          Select a template to continue
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Script block dependencies -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="/static/js/index.js" defer></script>
+</body>
+</html>
