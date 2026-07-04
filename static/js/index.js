@@ -122,7 +122,7 @@ function formatBytes(bytes, decimals = 2) {
 
 // ── File A Handling ───────────────────────────────────────────────────────
   // Validate - PDF or image
-  const ALLOWED_INDEX  = ['.pdf','.jpg','.jpeg','.png','.bmp','.webp'];
+  const ALLOWED_INDEX  = ['.pdf'];
   const ALLOWED_TERMWK = ['.pdf','.jpg','.jpeg','.png','.bmp','.webp','.docx','.doc'];
 
   function getExt(name) { return name.toLowerCase().slice(name.lastIndexOf('.')); }
