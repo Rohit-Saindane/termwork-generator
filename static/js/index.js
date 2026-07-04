@@ -138,6 +138,7 @@ function formatBytes(bytes, decimals = 2) {
     $('fn-a').textContent = file.name;
     $('fs-a').textContent = formatBytes(file.size);
     $('fp-a').classList.add('show');
+    $('dz-a').classList.add('has-file');
     $('dz-a-text').style.display = 'none';
     $('dz-a-icon').style.display = 'none';
     $('btn-parse').disabled = false;
@@ -147,6 +148,7 @@ function formatBytes(bytes, decimals = 2) {
 $('btn-remove-a').addEventListener('click', () => {
   $('file-a').value = '';
   $('fp-a').classList.remove('show');
+  $('dz-a').classList.remove('has-file');
   $('dz-a-text').style.display = '';
   $('dz-a-icon').style.display = '';
   $('btn-parse').disabled = true;
@@ -174,6 +176,7 @@ $('btn-remove-a').addEventListener('click', () => {
     $('fn-b').textContent = file.name;
     $('fs-b').textContent = formatBytes(file.size);
     $('fp-b').classList.add('show');
+    $('dz-b').classList.add('has-file');
     $('dz-b-text').style.display = 'none';
     $('dz-b-icon').style.display = 'none';
     $('card3').classList.add('done');
@@ -186,6 +189,7 @@ $('btn-remove-b').addEventListener('click', () => {
   $('file-b').value = '';
   fileBObj = null;
   $('fp-b').classList.remove('show');
+  $('dz-b').classList.remove('has-file');
   $('dz-b-text').style.display = '';
   $('dz-b-icon').style.display = '';
   $('card3').classList.remove('done');

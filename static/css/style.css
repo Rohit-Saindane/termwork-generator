@@ -468,6 +468,16 @@ body {
   transition: var(--transition-fast);
 }
 
+/* Collapse the dropzone when a file is chosen — removes blank space */
+.dropzone.has-file {
+  padding: 0;
+  border: none;
+  background: transparent;
+  pointer-events: none;
+  min-height: 0;
+  gap: 0;
+}
+
 .dropzone:hover, .dropzone.over {
   border-color: var(--primary);
   background: var(--primary-light);

@@ -197,19 +197,123 @@ def _wrap_experiment(title):
             return l1, rest
     return " ".join(buf), ""
 
-def extract_practicals(file_bytes: bytes, filename: str = "index.pdf") -> dict:
-    """Extract practicals from PDF or image (image→PDF first)."""
-    pdf_bytes = to_pdf_bytes(file_bytes, filename)
+def extract_practicals_from_ocr(img_bytes: bytes) -> dict:
+    """
+    Use pytesseract OCR to extract practical titles from an image of the index.
+    Handles cases where OCR merges multiple practicals into one block by
+    splitting on sentence-ending punctuation mid-block.
+    """
+    try:
+        import pytesseract
+        from PIL import ImageEnhance
+    except ImportError:
+        raise RuntimeError("pytesseract is required for image index parsing.")
+
+    img  = Image.open(io.BytesIO(img_bytes)).convert("L")
+    img  = ImageEnhance.Sharpness(img).enhance(2.5)
+    img  = ImageEnhance.Contrast(img).enhance(1.8)
+    text = pytesseract.image_to_string(img, config="--oem 3 --psm 4")
+
+    # Noise patterns to discard
+    NOISE = re.compile(
+        r"^(INDEX|PEN|NAME|SUBJECT|RUBRICS|TITLE|DATE|SR\.?|NO\.?|SIGN|MARKS|TOTAL"
+        r"|PG\.?|R\s*[\(\[]|M\s*[\(\[]|V\s*[\(\[]|\(?G?\)\.?|TR\]|@|®|\|)",
+        re.IGNORECASE
+    )
+
+    # Split into paragraph blocks on blank lines
+    raw_blocks, current = [], []
+    for line in text.splitlines():
+        stripped = line.strip()
+        if not stripped:
+            if current:
+                raw_blocks.append(current)
+                current = []
+        else:
+            current.append(stripped)
+    if current:
+        raw_blocks.append(current)
+
+    # New practical starters — these words reliably begin a new practical title
+    STARTERS = re.compile(
+        r"^(Write|Demonstrate|Study|Implement|Design|Develop|Create|Build|Perform|Explore)\b",
+        re.IGNORECASE
+    )
+
+    def split_block_on_sentences(lines):
+        """
+        Split a merged block into sub-blocks wherever a new practical begins.
+        A new practical begins when a line starts with a known starter word
+        AND the previous lines already form a complete sentence (end with . or )).
+        """
+        if len(lines) <= 1:
+            return [lines]
+        sub_blocks, current = [], [lines[0]]
+        for line in lines[1:]:
+            prev_complete = current[-1].rstrip().endswith(('.', ')'))
+            starts_new    = bool(STARTERS.match(line.strip()))
+            if prev_complete and starts_new:
+                sub_blocks.append(current)
+                current = [line]
+            else:
+                current.append(line)
+        if current:
+            sub_blocks.append(current)
+        return sub_blocks
+
+    # Flatten all blocks, re-splitting on sentence boundaries
+    all_blocks = []
+    for block in raw_blocks:
+        clean = [l for l in block if not NOISE.match(l) and len(l.strip()) > 2]
+        if not clean:
+            continue
+        sub = split_block_on_sentences(clean)
+        all_blocks.extend(sub)
+
+    # Convert blocks to practical titles
     practicals = {}
-    with pdfplumber.open(io.BytesIO(pdf_bytes)) as pdf:
+    sr = 0
+    for block in all_blocks:
+        title = re.sub(r"\s+", " ", " ".join(block)).strip()
+        # Clean up common OCR artifacts
+        title = re.sub(r"Write\.a\b", "Write a", title)
+        title = re.sub(r"\s*\|\s*", " ", title)
+        # Must look like a practical: has lowercase words, reasonable length
+        if re.search(r"[a-z]{3,}", title) and 8 < len(title) < 300:
+            sr += 1
+            practicals[sr] = title
+
+    return practicals
+
+
+def extract_practicals(file_bytes: bytes, filename: str = "index.pdf") -> dict:
+    """
+    Extract practicals from PDF (via pdfplumber table extraction)
+    or from an image (via pytesseract OCR).
+    These are two completely different pipelines — images cannot use
+    pdfplumber because converting an image→PDF via reportlab produces
+    a raster-only PDF with no extractable text objects.
+    """
+    ext = _ext(filename)
+
+    if ext in IMAGE_EXTS:
+        # Image path: OCR directly on the image bytes
+        return extract_practicals_from_ocr(file_bytes)
+
+    # PDF path: pdfplumber table extraction
+    practicals = {}
+    with pdfplumber.open(io.BytesIO(file_bytes)) as pdf:
         for page in pdf.pages:
             tables = page.extract_tables()
-            if not tables: continue
+            if not tables:
+                continue
             best = max(tables, key=len)
             for row in best:
-                if not row or not row[0]: continue
+                if not row or not row[0]:
+                    continue
                 sr = str(row[0]).strip()
-                if not re.match(r"^\d+$", sr): continue
+                if not re.match(r"^\d+$", sr):
+                    continue
                 title = row[2] if len(row) > 2 else ""
                 if title:
                     practicals[int(sr)] = " ".join(title.split())
