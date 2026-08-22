@@ -63,6 +63,9 @@ FIELDS = {
 # FILE CONVERSION HELPERS
 # ─────────────────────────────────────────────────────────────────────────────
 
+
+
+
 def _ext(filename: str) -> str:
     return os.path.splitext(filename.lower())[1] if filename else ""
 
@@ -197,6 +200,31 @@ def _wrap_experiment(title):
             return l1, rest
     return " ".join(buf), ""
 
+
+def extract_subject_from_index(pdf_bytes: bytes) -> str:
+    """
+    Extract the Subject name from the practical index PDF.
+    Handles OCR-style splits like 'SU BJEC T : O perating Systems (1CS)'
+    """
+    import re, io
+    try:
+        with pdfplumber.open(io.BytesIO(pdf_bytes)) as pdf:
+            for page in pdf.pages:
+                text = re.sub(r'\s+', ' ', page.extract_text() or "")
+                m = re.search(
+                    r'SU?\s*B?\s*J?\s*E?\s*C?\s*T\s*:\s*(.+?)(?=\s*(?:RUBRICS|SR\.?\s*NO|DATE|PEN\s*:|NAME\s*:|\d{1,2}\s+[A-Z]))',
+                    text, re.IGNORECASE
+                )
+                if m:
+                    subject = m.group(1).strip()
+                    # Fix OCR letter-spacing: "O perating" → "Operating"
+                    subject = re.sub(r'(?<=[A-Za-z])\s(?=[a-z])', '', subject)
+                    return re.sub(r'\s{2,}', ' ', subject).strip()
+    except Exception:
+        pass
+    return ""
+
+
 def extract_practicals(file_bytes: bytes, filename: str = "index.pdf") -> dict:
     """
     Extract practicals from a PDF index via pdfplumber table extraction.
@@ -321,15 +349,21 @@ def parse_index():
         return jsonify({"error": err}), 400
 
     try:
-        data = extract_practicals(f.read(), filename)
+        file_bytes = f.read()
+        data       = extract_practicals(file_bytes, filename)
         if not data:
             return jsonify({"error": "No practicals found. Make sure the index has a table with SR. No. and Title columns."}), 422
-        return jsonify({"practicals": data})
+
+        # Also extract subject — returned alongside practicals so form.js can auto-fill it
+        subject = extract_subject_from_index(file_bytes)
+
+        return jsonify({"practicals": data, "subject": subject})
     except Exception as e:
         msg = str(e)
         if "Root object" in msg or "EOF" in msg:
             msg = "This file doesn't look like a valid PDF. Please check and try again."
         return jsonify({"error": msg}), 500
+
 
 @app.route("/api/generate", methods=["POST"])
 def generate():

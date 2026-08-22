@@ -8,7 +8,6 @@ if (!titles.length || !pdfBb64) {
 
 const $ = id => document.getElementById(id);
 
-// ── localStorage keys for remembering user's details ─────────────────────
 const LS_KEY = 'twf_saved_form';
 
 const FIELD_LABELS = {
@@ -27,7 +26,6 @@ const FIELD_LABELS = {
   'f-signdate': 'Signature Date',
 };
 
-// ── Helpers ───────────────────────────────────────────────────────────────
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 function formatDate(val) {
@@ -44,7 +42,6 @@ function formatBytes(bytes, decimals = 2) {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 }
 
-// ── localStorage: save & load form values ────────────────────────────────
 function saveFormToLocalStorage() {
   const data = {};
   Object.keys(FIELD_LABELS).forEach(id => {
@@ -65,11 +62,13 @@ function loadFormFromLocalStorage() {
       if (el && data[id]) { el.value = data[id]; loaded++; }
     });
     if (loaded > 0) {
-      // Show a subtle "remembered" toast
-      const toast = document.getElementById('toast-remembered');
+      const toast = $('toast-remembered');
       if (toast) {
         toast.style.display = 'flex';
-        setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 400); }, 3000);
+        setTimeout(() => {
+          toast.style.opacity = '0';
+          setTimeout(() => toast.remove(), 400);
+        }, 3000);
       }
     }
   } catch (_) {}
@@ -106,12 +105,10 @@ function getEmptyFields() {
   return empty;
 }
 
-// ── Modal ─────────────────────────────────────────────────────────────────
 function openModal()  { $('modal-overlay').classList.add('show');    }
 function closeModal() { $('modal-overlay').classList.remove('show'); }
 window.closeModal = closeModal;
 
-// ── Back navigation guard (prevents losing selected practicals by accident)
 window.confirmGoBack = function () {
   const sure = confirm(
     `Going back will clear your ${titles.length} selected practical${titles.length > 1 ? 's' : ''} and uploaded files. Continue?`
@@ -124,32 +121,75 @@ window.confirmGoBack = function () {
   }
 };
 
-// ── PDF Generation ─────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════
+// LOTTIE — uses lottie-web 5.12.2 (SVG renderer, no WASM, no workers)
+// <script> tag in form.html loads it from cdnjs before this file runs
+// Animation file: /static/loading-animation.json
+// ═══════════════════════════════════════════════════════════════════════════
+let _lottieAnim = null;
+
+function initLottie() {
+  if (_lottieAnim) return;
+  if (typeof lottie === 'undefined') {
+    console.warn('lottie-web not available');
+    return;
+  }
+  const container = $('lottie-wrap');
+  if (!container) return;
+
+  _lottieAnim = lottie.loadAnimation({
+    container,
+    renderer:  'svg',
+    loop:      true,
+    autoplay:  false,
+    path:      '/static/loading-animation.json',
+  });
+}
+
+function startLottie() {
+  if (!_lottieAnim) initLottie();
+  if (_lottieAnim) _lottieAnim.play();
+}
+
+function stopLottie() {
+  if (_lottieAnim) _lottieAnim.stop();
+}
+
+const MESSAGES = [
+  'Reading template PDF\u2026',
+  'Mapping your details onto fields\u2026',
+  'Server is generating your PDFs\u2026',
+  'Merging all pages together\u2026',
+  'Preparing your download\u2026',
+];
+
+function setProgress(pct, msgIdx) {
+  const bar = $('progress-fill');
+  const msg = $('progress-message');
+  if (bar) bar.style.width = pct + '%';
+  if (msg && msgIdx !== undefined)
+    msg.textContent = MESSAGES[Math.min(msgIdx, MESSAGES.length - 1)];
+}
+
 async function doGenerate() {
   const overlay = $('progress-overlay');
-  const bar     = $('progress-fill');
-  const sub     = $('progress-message');
-
   overlay.classList.add('show');
-  bar.style.width = '10%';
-  sub.textContent = 'Reading template PDF…';
+  startLottie();
+  setProgress(8, 0);
 
   try {
-    await sleep(250);
-
-    // Save form to localStorage before generating
+    await sleep(200);
     saveFormToLocalStorage();
 
-    // Convert base64 → Blob
+    setProgress(20, 1);
     const base64Data   = pdfBb64.split(',')[1];
     const binaryString = atob(base64Data);
     const bytes        = new Uint8Array(binaryString.length);
     for (let i = 0; i < binaryString.length; i++) bytes[i] = binaryString.charCodeAt(i);
     const pdfBlob = new Blob([bytes], { type: 'application/pdf' });
 
-    bar.style.width = '35%';
-    sub.textContent = `Filling ${titles.length} term work page${titles.length > 1 ? 's' : ''}…`;
-    await sleep(250);
+    await sleep(200);
+    setProgress(40, 2);
 
     const formValues = getFormValues();
     const fd = new FormData();
@@ -157,13 +197,8 @@ async function doGenerate() {
     fd.append('titles_json', JSON.stringify(titles));
     fd.append('form_json',   JSON.stringify(formValues));
 
-    bar.style.width = '60%';
-    sub.textContent = 'Server is generating your PDFs…';
-
     const response = await fetch('/api/generate', { method: 'POST', body: fd });
-
-    bar.style.width = '85%';
-    sub.textContent = 'Preparing download…';
+    setProgress(75, 3);
 
     if (!response.ok) {
       let errMsg = 'Server error';
@@ -172,37 +207,37 @@ async function doGenerate() {
     }
 
     const outputBlob = await response.blob();
-    bar.style.width  = '100%';
-    sub.textContent  = 'Done!';
-    await sleep(350);
+    setProgress(95, 4);
+    await sleep(300);
 
-    // ── Trigger download ────────────────────────────────────────────────
-    const downloadUrl = URL.createObjectURL(outputBlob);
-    const a           = document.createElement('a');
-    a.href            = downloadUrl;
-    a.download        = `TermWork_Practicals_${titles.map(t => t.sr_no).join('-')}.pdf`;
+    const url = URL.createObjectURL(outputBlob);
+    const a   = document.createElement('a');
+    a.href     = url;
+    a.download = `TermWork_Practicals_${titles.map(t => t.sr_no).join('-')}.pdf`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
-    setTimeout(() => URL.revokeObjectURL(downloadUrl), 1000);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
 
-    // ── Show success screen ─────────────────────────────────────────────
+    setProgress(100, 4);
+    await sleep(400);
+
+    stopLottie();
     overlay.classList.remove('show');
     $('success-qty').textContent  = `${titles.length} page${titles.length > 1 ? 's' : ''}`;
     $('success-size').textContent = formatBytes(outputBlob.size);
     $('success-screen-overlay').classList.add('show');
 
   } catch (error) {
+    stopLottie();
     overlay.classList.remove('show');
-    alert(`❌ Generation Failed: ${error.message}\n\nPlease check your files and try again.`);
+    alert(`\u274C Generation Failed: ${error.message}\n\nPlease check your files and try again.`);
   }
 }
 
-// ── Init after DOM ─────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   if (window.lucide) window.lucide.createIcons();
 
-  // Populate topbar & summary bar
   $('topbar-count').textContent = `${titles.length} practical${titles.length > 1 ? 's' : ''} selected`;
   $('cta-qty-hint').textContent = `Will generate ${titles.length} filled page${titles.length > 1 ? 's' : ''} as one merged PDF.`;
 
@@ -216,23 +251,33 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   if (window.lucide) window.lucide.createIcons();
 
-  // Auto-fill saved form values from localStorage
+  setTimeout(initLottie, 600);
+
   loadFormFromLocalStorage();
 
-  // Save on every input change
+  // Auto-fill subject from the parsed index — only if field is still blank
+  // (localStorage value takes priority if user already typed something)
+  const autoSubject = sessionStorage.getItem('twf_subject') || '';
+  const subjectEl   = $('f-subject');
+  if (autoSubject && subjectEl && !subjectEl.value.trim()) {
+    subjectEl.value = autoSubject;
+    saveFormToLocalStorage();
+  }
+
   Object.keys(FIELD_LABELS).forEach(id => {
     const el = $(id);
-    if (el) el.addEventListener('input', saveFormToLocalStorage);
-    if (el) el.addEventListener('change', saveFormToLocalStorage);
+    if (el) {
+      el.addEventListener('input',  saveFormToLocalStorage);
+      el.addEventListener('change', saveFormToLocalStorage);
+    }
   });
 
-  // ── Generate button ─────────────────────────────────────────────────────
   $('btn-generate').addEventListener('click', () => {
     const empty = getEmptyFields();
     if (empty.length > 0) {
       $('modal-body-text').textContent =
         `${empty.length} field${empty.length > 1 ? 's are' : ' is'} empty. Blank spaces will appear in those positions on the PDF. Do you want to proceed?`;
-      $('modal-empty-list').innerHTML = empty.map(f => `• ${f}`).join('<br>');
+      $('modal-empty-list').innerHTML = empty.map(f => `\u2022 ${f}`).join('<br>');
       openModal();
       $('modal-confirm').onclick = () => { closeModal(); doGenerate(); };
     } else {
@@ -240,12 +285,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Close modal on backdrop click
   $('modal-overlay').addEventListener('click', e => {
     if (e.target === $('modal-overlay')) closeModal();
   });
 
-  // ── "Clear saved details" button (if present in the HTML) ───────────────
   const clearBtn = $('btn-clear-saved');
   if (clearBtn) {
     clearBtn.addEventListener('click', () => {

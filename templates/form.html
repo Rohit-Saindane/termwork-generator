@@ -11,6 +11,8 @@
   <link rel="icon" type="image/png" sizes="192x192" href="/static/favicon-192.png">
   <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
   <link rel="stylesheet" href="/static/css/style.css"/>
+  <!-- DotLottie Web player — loads the .lottie animation format -->
+  <script src="https://cdn.jsdelivr.net/npm/@lottiefiles/dotlottie-web@0.34.0/dist/dotlottie.iife.js"></script>
 </head>
 <body>
 
@@ -99,7 +101,7 @@
       </section>
 
       <form id="details-form" onsubmit="event.preventDefault();">
-        
+
         <!-- Section 1: Student Information -->
         <section class="animate-fade-in" style="animation-delay:0.1s;">
           <div class="form-section-head">
@@ -168,6 +170,10 @@
               <div class="field-group">
                 <label for="f-subject">Subject Title</label>
                 <input type="text" id="f-subject"/>
+                <p style="font-size:11px;color:#94a3b8;margin-top:5px;line-height:1.5;">
+                  <span style="color:#6366f1;font-weight:600;">✦ Smart fill —</span>
+                  leave this blank and we'll pull it directly from your index file.
+                </p>
               </div>
               <div class="form-divider"></div>
               <div class="field-group">
@@ -178,7 +184,7 @@
           </div>
         </section>
 
-        <!-- Section 3: Dates -->
+        <!-- Section 4: Dates -->
         <section class="animate-fade-in" style="animation-delay:0.2s;">
           <div class="form-section-head">
             <div class="form-section-icon warning-accent"><i data-lucide="calendar"></i></div>
@@ -205,7 +211,7 @@
           </div>
         </section>
 
-        <!-- Section 4: Assessment -->
+        <!-- Section 5: Assessment -->
         <section class="animate-fade-in" style="animation-delay:0.25s;">
           <div class="form-section-head">
             <div class="form-section-icon success-accent"><i data-lucide="check-square"></i></div>
@@ -286,13 +292,22 @@
     </div>
   </div>
 
-  <!-- Progress Overlay Loader -->
+  <!-- ── Progress Overlay with Lottie Animation ── -->
   <div class="progress-overlay" id="progress-overlay">
-    <div class="progress-spinner"></div>
-    <h3 class="progress-title">Generating PDFs...</h3>
-    <p class="progress-message" id="progress-message">Preparing files...</p>
-    <div class="progress-bar-container">
-      <div class="progress-bar-fill" id="progress-fill"></div>
+    <div class="progress-card">
+
+      <!-- Lottie canvas renders here -->
+      <div class="lottie-wrap" id="lottie-wrap"></div>
+
+      <!-- Status message -->
+      <div class="progress-title" id="progress-message">Preparing your PDFs…</div>
+
+      <!-- Slim progress bar -->
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+
+      <p class="progress-sub">Please don't close this tab</p>
     </div>
   </div>
 
@@ -304,7 +319,6 @@
       </div>
       <h2 class="success-title">PDF Generated Successfully!</h2>
       <p class="success-message">Your custom overlay term-work files have compiled and downloaded to your device.</p>
-      
       <div class="success-details">
         <div class="success-details-row">
           <span>Documents Compiled:</span>
@@ -315,7 +329,6 @@
           <span class="success-details-val" id="success-size">4.2 MB</span>
         </div>
       </div>
-      
       <div class="success-actions">
         <button class="btn btn-primary btn-full" onclick="window.location.href='/'">
           <i data-lucide="refresh-cw" style="width:16px;height:16px;"></i> Generate More Documents

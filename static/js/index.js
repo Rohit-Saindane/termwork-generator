@@ -227,6 +227,8 @@ $('btn-parse').addEventListener('click', async () => {
     }
 
     practicals = data.practicals;
+    // Store subject so form.js can auto-fill it
+    sessionStorage.setItem('twf_subject', data.subject || '');
     selected.clear();
     renderGrid();
 
@@ -360,6 +362,7 @@ $('btn-next').addEventListener('click', () => {
 
   sessionStorage.setItem('twf_titles',    JSON.stringify(titles));
   sessionStorage.setItem('twf_sel_count', srNos.length);
+  // subject is already stored from parse step — nothing extra needed
 
   $('btn-next').disabled = true;
   $('btn-next').innerHTML = '<span class="progress-spinner" style="width:14px;height:14px;border-width:2px;margin-right:4px;"></span> Reading Form PDF…';
