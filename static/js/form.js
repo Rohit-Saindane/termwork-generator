@@ -255,13 +255,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
   loadFormFromLocalStorage();
 
-  // Auto-fill subject from the parsed index — only if field is still blank
-  // (localStorage value takes priority if user already typed something)
+  // Auto-fill subject from the parsed index.
+  // sessionStorage (fresh parse) ALWAYS wins over localStorage (old saved data).
+  // If the user's saved subject differs from what was just parsed, the fresh
+  // parsed value replaces it — so switching index files always shows the right subject.
   const autoSubject = sessionStorage.getItem('twf_subject') || '';
   const subjectEl   = $('f-subject');
-  if (autoSubject && subjectEl && !subjectEl.value.trim()) {
-    subjectEl.value = autoSubject;
-    saveFormToLocalStorage();
+  if (autoSubject && subjectEl) {
+    const savedSubject = subjectEl.value.trim(); // already filled by loadFormFromLocalStorage
+    if (savedSubject.toLowerCase() !== autoSubject.toLowerCase()) {
+      // Different subject detected — override with the freshly parsed one
+      subjectEl.value = autoSubject;
+      saveFormToLocalStorage(); // update localStorage so future visits also get the right value
+    }
+    // If they match, leave it — no flicker, no unnecessary write
   }
 
   Object.keys(FIELD_LABELS).forEach(id => {
