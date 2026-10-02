@@ -42,6 +42,28 @@ function formatBytes(bytes, decimals = 2) {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 }
 
+// Mirrors the server-side make_download_name() logic in app.py
+function buildDownloadName(srNumbers) {
+  const nums = [...new Set(srNumbers.map(Number))].sort((a, b) => a - b);
+  if (!nums.length) return 'TermWorkForge_Practicals.pdf';
+  const groups = [];
+  let start = nums[0], prev = nums[0];
+  for (const n of nums.slice(1)) {
+    if (n === prev + 1) { prev = n; continue; }
+    groups.push([start, prev]);
+    start = prev = n;
+  }
+  groups.push([start, prev]);
+  const parts = [];
+  for (const [a, b] of groups) {
+    if (a === b)         parts.push(String(a));
+    else if (b === a+1) { parts.push(String(a)); parts.push(String(b)); }
+    else                 parts.push(`${a}-${b}`);
+  }
+  const label = nums.length === 1 ? 'Practical' : 'Practicals';
+  return `TermWorkForge_${label}_${parts.join('_')}.pdf`;
+}
+
 function saveFormToLocalStorage() {
   const data = {};
   Object.keys(FIELD_LABELS).forEach(id => {
@@ -210,10 +232,14 @@ async function doGenerate() {
     setProgress(95, 4);
     await sleep(300);
 
+    // Prefer the branded filename the server sends; fall back to a client-side version
+    const serverName = response.headers.get('X-Download-Name');
+    const downloadName = serverName || buildDownloadName(titles.map(t => t.sr_no));
+
     const url = URL.createObjectURL(outputBlob);
     const a   = document.createElement('a');
     a.href     = url;
-    a.download = `TermWork_Practicals_${titles.map(t => t.sr_no).join('-')}.pdf`;
+    a.download = downloadName;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);

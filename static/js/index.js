@@ -1,335 +1,472 @@
-// ── Retrieve State from sessionStorage ───────────────────────────────────
-const titles  = JSON.parse(sessionStorage.getItem('twf_titles')  || '[]');
-const pdfBb64 = sessionStorage.getItem('twf_pdf_b') || '';
+// State Variables
+let practicals = {};
+let selected = new Set();
+let fileBObj = null;
 
-if (!titles.length || !pdfBb64) {
-  window.location.href = '/';
-}
-
+// Helpers
 const $ = id => document.getElementById(id);
 
-const LS_KEY = 'twf_saved_form';
+function showMsg(id, message, type) {
+  const el = $(id);
+  if (!el) return;
+  let iconName = 'info';
+  if (type === 'ok')  iconName = 'check-circle-2';
+  if (type === 'err') iconName = 'alert-triangle';
+  el.className = `toast-msg toast-msg-${type} show`;
+  el.innerHTML = `
+    <div class="toast-msg-icon"><i data-lucide="${iconName}"></i></div>
+    <div class="toast-msg-content">${message}</div>
+  `;
+  if (window.lucide) window.lucide.createIcons();
+}
 
-const FIELD_LABELS = {
-  'f-student':  'Student Name',
-  'f-pen':      'PEN Number',
-  'f-semester': 'Semester',
-  'f-class':    'Class',
-  'f-batch':    'Batch',
-  'f-faculty':  'Faculty Name (Checked By)',
-  'f-subject':  'Subject',
-  'f-term':     'Term',
-  'f-cond':     'Conducted On',
-  'f-sub':      'Date of Submission',
-  'f-actsub':   'Actual Date of Submission',
-  'f-marks':    'Marks',
-  'f-signdate': 'Signature Date',
-};
+function hideMsg(id) {
+  const el = $(id);
+  if (el) el.className = 'toast-msg';
+}
 
-function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
-
-function formatDate(val) {
-  if (!val) return '';
-  const [y, m, d] = val.split('-');
-  return `${d}/${m}/${y}`;
+function updateStepper(step, status) {
+  const node = $(`step-node-${step}`);
+  if (!node) return;
+  if (status === 'active') {
+    node.className = 'step-node active';
+  } else if (status === 'done') {
+    node.className = 'step-node done';
+    const circle = node.querySelector('.step-circle');
+    if (circle) circle.innerHTML = '<i data-lucide="check" style="width:16px;height:16px;"></i>';
+  } else {
+    node.className = 'step-node';
+    const circle = node.querySelector('.step-circle');
+    if (circle) circle.textContent = step;
+  }
+  let doneCount = 0;
+  for (let i = 1; i <= 5; i++) {
+    const n = $(`step-node-${i}`);
+    if (n && n.classList.contains('done')) doneCount++;
+  }
+  const fill = $('step-progress-fill');
+  if (fill) {
+    let pct = 0;
+    if (doneCount === 1) pct = 10;
+    if (doneCount === 2) pct = 35;
+    if (doneCount === 3) pct = 60;
+    if (doneCount === 4) pct = 85;
+    if (doneCount === 5) pct = 100;
+    fill.style.width = `${pct}%`;
+  }
+  if (window.lucide) window.lucide.createIcons();
 }
 
 function formatBytes(bytes, decimals = 2) {
   if (bytes === 0) return '0 Bytes';
-  const k = 1024, dm = decimals < 0 ? 0 : decimals;
-  const sizes = ['Bytes', 'KB', 'MB'];
+  const k = 1024;
+  const dm = decimals < 0 ? 0 : decimals;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB'];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 }
 
-// Mirrors the server-side make_download_name() logic in app.py
-function buildDownloadName(srNumbers) {
-  const nums = [...new Set(srNumbers.map(Number))].sort((a, b) => a - b);
-  if (!nums.length) return 'TermWorkForge_Practicals.pdf';
-  const groups = [];
-  let start = nums[0], prev = nums[0];
-  for (const n of nums.slice(1)) {
-    if (n === prev + 1) { prev = n; continue; }
-    groups.push([start, prev]);
-    start = prev = n;
-  }
-  groups.push([start, prev]);
-  const parts = [];
-  for (const [a, b] of groups) {
-    if (a === b)         parts.push(String(a));
-    else if (b === a+1) { parts.push(String(a)); parts.push(String(b)); }
-    else                 parts.push(`${a}-${b}`);
-  }
-  const label = nums.length === 1 ? 'Practical' : 'Practicals';
-  return `TermWorkForge_${label}_${parts.join('_')}.pdf`;
-}
+// ── Cold-start banner (Render.com free tier sleeps after 15 min) ──────────
+(function initColdStartBanner() {
+  const startTime = Date.now();
+  const banner = document.createElement('div');
+  banner.id = 'cold-banner';
+  banner.innerHTML = `
+    <span style="font-size:16px">⏳</span>
+    <span>Server is waking up — this takes ~20 seconds on first visit. Almost there!</span>
+    <button onclick="document.getElementById('cold-banner').remove()" style="background:none;border:none;cursor:pointer;color:inherit;font-size:16px;line-height:1;padding:0;margin-left:4px">✕</button>
+  `;
+  banner.style.cssText = [
+    'display:none','position:fixed','top:0','left:0','right:0','z-index:9999',
+    'background:#FEF3C7','color:#92400E','padding:10px 16px',
+    'font-size:13px','font-weight:500','text-align:center',
+    'align-items:center','justify-content:center','gap:8px',
+    'box-shadow:0 2px 8px rgba(0,0,0,.1)'
+  ].join(';');
+  document.body.prepend(banner);
 
-function saveFormToLocalStorage() {
-  const data = {};
-  Object.keys(FIELD_LABELS).forEach(id => {
-    const el = $(id);
-    if (el) data[id] = el.value;
-  });
-  try { localStorage.setItem(LS_KEY, JSON.stringify(data)); } catch (_) {}
-}
-
-function loadFormFromLocalStorage() {
-  try {
-    const raw = localStorage.getItem(LS_KEY);
-    if (!raw) return;
-    const data = JSON.parse(raw);
-    let loaded = 0;
-    Object.keys(FIELD_LABELS).forEach(id => {
-      const el = $(id);
-      if (el && data[id]) { el.value = data[id]; loaded++; }
-    });
-    if (loaded > 0) {
-      const toast = $('toast-remembered');
-      if (toast) {
-        toast.style.display = 'flex';
-        setTimeout(() => {
-          toast.style.opacity = '0';
-          setTimeout(() => toast.remove(), 400);
-        }, 3000);
-      }
+  // Show banner only if page takes > 4 seconds to respond (cold start)
+  const checkTimer = setTimeout(() => {
+    if (!document.body.dataset.serverReady) {
+      banner.style.display = 'flex';
+      // Auto-remove after 30s
+      setTimeout(() => banner.remove(), 30000);
     }
-  } catch (_) {}
-}
+  }, 4000);
 
-function clearSavedForm() {
-  try { localStorage.removeItem(LS_KEY); } catch (_) {}
-}
-
-function getFormValues() {
-  return {
-    student_name: $('f-student').value.trim(),
-    pen:          $('f-pen').value.trim(),
-    semester:     $('f-semester').value.trim(),
-    class_name:   $('f-class').value.trim(),
-    batch:        $('f-batch').value.trim(),
-    checked_by:   $('f-faculty').value.trim(),
-    subject:      $('f-subject').value.trim(),
-    term:         $('f-term').value.trim(),
-    conducted_on: formatDate($('f-cond').value),
-    date_of_sub:  formatDate($('f-sub').value),
-    actual_sub:   formatDate($('f-actsub').value),
-    marks:        $('f-marks').value.trim(),
-    sign_date:    formatDate($('f-signdate').value),
-  };
-}
-
-function getEmptyFields() {
-  const empty = [];
-  Object.entries(FIELD_LABELS).forEach(([id, label]) => {
-    const el = $(id);
-    if (el && !el.value.trim()) empty.push(label);
+  window.addEventListener('load', () => {
+    document.body.dataset.serverReady = '1';
+    clearTimeout(checkTimer);
+    if (Date.now() - startTime < 4000) {
+      banner.remove(); // fast load — never show
+    }
   });
-  return empty;
+})();
+
+// ── Drag & Drop Event Listeners ───────────────────────────────────────────
+['dz-a', 'dz-b'].forEach(dzId => {
+  const dz = $(dzId);
+  if (!dz) return;
+  dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('over'); });
+  dz.addEventListener('dragleave', () => dz.classList.remove('over'));
+  dz.addEventListener('drop', e => {
+    e.preventDefault();
+    dz.classList.remove('over');
+    const inp = dz.querySelector('input[type=file]');
+    if (e.dataTransfer.files[0]) {
+      try { const dt = new DataTransfer(); dt.items.add(e.dataTransfer.files[0]); inp.files = dt.files; } catch (_) {}
+      inp.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+  });
+});
+
+// ── File A Handling ───────────────────────────────────────────────────────
+  // Validate - PDF or image
+  const ALLOWED_INDEX  = ['.pdf'];
+  const ALLOWED_TERMWK = ['.pdf','.jpg','.jpeg','.png','.bmp','.webp','.docx','.doc'];
+
+  function getExt(name) { return name.toLowerCase().slice(name.lastIndexOf('.')); }
+
+  $('file-a').addEventListener('change', () => {
+    const file = $('file-a').files[0];
+    if (!file) return;
+    if (!ALLOWED_INDEX.includes(getExt(file.name))) {
+      showMsg('msg-parse', `Unsupported file type. Please upload: ${ALLOWED_INDEX.join(', ')}`, 'err');
+      $('file-a').value = '';
+      return;
+    }
+    $('fn-a').textContent = file.name;
+    $('fs-a').textContent = formatBytes(file.size);
+    $('fp-a').classList.add('show');
+    $('dz-a').classList.add('has-file');
+    $('dz-a-text').style.display = 'none';
+    $('dz-a-icon').style.display = 'none';
+    $('btn-parse').disabled = false;
+    hideMsg('msg-parse');
+  });
+
+$('btn-remove-a').addEventListener('click', () => {
+  $('file-a').value = '';
+  $('fp-a').classList.remove('show');
+  $('dz-a').classList.remove('has-file');
+  $('dz-a-text').style.display = '';
+  $('dz-a-icon').style.display = '';
+  $('btn-parse').disabled = true;
+  hideMsg('msg-parse');
+  updateStepper(1, 'active');
+  updateStepper(2, 'upcoming');
+  $('card1').classList.remove('done');
+  $('card2').classList.add('locked');
+  practicals = {};
+  selected.clear();
+  $('prac-grid').innerHTML = '';
+  updateSel();
+});
+
+// ── File B Handling ───────────────────────────────────────────────────────
+  $('file-b').addEventListener('change', () => {
+    const file = $('file-b').files[0];
+    if (!file) return;
+    if (!ALLOWED_TERMWK.includes(getExt(file.name))) {
+      showMsg('msg-parse', `Unsupported file type. Please upload: ${ALLOWED_TERMWK.join(', ')}`, 'err');
+      $('file-b').value = '';
+      return;
+    }
+    fileBObj = file;
+    $('fn-b').textContent = file.name;
+    $('fs-b').textContent = formatBytes(file.size);
+    $('fp-b').classList.add('show');
+    $('dz-b').classList.add('has-file');
+    $('dz-b-text').style.display = 'none';
+    $('dz-b-icon').style.display = 'none';
+    $('card3').classList.add('done');
+    updateStepper(3, 'done');
+    updateStepper(4, 'active');
+    tryEnableNext();
+  });
+
+$('btn-remove-b').addEventListener('click', () => {
+  $('file-b').value = '';
+  fileBObj = null;
+  $('fp-b').classList.remove('show');
+  $('dz-b').classList.remove('has-file');
+  $('dz-b-text').style.display = '';
+  $('dz-b-icon').style.display = '';
+  $('card3').classList.remove('done');
+  updateStepper(3, 'active');
+  updateStepper(4, 'upcoming');
+  tryEnableNext();
+});
+
+// ── Parse Index PDF ───────────────────────────────────────────────────────
+$('btn-parse').addEventListener('click', async () => {
+  const file = $('file-a').files[0];
+  if (!file) return;
+
+  $('btn-parse').disabled = true;
+  $('sp-parse').style.display = 'inline-block';
+  hideMsg('msg-parse');
+
+  // Add a timeout so user gets clear feedback if server is cold-starting
+  const controller  = new AbortController();
+  const timeoutId   = setTimeout(() => {
+    showMsg('msg-parse', '⏳ Server is taking a moment to wake up — still working…', 'info');
+  }, 6000);
+
+  const fd = new FormData();
+  fd.append('pdf_a', file);
+
+  try {
+    const res  = await fetch('/api/parse-index', { method: 'POST', body: fd, signal: controller.signal });
+    clearTimeout(timeoutId);
+    const data = await res.json();
+
+    if (!res.ok || data.error) {
+      showMsg('msg-parse', `Parsing failed: ${data.error || 'Unknown server error'}`, 'err');
+      return;
+    }
+
+    practicals = data.practicals;
+    // Store subject so form.js can auto-fill it
+    sessionStorage.setItem('twf_subject', data.subject || '');
+    selected.clear();
+    renderGrid();
+
+    $('card2').classList.remove('locked');
+    $('card1').classList.add('done');
+    updateStepper(1, 'done');
+    updateStepper(2, 'active');
+
+    showMsg('msg-parse', `Successfully extracted <b>${Object.keys(practicals).length} practicals</b> from index.`, 'ok');
+  } catch (e) {
+    clearTimeout(timeoutId);
+    if (e.name === 'AbortError') return;
+    showMsg('msg-parse', `Network error: ${e.message}. Try refreshing if the server was sleeping.`, 'err');
+  } finally {
+    $('sp-parse').style.display = 'none';
+    $('btn-parse').disabled = false;
+  }
+});
+
+// ── Render Grid ───────────────────────────────────────────────────────────
+function renderGrid() {
+  const grid = $('prac-grid');
+  grid.innerHTML = '';
+
+  // Show skeleton cards briefly for visual polish
+  const count = Object.keys(practicals).length;
+  for (let i = 0; i < Math.min(count, 4); i++) {
+    const sk = document.createElement('div');
+    sk.className = 'prac-card skeleton-card';
+    sk.style.cssText = 'animation:pulse 1s ease infinite;background:var(--clr-surface-alt);border:none;min-height:72px;';
+    grid.appendChild(sk);
+  }
+
+  // Replace with real cards after a brief moment
+  setTimeout(() => {
+    grid.innerHTML = '';
+    Object.keys(practicals).sort((a, b) => +a - +b).forEach(num => {
+      const card = document.createElement('div');
+      card.className = `prac-card${selected.has(num) ? ' selected' : ''}`;
+      card.dataset.num = num;
+      card.innerHTML = `
+        <div class="prac-card-checkbox">
+          <i data-lucide="check" style="width:12px;height:12px;"></i>
+        </div>
+        <div class="prac-card-num">Practical ${num}</div>
+        <div class="prac-card-title">${practicals[num]}</div>
+      `;
+      card.addEventListener('click', () => togglePractical(num));
+      grid.appendChild(card);
+    });
+    updateSel();
+    if (window.lucide) window.lucide.createIcons();
+  }, 300);
 }
 
-function openModal()  { $('modal-overlay').classList.add('show');    }
-function closeModal() { $('modal-overlay').classList.remove('show'); }
-window.closeModal = closeModal;
+function togglePractical(num) {
+  if (selected.has(num)) selected.delete(num);
+  else selected.add(num);
+  const card = document.querySelector(`.prac-card[data-num="${num}"]`);
+  if (card) card.classList.toggle('selected', selected.has(num));
+  updateSel();
+}
 
-window.confirmGoBack = function () {
-  const sure = confirm(
-    `Going back will clear your ${titles.length} selected practical${titles.length > 1 ? 's' : ''} and uploaded files. Continue?`
-  );
-  if (sure) {
-    sessionStorage.removeItem('twf_titles');
-    sessionStorage.removeItem('twf_pdf_b');
-    sessionStorage.removeItem('twf_sel_count');
-    window.location.href = '/';
+$('btn-all').addEventListener('click', () => {
+  Object.keys(practicals).forEach(n => selected.add(n));
+  renderGrid();
+});
+
+$('btn-none').addEventListener('click', () => {
+  selected.clear();
+  renderGrid();
+});
+
+// ── Selection State ───────────────────────────────────────────────────────
+function updateSel() {
+  $('sel-count').textContent = selected.size;
+
+  const chips = $('chips');
+  chips.innerHTML = '';
+  [...selected].sort((a, b) => +a - +b).forEach(num => {
+    const chip = document.createElement('div');
+    chip.className = 'chip';
+    chip.innerHTML = `
+      <span>P${num}</span>
+      <button class="chip-remove" onclick="removeSel('${num}')">
+        <i data-lucide="x" style="width:12px;height:12px;"></i>
+      </button>
+    `;
+    chips.appendChild(chip);
+  });
+
+  if (selected.size > 0) {
+    $('card2').classList.add('done');
+    updateStepper(2, 'done');
+    if ($('card3').classList.contains('locked')) {
+      $('card3').classList.remove('locked');
+      updateStepper(3, 'active');
+    }
+  } else {
+    $('card2').classList.remove('done');
+    updateStepper(2, 'active');
+    $('card3').classList.add('locked');
+    updateStepper(3, 'upcoming');
   }
+
+  tryEnableNext();
+  if (window.lucide) window.lucide.createIcons();
+}
+
+window.removeSel = function(num) {
+  selected.delete(num);
+  const card = document.querySelector(`.prac-card[data-num="${num}"]`);
+  if (card) card.classList.remove('selected');
+  updateSel();
 };
 
-// ═══════════════════════════════════════════════════════════════════════════
-// LOTTIE — uses lottie-web 5.12.2 (SVG renderer, no WASM, no workers)
-// <script> tag in form.html loads it from cdnjs before this file runs
-// Animation file: /static/loading-animation.json
-// ═══════════════════════════════════════════════════════════════════════════
-let _lottieAnim = null;
-
-function initLottie() {
-  if (_lottieAnim) return;
-  if (typeof lottie === 'undefined') {
-    console.warn('lottie-web not available');
-    return;
-  }
-  const container = $('lottie-wrap');
-  if (!container) return;
-
-  _lottieAnim = lottie.loadAnimation({
-    container,
-    renderer:  'svg',
-    loop:      true,
-    autoplay:  false,
-    path:      '/static/loading-animation.json',
-  });
+// ── Continue Button ───────────────────────────────────────────────────────
+function tryEnableNext() {
+  const ready = selected.size > 0 && fileBObj !== null;
+  $('btn-next').disabled = !ready;
+  $('cta-hint').innerHTML = ready
+    ? `<b>${selected.size} practical${selected.size > 1 ? 's' : ''}</b> selected — ready to continue.`
+    : 'Please complete steps 1, 2, and 3 to proceed.';
 }
 
-function startLottie() {
-  if (!_lottieAnim) initLottie();
-  if (_lottieAnim) _lottieAnim.play();
-}
+$('btn-next').addEventListener('click', () => {
+  if (selected.size === 0 || !fileBObj) return;
 
-function stopLottie() {
-  if (_lottieAnim) _lottieAnim.stop();
-}
+  const srNos  = [...selected].sort((a, b) => +a - +b);
+  const titles = srNos.map(n => ({ sr_no: n, title: practicals[n] }));
 
-const MESSAGES = [
-  'Reading template PDF\u2026',
-  'Mapping your details onto fields\u2026',
-  'Server is generating your PDFs\u2026',
-  'Merging all pages together\u2026',
-  'Preparing your download\u2026',
-];
+  sessionStorage.setItem('twf_titles',    JSON.stringify(titles));
+  sessionStorage.setItem('twf_sel_count', srNos.length);
+  // subject is already stored from parse step — nothing extra needed
 
-function setProgress(pct, msgIdx) {
-  const bar = $('progress-fill');
-  const msg = $('progress-message');
-  if (bar) bar.style.width = pct + '%';
-  if (msg && msgIdx !== undefined)
-    msg.textContent = MESSAGES[Math.min(msgIdx, MESSAGES.length - 1)];
-}
+  $('btn-next').disabled = true;
+  $('btn-next').innerHTML = '<span class="progress-spinner" style="width:14px;height:14px;border-width:2px;margin-right:4px;"></span> Reading Form PDF…';
 
-async function doGenerate() {
-  const overlay = $('progress-overlay');
-  overlay.classList.add('show');
-  startLottie();
-  setProgress(8, 0);
+  const reader   = new FileReader();
+  reader.onload  = e => {
+    sessionStorage.setItem('twf_pdf_b', e.target.result);
+    window.location.href = '/form';
+  };
+  reader.onerror = () => {
+    alert('Failed to read Term Work template PDF. Please try uploading again.');
+    $('btn-next').disabled = false;
+    $('btn-next').innerHTML = 'Continue to Fill Details <i data-lucide="arrow-right"></i>';
+    if (window.lucide) window.lucide.createIcons();
+  };
+  reader.readAsDataURL(fileBObj);
+});
 
-  try {
-    await sleep(200);
-    saveFormToLocalStorage();
-
-    setProgress(20, 1);
-    const base64Data   = pdfBb64.split(',')[1];
-    const binaryString = atob(base64Data);
-    const bytes        = new Uint8Array(binaryString.length);
-    for (let i = 0; i < binaryString.length; i++) bytes[i] = binaryString.charCodeAt(i);
-    const pdfBlob = new Blob([bytes], { type: 'application/pdf' });
-
-    await sleep(200);
-    setProgress(40, 2);
-
-    const formValues = getFormValues();
-    const fd = new FormData();
-    fd.append('pdf_b',       pdfBlob, 'term_work.pdf');
-    fd.append('titles_json', JSON.stringify(titles));
-    fd.append('form_json',   JSON.stringify(formValues));
-
-    const response = await fetch('/api/generate', { method: 'POST', body: fd });
-    setProgress(75, 3);
-
-    if (!response.ok) {
-      let errMsg = 'Server error';
-      try { const d = await response.json(); errMsg = d.error || errMsg; } catch (_) {}
-      throw new Error(errMsg);
-    }
-
-    const outputBlob = await response.blob();
-    setProgress(95, 4);
-    await sleep(300);
-
-    // Prefer the branded filename the server sends; fall back to a client-side version
-    const serverName = response.headers.get('X-Download-Name');
-    const downloadName = serverName || buildDownloadName(titles.map(t => t.sr_no));
-
-    const url = URL.createObjectURL(outputBlob);
-    const a   = document.createElement('a');
-    a.href     = url;
-    a.download = downloadName;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
-
-    setProgress(100, 4);
-    await sleep(400);
-
-    stopLottie();
-    overlay.classList.remove('show');
-    $('success-qty').textContent  = `${titles.length} page${titles.length > 1 ? 's' : ''}`;
-    $('success-size').textContent = formatBytes(outputBlob.size);
-    $('success-screen-overlay').classList.add('show');
-
-  } catch (error) {
-    stopLottie();
-    overlay.classList.remove('show');
-    alert(`\u274C Generation Failed: ${error.message}\n\nPlease check your files and try again.`);
-  }
-}
-
+// ── Init ──────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   if (window.lucide) window.lucide.createIcons();
+  updateStepper(1, 'active');
+});
 
-  $('topbar-count').textContent = `${titles.length} practical${titles.length > 1 ? 's' : ''} selected`;
-  $('cta-qty-hint').textContent = `Will generate ${titles.length} filled page${titles.length > 1 ? 's' : ''} as one merged PDF.`;
+// ═══════════════════════════════════════════════════════════════
+// TEMPLATE PICKER MODAL
+// ═══════════════════════════════════════════════════════════════
 
-  const summaryBar = $('summary-bar');
-  summaryBar.innerHTML = '';
-  titles.forEach(item => {
-    const pill = document.createElement('div');
-    pill.className = 'sum-pill';
-    pill.innerHTML = `<i data-lucide="bookmark" style="width:12px;height:12px;color:var(--clr-primary);"></i> P${item.sr_no}`;
-    summaryBar.appendChild(pill);
+let selectedTemplateKey  = null;
+let selectedTemplateLabel = null;
+
+// ── Open / Close ─────────────────────────────────────────────
+function openTemplateModal() {
+  $('tpl-backdrop').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeTemplateModal() {
+  $('tpl-backdrop').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+window.openTemplateModal  = openTemplateModal;
+window.closeTemplateModal = closeTemplateModal;
+
+// ── Trigger button ────────────────────────────────────────────
+const openBtn = $('btn-open-templates');
+if (openBtn) openBtn.addEventListener('click', openTemplateModal);
+
+// ── Close on backdrop click (not on modal itself) ─────────────
+$('tpl-backdrop').addEventListener('click', e => {
+  if (e.target === $('tpl-backdrop')) closeTemplateModal();
+});
+
+// ── Card selection logic ──────────────────────────────────────
+document.querySelectorAll('.tpl-card[data-key]').forEach(card => {
+  card.addEventListener('click', () => {
+    // Deselect all
+    document.querySelectorAll('.tpl-card').forEach(c => c.classList.remove('active'));
+    // Select this one
+    card.classList.add('active');
+    selectedTemplateKey   = card.dataset.key;
+    selectedTemplateLabel = card.dataset.label;
+    // Update CTA
+    const useBtn = $('tpl-use-btn');
+    useBtn.disabled = false;
+    useBtn.textContent = 'Use this template';
+    if (window.lucide) window.lucide.createIcons();
   });
-  if (window.lucide) window.lucide.createIcons();
+});
 
-  setTimeout(initLottie, 600);
+// ── "Use this template" button ────────────────────────────────
+$('tpl-use-btn').addEventListener('click', async () => {
+  if (!selectedTemplateKey) return;
 
-  loadFormFromLocalStorage();
+  const useBtn = $('tpl-use-btn');
+  useBtn.disabled  = true;
+  useBtn.textContent = 'Loading template…';
 
-  // Auto-fill subject from the parsed index.
-  // sessionStorage (fresh parse) ALWAYS wins over localStorage (old saved data).
-  // If the user's saved subject differs from what was just parsed, the fresh
-  // parsed value replaces it — so switching index files always shows the right subject.
-  const autoSubject = sessionStorage.getItem('twf_subject') || '';
-  const subjectEl   = $('f-subject');
-  if (autoSubject && subjectEl) {
-    const savedSubject = subjectEl.value.trim(); // already filled by loadFormFromLocalStorage
-    if (savedSubject.toLowerCase() !== autoSubject.toLowerCase()) {
-      // Different subject detected — override with the freshly parsed one
-      subjectEl.value = autoSubject;
-      saveFormToLocalStorage(); // update localStorage so future visits also get the right value
-    }
-    // If they match, leave it — no flicker, no unnecessary write
-  }
+  try {
+    const res = await fetch(`/template/${selectedTemplateKey}`, { cache: 'no-store' });
+    if (!res.ok) throw new Error('Template not found on server');
 
-  Object.keys(FIELD_LABELS).forEach(id => {
-    const el = $(id);
-    if (el) {
-      el.addEventListener('input',  saveFormToLocalStorage);
-      el.addEventListener('change', saveFormToLocalStorage);
-    }
-  });
+    const blob    = await res.blob();
+    const file    = new File([blob], selectedTemplateLabel || 'term_work.pdf', { type: 'application/pdf' });
 
-  $('btn-generate').addEventListener('click', () => {
-    const empty = getEmptyFields();
-    if (empty.length > 0) {
-      $('modal-body-text').textContent =
-        `${empty.length} field${empty.length > 1 ? 's are' : ' is'} empty. Blank spaces will appear in those positions on the PDF. Do you want to proceed?`;
-      $('modal-empty-list').innerHTML = empty.map(f => `\u2022 ${f}`).join('<br>');
-      openModal();
-      $('modal-confirm').onclick = () => { closeModal(); doGenerate(); };
-    } else {
-      doGenerate();
-    }
-  });
+    // Inject into the file-b input via DataTransfer
+    const dt = new DataTransfer();
+    dt.items.add(file);
+    const fileInput = $('file-b');
+    fileInput.files  = dt.files;
 
-  $('modal-overlay').addEventListener('click', e => {
-    if (e.target === $('modal-overlay')) closeModal();
-  });
+    // Fire change event so existing file-b handler picks it up
+    fileInput.dispatchEvent(new Event('change', { bubbles: true }));
 
-  const clearBtn = $('btn-clear-saved');
-  if (clearBtn) {
-    clearBtn.addEventListener('click', () => {
-      clearSavedForm();
-      Object.keys(FIELD_LABELS).forEach(id => {
-        const el = $(id);
-        if (el) el.value = '';
-      });
-    });
+    closeTemplateModal();
+    useBtn.textContent  = 'Use this template';
+    useBtn.disabled     = false;
+    selectedTemplateKey = null;
+    document.querySelectorAll('.tpl-card').forEach(c => c.classList.remove('active'));
+
+  } catch (err) {
+    useBtn.disabled     = false;
+    useBtn.textContent  = 'Failed — tap to retry';
+    console.error('Template load error:', err);
   }
 });
