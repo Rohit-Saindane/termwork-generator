@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Fill Details — TermWorkForge</title>
+  <title>Fill Details — Term Work Generator</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -11,8 +11,6 @@
   <link rel="icon" type="image/png" sizes="192x192" href="/static/favicon-192.png">
   <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
   <link rel="stylesheet" href="/static/css/style.css"/>
-  <!-- DotLottie Web player — loads the .lottie animation format -->
-  <script src="https://cdn.jsdelivr.net/npm/@lottiefiles/dotlottie-web@0.34.0/dist/dotlottie.iife.js"></script>
 </head>
 <body>
 
@@ -33,7 +31,7 @@
           <i data-lucide="arrow-left" style="width:18px;height:18px;"></i>
         </button>
         <div class="topbar-center text-center">
-          <span class="brand-title" style="font-size:15px;">TermWorkForge</span>
+          <span class="brand-title" style="font-size:15px;">Fill details</span>
           <div class="card-subtitle" id="topbar-count">Loading practicals...</div>
         </div>
         <div class="nav-stepper">
@@ -101,7 +99,7 @@
       </section>
 
       <form id="details-form" onsubmit="event.preventDefault();">
-
+        
         <!-- Section 1: Student Information -->
         <section class="animate-fade-in" style="animation-delay:0.1s;">
           <div class="form-section-head">
@@ -170,10 +168,6 @@
               <div class="field-group">
                 <label for="f-subject">Subject Title</label>
                 <input type="text" id="f-subject"/>
-                <p style="font-size:11px;color:#94a3b8;margin-top:5px;line-height:1.5;">
-                  <span style="color:#6366f1;font-weight:600;">✦ Smart fill —</span>
-                  leave this blank and we'll pull it directly from your index file.
-                </p>
               </div>
               <div class="form-divider"></div>
               <div class="field-group">
@@ -184,7 +178,7 @@
           </div>
         </section>
 
-        <!-- Section 4: Dates -->
+        <!-- Section 3: Dates -->
         <section class="animate-fade-in" style="animation-delay:0.2s;">
           <div class="form-section-head">
             <div class="form-section-icon warning-accent"><i data-lucide="calendar"></i></div>
@@ -211,7 +205,7 @@
           </div>
         </section>
 
-        <!-- Section 5: Assessment -->
+        <!-- Section 4: Assessment -->
         <section class="animate-fade-in" style="animation-delay:0.25s;">
           <div class="form-section-head">
             <div class="form-section-icon success-accent"><i data-lucide="check-square"></i></div>
@@ -262,7 +256,7 @@
       <div class="footer-inner">
         <div class="footer-logo">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-square"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-          TermWorkForge
+          Term Work Generator
         </div>
         <p class="footer-credit">Designed & Developed by <strong><a href="https://github.com/Rohit-Saindane" target="_blank" rel="noopener noreferrer">Saindane Rohit</a></strong></p>
         <p class="footer-copy">&copy; 2026 Saindane Rohit. All Rights Reserved.</p>
@@ -292,22 +286,38 @@
     </div>
   </div>
 
-  <!-- ── Progress Overlay with Lottie Animation ── -->
+  <!-- Progress Overlay Loader -->
   <div class="progress-overlay" id="progress-overlay">
     <div class="progress-card">
 
-      <!-- Lottie canvas renders here -->
-      <div class="lottie-wrap" id="lottie-wrap"></div>
-
-      <!-- Status message -->
-      <div class="progress-title" id="progress-message">Preparing your PDFs…</div>
-
-      <!-- Slim progress bar -->
-      <div class="progress-track">
-        <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+      <!-- Orbital animation -->
+      <div class="orbital-wrap" aria-hidden="true">
+        <!-- Outer ring (clockwise) -->
+        <div class="orbital-ring orbital-ring--outer">
+          <div class="orbital-dot orbital-dot--outer"></div>
+        </div>
+        <!-- Inner ring (counter-clockwise) -->
+        <div class="orbital-ring orbital-ring--inner">
+          <div class="orbital-dot orbital-dot--inner"></div>
+        </div>
+        <!-- Core with file icon -->
+        <div class="orbital-core">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 7h-3a2 2 0 0 1-2-2V2"/>
+            <path d="M9 18a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h7l4 4v10a2 2 0 0 1-2 2Z"/>
+            <path d="M3 7.6v12.8A1.6 1.6 0 0 0 4.6 22h9.8"/>
+          </svg>
+        </div>
       </div>
 
-      <p class="progress-sub">Please don't close this tab</p>
+      <h3 class="progress-title">Server is generating your PDFs…</h3>
+      <p class="progress-message" id="progress-message">Preparing files…</p>
+
+      <div class="progress-bar-container">
+        <div class="progress-bar-fill" id="progress-fill"></div>
+      </div>
+
+      <p class="progress-footnote">Please don’t close this tab</p>
     </div>
   </div>
 
@@ -319,6 +329,7 @@
       </div>
       <h2 class="success-title">PDF Generated Successfully!</h2>
       <p class="success-message">Your custom overlay term-work files have compiled and downloaded to your device.</p>
+      
       <div class="success-details">
         <div class="success-details-row">
           <span>Documents Compiled:</span>
@@ -329,6 +340,7 @@
           <span class="success-details-val" id="success-size">4.2 MB</span>
         </div>
       </div>
+      
       <div class="success-actions">
         <button class="btn btn-primary btn-full" onclick="window.location.href='/'">
           <i data-lucide="refresh-cw" style="width:16px;height:16px;"></i> Generate More Documents

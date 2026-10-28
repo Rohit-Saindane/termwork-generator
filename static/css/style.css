@@ -1916,3 +1916,205 @@ body {
   color: #94a3b8;
   font-family: 'Plus Jakarta Sans', sans-serif;
 }
+
+
+
+
+
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   PROGRESS OVERLAY  —  Orbital animation
+   Add this block at the end of static/css/style.css
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* Fullscreen backdrop */
+.progress-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.progress-overlay.show {
+  display: flex;
+}
+
+/* Card */
+.progress-card {
+  background: var(--card-bg, #ffffff);
+  border-radius: 24px;
+  padding: 36px 32px 28px;
+  width: 100%;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.18);
+  border: 1px solid var(--border, #e8e5ff);
+}
+
+/* ── Orbital animation ───────────────────────────────────────────── */
+.orbital-wrap {
+  position: relative;
+  width: 88px;
+  height: 88px;
+  margin-bottom: 24px;
+  flex-shrink: 0;
+}
+
+/* Rings */
+.orbital-ring {
+  position: absolute;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform-origin: center center;
+}
+
+.orbital-ring--outer {
+  width: 88px;
+  height: 88px;
+  margin-left: -44px;
+  margin-top: -44px;
+  border: 2px solid transparent;
+  border-top-color: #6366f1;
+  border-right-color: rgba(99, 102, 241, 0.25);
+  animation: orbital-spin-cw 1.4s linear infinite;
+}
+
+.orbital-ring--inner {
+  width: 60px;
+  height: 60px;
+  margin-left: -30px;
+  margin-top: -30px;
+  border: 2px solid transparent;
+  border-bottom-color: #818cf8;
+  border-left-color: rgba(129, 140, 248, 0.25);
+  animation: orbital-spin-ccw 1.0s linear infinite;
+}
+
+/* Orbiting dots */
+.orbital-dot {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.orbital-dot--outer {
+  width: 10px;
+  height: 10px;
+  background: #6366f1;
+  top: -5px;
+  left: 50%;
+  margin-left: -5px;
+  box-shadow: 0 0 8px rgba(99, 102, 241, 0.7);
+}
+
+.orbital-dot--inner {
+  width: 7px;
+  height: 7px;
+  background: #818cf8;
+  bottom: -4px;
+  left: 50%;
+  margin-left: -4px;
+  box-shadow: 0 0 6px rgba(129, 140, 248, 0.6);
+}
+
+/* Solid core circle with file icon */
+.orbital-core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #eef2ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6366f1;
+  animation: orbital-core-pulse 2.0s ease-in-out infinite;
+}
+
+/* Keyframes */
+@keyframes orbital-spin-cw {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes orbital-spin-ccw {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(-360deg); }
+}
+
+@keyframes orbital-core-pulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1);   opacity: 1; }
+  50%       { transform: translate(-50%, -50%) scale(1.1); opacity: 0.85; }
+}
+
+/* ── Text ────────────────────────────────────────────────────────── */
+.progress-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary, #1e1b4b);
+  margin: 0 0 6px;
+  text-align: center;
+  letter-spacing: -0.01em;
+}
+
+.progress-message {
+  font-size: 12px;
+  color: var(--text-muted, #94a3b8);
+  margin: 0 0 20px;
+  text-align: center;
+  min-height: 18px;
+}
+
+/* ── Progress bar ────────────────────────────────────────────────── */
+.progress-bar-container {
+  width: 100%;
+  height: 5px;
+  background: var(--border, #e8e5ff);
+  border-radius: 99px;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #6366f1, #8b5cf6);
+  border-radius: 99px;
+  transition: width 0.4s ease;
+}
+
+/* ── Footnote ────────────────────────────────────────────────────── */
+.progress-footnote {
+  font-size: 11px;
+  color: var(--text-muted, #94a3b8);
+  margin: 0;
+  text-align: center;
+}
+
+/* ── Dark mode overrides ─────────────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  .orbital-core {
+    background: rgba(99, 102, 241, 0.2);
+    color: #818cf8;
+  }
+  .progress-card {
+    background: var(--card-bg, #111327);
+    border-color: var(--border, #1e2038);
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+  }
+  .progress-title {
+    color: var(--text-primary, #e8e6ff);
+  }
+}
