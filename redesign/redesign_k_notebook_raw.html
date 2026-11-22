@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<title>Redesign K — Notebook</title>
+<script src="ab5141ba-37c4-44bc-92a9-a280f5642ae8"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<style>/* vietnamese */
+@font-face {
+  font-family: 'Barlow';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("5257e3d2-999e-467c-b4c5-e9b5dbf6dd72") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Barlow';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("92872f4d-46d8-473c-9ea9-553e96b53462") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Barlow';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("262452b7-d3c8-4be0-8339-8c56a9ae0d4e") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Barlow';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("54dac28f-d10a-47f3-bd29-fae6fe60a548") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Barlow';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("e5f0b813-2615-4a44-9c6c-c025a0683b4c") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Barlow';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("736eb4f1-7a4d-4165-bdc5-178ffe06ed2b") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Barlow';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("3b4080fb-d373-4cfa-b77c-4312938d3e2c") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Barlow';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("39ef5785-55f5-4aa2-8469-d3d033024823") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Barlow';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("41798174-6a50-41d2-bb03-632cab1bb7a1") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Barlow Condensed';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("3028862f-c7fb-43a4-b891-66c4104f9652") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Barlow Condensed';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("b28e5a67-eb9c-406f-bbd4-29092f49d680") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Barlow Condensed';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("6f369b7e-fe4f-4729-805d-422e0d643648") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Caveat';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("3872977c-f5e5-493c-8133-a41e96073792") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Caveat';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("bb7464c4-2039-4443-b16f-e13c1f37614d") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Caveat';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("5ed347c6-de93-4722-a1c5-abb53c541d7f") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Caveat';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("ec56de74-700d-49d0-b7c2-52adf1dec0cf") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("61facaf1-9014-4f3f-8325-7a3afeb90b4c") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("4a483962-f59c-4e5a-bbb4-514a20c6124b") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("61facaf1-9014-4f3f-8325-7a3afeb90b4c") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("4a483962-f59c-4e5a-bbb4-514a20c6124b") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("61facaf1-9014-4f3f-8325-7a3afeb90b4c") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("4a483962-f59c-4e5a-bbb4-514a20c6124b") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Fraunces';
+  font-style: italic;
+  font-weight: 600;
+  font-display: swap;
+  src: url("90318b12-b7e2-45ef-8086-8d0381132c13") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Fraunces';
+  font-style: italic;
+  font-weight: 600;
+  font-display: swap;
+  src: url("c6fe4ccc-aa8b-444b-b289-af8079da656c") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Fraunces';
+  font-style: italic;
+  font-weight: 600;
+  font-display: swap;
+  src: url("236067b5-523d-44ba-b566-1b6ddd8dd3f0") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Fraunces';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("f347901b-2795-4a94-ad69-beab85aaac9a") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Fraunces';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("64c1a756-3b88-4c4b-ac65-53fd897debb2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Fraunces';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("86f2eea5-dba7-4c10-a328-f457cb520ecb") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v23/-F6qfjptAgt5VM-kVkqdyU8n3twJwl1FgtIU.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v23/-F6qfjptAgt5VM-kVkqdyU8n3twJwlRFgtIU.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* symbols2 */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v23/-F6qfjptAgt5VM-kVkqdyU8n3twJwupkp-8tFQ.woff2) format('woff2');
+  unicode-range: U+2000-2001, U+2004-2008, U+200A, U+23B8-23BD, U+2500-259F;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v23/-F6qfjptAgt5VM-kVkqdyU8n3twJwl9FgtIU.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v23/-F6qfjptAgt5VM-kVkqdyU8n3twJwl5FgtIU.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v23/-F6qfjptAgt5VM-kVkqdyU8n3twJwlBFgg.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v23/-F6qfjptAgt5VM-kVkqdyU8n3vAOwl1FgtIU.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v23/-F6qfjptAgt5VM-kVkqdyU8n3vAOwlRFgtIU.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* symbols2 */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v23/-F6qfjptAgt5VM-kVkqdyU8n3vAOwupkp-8tFQ.woff2) format('woff2');
+  unicode-range: U+2000-2001, U+2004-2008, U+200A, U+23B8-23BD, U+2500-259F;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v23/-F6qfjptAgt5VM-kVkqdyU8n3vAOwl9FgtIU.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v23/-F6qfjptAgt5VM-kVkqdyU8n3vAOwl5FgtIU.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v23/-F6qfjptAgt5VM-kVkqdyU8n3vAOwlBFgg.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("d8eb300c-f128-48eb-9cd6-cd32a655d18f") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("a7a58dd0-7a85-49bf-9746-7812b5e7fcd1") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("9c1c8cec-04d1-4b36-95d5-54ad913b5c90") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("71f99a9a-beb7-4166-bdb9-b7ebc1e41bdc") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("f5eb26b2-3c10-470f-b49f-30d5d378c1ad") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("b5c3f983-37f7-4c64-875f-a119c6bffc93") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("30ddca23-1478-4a36-9838-4e2c813ffa25") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("d8eb300c-f128-48eb-9cd6-cd32a655d18f") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("a7a58dd0-7a85-49bf-9746-7812b5e7fcd1") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("9c1c8cec-04d1-4b36-95d5-54ad913b5c90") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("71f99a9a-beb7-4166-bdb9-b7ebc1e41bdc") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("f5eb26b2-3c10-470f-b49f-30d5d378c1ad") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("b5c3f983-37f7-4c64-875f-a119c6bffc93") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("30ddca23-1478-4a36-9838-4e2c813ffa25") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("d8eb300c-f128-48eb-9cd6-cd32a655d18f") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("a7a58dd0-7a85-49bf-9746-7812b5e7fcd1") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("9c1c8cec-04d1-4b36-95d5-54ad913b5c90") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("71f99a9a-beb7-4166-bdb9-b7ebc1e41bdc") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("f5eb26b2-3c10-470f-b49f-30d5d378c1ad") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("b5c3f983-37f7-4c64-875f-a119c6bffc93") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("30ddca23-1478-4a36-9838-4e2c813ffa25") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("d8eb300c-f128-48eb-9cd6-cd32a655d18f") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("a7a58dd0-7a85-49bf-9746-7812b5e7fcd1") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("9c1c8cec-04d1-4b36-95d5-54ad913b5c90") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("71f99a9a-beb7-4166-bdb9-b7ebc1e41bdc") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("f5eb26b2-3c10-470f-b49f-30d5d378c1ad") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("b5c3f983-37f7-4c64-875f-a119c6bffc93") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("30ddca23-1478-4a36-9838-4e2c813ffa25") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("d8eb300c-f128-48eb-9cd6-cd32a655d18f") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("a7a58dd0-7a85-49bf-9746-7812b5e7fcd1") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("9c1c8cec-04d1-4b36-95d5-54ad913b5c90") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("71f99a9a-beb7-4166-bdb9-b7ebc1e41bdc") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("f5eb26b2-3c10-470f-b49f-30d5d378c1ad") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("b5c3f983-37f7-4c64-875f-a119c6bffc93") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("30ddca23-1478-4a36-9838-4e2c813ffa25") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("1c1f8df3-24e0-4973-8413-43e665e4993a") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("c1a74ab5-9d6e-4e77-89ef-2dd1cc3867bf") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("a2b0cb47-1fbc-467d-a0e1-bbbf129a4163") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("06d7d343-9747-482c-8491-08eb4515850c") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("a89beda7-c7cf-4e94-a4c1-ae59a4797bbe") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("4767b660-4542-409c-bbae-0138e37ec046") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Libre Baskerville';
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/librebaskerville/v24/kmKWZrc3Hgbbcjq75U4uslyuy4kn0qNccR04_RUJeby2OU0dTTNDlufifQ.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Libre Baskerville';
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/librebaskerville/v24/kmKWZrc3Hgbbcjq75U4uslyuy4kn0qNccR04_RUJeby2OU0dTTNNluc.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Libre Baskerville';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/librebaskerville/v24/kmKUZrc3Hgbbcjq75U4uslyuy4kn0olVQ-LglH6T17ujFgkiAANPjuM.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Libre Baskerville';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/librebaskerville/v24/kmKUZrc3Hgbbcjq75U4uslyuy4kn0olVQ-LglH6T17ujFgkiDgNP.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Libre Franklin';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("e7c77ff6-d71d-4392-a68d-44b2d49bca48") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Libre Franklin';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("181ed1f9-f10e-461c-9f40-873abc234443") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Libre Franklin';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("bdef5e8f-1a7e-4268-846c-75d744542e52") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Libre Franklin';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("85eea5ad-ca74-4175-98d2-f1c0ec8547f5") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Libre Franklin';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("94cb07a2-5a73-47a7-ac33-1f7ddec4343c") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Libre Franklin';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("e7c77ff6-d71d-4392-a68d-44b2d49bca48") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Libre Franklin';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("181ed1f9-f10e-461c-9f40-873abc234443") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Libre Franklin';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("bdef5e8f-1a7e-4268-846c-75d744542e52") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Libre Franklin';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("85eea5ad-ca74-4175-98d2-f1c0ec8547f5") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Libre Franklin';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("94cb07a2-5a73-47a7-ac33-1f7ddec4343c") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Libre Franklin';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("e7c77ff6-d71d-4392-a68d-44b2d49bca48") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Libre Franklin';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("181ed1f9-f10e-461c-9f40-873abc234443") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Libre Franklin';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("bdef5e8f-1a7e-4268-846c-75d744542e52") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Libre Franklin';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("85eea5ad-ca74-4175-98d2-f1c0ec8547f5") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Libre Franklin';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("94cb07a2-5a73-47a7-ac33-1f7ddec4343c") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/playfairdisplay/v40/nuFRD-vYSZviVYUb_rj3ij__anPXDTnCjmHKM4nYO7KN_k-UXtXA-W2r.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/playfairdisplay/v40/nuFRD-vYSZviVYUb_rj3ij__anPXDTnCjmHKM4nYO7KN_k-UXt7A-W2r.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/playfairdisplay/v40/nuFRD-vYSZviVYUb_rj3ij__anPXDTnCjmHKM4nYO7KN_k-UXt_A-W2r.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/playfairdisplay/v40/nuFRD-vYSZviVYUb_rj3ij__anPXDTnCjmHKM4nYO7KN_k-UXtHA-Q.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/playfairdisplay/v40/nuFiD-vYSZviVYUb_rj3ij__anPXDTjYgFE_.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/playfairdisplay/v40/nuFiD-vYSZviVYUb_rj3ij__anPXDTPYgFE_.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/playfairdisplay/v40/nuFiD-vYSZviVYUb_rj3ij__anPXDTLYgFE_.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/playfairdisplay/v40/nuFiD-vYSZviVYUb_rj3ij__anPXDTzYgA.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/playfairdisplay/v40/nuFiD-vYSZviVYUb_rj3ij__anPXDTjYgFE_.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/playfairdisplay/v40/nuFiD-vYSZviVYUb_rj3ij__anPXDTPYgFE_.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/playfairdisplay/v40/nuFiD-vYSZviVYUb_rj3ij__anPXDTLYgFE_.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/playfairdisplay/v40/nuFiD-vYSZviVYUb_rj3ij__anPXDTzYgA.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+</style>
+<style>
+
+  body{margin:0;background:#fff;font-family:system-ui,sans-serif;color:#15151b}
+  button,input{font-family:inherit}
+  button{cursor:pointer}
+  .page{width:100%;box-sizing:border-box;padding:56px 48px 96px;max-width:1420px;margin:0 auto}
+  .sec{margin-bottom:90px}
+  .sec-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;margin-bottom:22px}
+  .num{font-size:13px;font-weight:700;color:#6b7280}
+  .ttl{font-size:26px;font-weight:800;letter-spacing:-.02em}
+  .sub{font-size:13.5px;color:#4b5563;flex-basis:100%;max-width:760px;line-height:1.55}
+  .swatches{display:flex;gap:6px;align-items:center;margin-left:8px}
+  .swatches i{width:16px;height:16px;border-radius:50%;border:1px solid rgba(0,0,0,.18);display:block}
+  .row{display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start;margin-bottom:44px}
+  .vp{flex:none;max-width:100%}
+  .vp-m{width:360px}
+  .vp-d{width:880px}
+  .cap{margin:0 0 8px;font-size:11px;font-weight:700;letter-spacing:.1em;color:#6b7280}
+  .frame{position:relative;overflow:hidden;background:var(--bg);color:var(--ink);font-family:var(--fb);border:1px solid var(--fl);box-sizing:border-box}
+  .vp-m .frame{border-radius:40px;height:700px}
+  .vp-d .frame{border-radius:14px;height:540px}
+  .chrome{display:none}
+  .vp-d .chrome{display:flex;position:absolute;left:0;right:0;top:0;height:36px;align-items:center;gap:6px;padding:0 14px;background:var(--surf);border-bottom:1px solid var(--line);z-index:30;box-sizing:border-box}
+  .chrome i{display:block;width:9px;height:9px;border-radius:50%;background:var(--line2)}
+  .chrome b{margin-left:14px;font-size:11px;font-weight:600;color:var(--mut);background:var(--bg2);border-radius:6px;padding:3px 12px}
+  .home{display:none}
+  .vp-m .home{display:block;position:absolute;left:50%;bottom:9px;width:116px;height:4px;margin-left:-58px;border-radius:2px;background:var(--ink);opacity:.85;z-index:30}
+
+  .hd{position:absolute;left:0;right:0;z-index:20;display:flex;align-items:center;justify-content:space-between;box-sizing:border-box;background:var(--hdbg)}
+  .vp-m .hd{top:0;height:60px;padding:16px 20px 0}
+  .vp-d .hd{top:36px;height:58px;padding:0 28px;border-bottom:var(--bw) solid var(--line)}
+  .scr{position:absolute;left:0;right:0;bottom:0;overflow:hidden}
+  .vp-m .scr{top:60px}
+  .vp-d .scr{top:94px}
+  .brand{display:flex;align-items:center;gap:9px}
+  .brand b{font-size:15px;font-weight:800;letter-spacing:-.01em;font-family:var(--fd)}
+  .logo{width:28px;height:28px;border-radius:var(--rs);background:var(--ac);color:var(--acink);display:flex;align-items:center;justify-content:center}
+  .pill{font-size:12px;font-weight:700;color:var(--acsink);background:var(--acs);padding:5px 11px;border-radius:var(--rp)}
+  .vp-d .pill{display:none}
+  .pg{display:none}
+  .vp-m .pg{display:block;position:absolute;left:20px;right:20px;top:54px;height:4px;border-radius:2px;background:var(--line);z-index:21}
+  .pg i{display:block;height:100%;border-radius:2px;background:var(--ac)}
+  .steps{display:none;align-items:center;gap:8px}
+  .vp-d .steps{display:flex}
+  .st{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:700;color:var(--mut)}
+  .st i{font-style:normal;width:22px;height:22px;border-radius:50%;border:1.5px solid var(--line2);display:flex;align-items:center;justify-content:center;font-size:11px;box-sizing:border-box}
+  .st.on{color:var(--ink)}
+  .st.on i{background:var(--ac);border-color:var(--ac);color:var(--acink)}
+  .st.done i{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+  .st-l{width:26px;height:1.5px;background:var(--line2)}
+  .hd-r{display:none}
+  .vp-d .hd-r{display:flex;width:34px;height:34px;border-radius:50%;border:1px solid var(--line2);background:var(--surf);align-items:center;justify-content:center;color:var(--ink)}
+
+  .disp{font-family:var(--fd);font-weight:var(--fdw);text-transform:var(--fdt);letter-spacing:var(--fdls);line-height:var(--fdlh);font-size:var(--fs1);margin:0}
+  .vp-d .disp{font-size:var(--fs1d)}
+  .disp em{font-style:var(--emst);color:var(--hl)}
+  .disp2{font-family:var(--fd);font-weight:var(--fdw);text-transform:var(--fdt);letter-spacing:var(--fdls);line-height:1.08;font-size:var(--fs2);margin:0}
+  .eyebrow{margin:0 0 10px;font-size:11px;font-weight:800;letter-spacing:.14em;color:var(--hl)}
+  .lead{margin:12px 0 0;font-size:13px;line-height:1.55;color:var(--mut);max-width:400px}
+  .vp-d .lead{font-size:14px}
+  .cta{width:100%;height:48px;border:var(--bw) solid var(--cb);border-radius:var(--rb);background:var(--cta);color:var(--ctaink);font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:var(--shb);transition:transform .15s}
+  .cta:hover{transform:translateY(-2px)}
+  .namebox{display:flex;align-items:center;border:var(--bw) solid var(--line2);border-radius:var(--rs);background:var(--surf);overflow:hidden}
+  .namebox:focus-within{border-color:var(--ac)}
+  .namebox input{flex:1;min-width:0;border:0;outline:0;background:transparent;padding:12px 0 12px 12px;font-size:13px;font-weight:600;color:var(--ink)}
+  .namebox span{padding:0 8px 0 2px;font-size:13px;color:var(--mut)}
+  .namebox button{align-self:stretch;width:42px;border:0;border-left:var(--bw) solid var(--line);background:var(--bg2);color:var(--ink);display:flex;align-items:center;justify-content:center}
+  .namebox button:hover{background:var(--acs);color:var(--acsink)}
+
+  .a1{position:absolute;inset:0}
+  .vp-m .a1{padding:18px 18px 0;display:flex;flex-direction:column;gap:14px}
+  .vp-d .a1{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:center;padding:0 40px}
+  .a1-feats{display:none;list-style:none;margin:24px 0 0;padding:0}
+  .vp-d .a1-feats{display:grid;gap:12px}
+  .a1-feats li{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600}
+  .a1-feats i{width:26px;height:26px;border-radius:50%;background:var(--acs);color:var(--acsink);display:flex;align-items:center;justify-content:center;font-style:normal;font-size:12px;flex:none;font-weight:800}
+  .slots{display:flex;flex-direction:column;gap:12px}
+  .slot{background:var(--surf);border:var(--bw) solid var(--line);border-radius:var(--r);padding:14px;box-shadow:var(--sh)}
+  .slot-h{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  .slot-h b{display:block;font-size:14px;font-weight:800}
+  .slot-h em{display:block;font-style:normal;font-size:12px;color:var(--mut);margin-top:1px}
+  .slot-n{width:26px;height:26px;border-radius:50%;background:var(--ink);color:var(--bg);font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:none}
+  .file{display:flex;align-items:center;gap:10px;background:var(--oks);border:1px solid var(--ok);border-radius:var(--rs);padding:10px 12px;color:var(--ok)}
+  .file div{flex:1;min-width:0}
+  .file b{display:block;font-size:12.5px;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .file em{display:block;font-style:normal;font-size:11.5px;color:var(--mut)}
+  .drop{display:flex;align-items:center;gap:12px;border:1.5px dashed var(--line2);border-radius:var(--rs);padding:12px 14px;background:var(--bg2);color:var(--hl)}
+  .drop b{display:block;font-size:13px;font-weight:700;color:var(--ink)}
+  .drop em{display:block;font-style:normal;font-size:12px;color:var(--mut)}
+  .tpl{display:flex;align-items:center;gap:12px;width:100%;margin-top:8px;text-align:left;border:var(--bw) solid var(--selb);background:var(--sel);border-radius:var(--rs);padding:8px 10px;color:var(--selink)}
+  .tpl .mini{width:30px;height:40px;border:1px solid var(--line2);border-radius:3px;background:#fff;padding:5px 4px;box-sizing:border-box;flex:none}
+  .tpl .mini i{display:block;height:2px;background:#cfcfd6;margin-bottom:3px}
+  .tpl .mini i:nth-child(2){background:#9aa3f0}
+  .tpl div{flex:1;min-width:0}
+  .tpl b{display:block;font-size:12.5px;font-weight:700}
+  .tpl em{display:block;font-style:normal;font-size:11px;opacity:.8}
+  .vfy{font-size:10px;font-weight:800;color:var(--ok);background:var(--oks);border:1px solid var(--ok);border-radius:99px;padding:2px 8px}
+  .vp-m .cta-wrap{position:absolute;left:18px;right:18px;bottom:26px}
+  .cta-wrap .cta{margin-top:14px}
+  .hint{margin:8px 0 0;text-align:center;font-size:11.5px;color:var(--mut)}
+
+  .a2{position:absolute;inset:0;padding:16px 16px 0}
+  .vp-d .a2{display:grid;grid-template-columns:1fr 250px;gap:26px;padding:22px 28px}
+  .a2-top{display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
+  .vp-d .a2-top{flex-direction:row;align-items:flex-end;justify-content:space-between}
+  .subj{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--acsink);background:var(--acs);padding:4px 10px;border-radius:var(--rp);margin-top:8px}
+  .tools{display:flex;gap:6px}
+  .chip-btn{height:32px;padding:0 12px;border-radius:var(--rp);border:var(--bw) solid var(--line2);background:var(--surf);font-size:12px;font-weight:700;color:var(--ink)}
+  .plist{display:grid;grid-template-columns:1fr;gap:8px}
+  .vp-d .plist{grid-template-columns:1fr 1fr}
+  .pr{display:flex;align-items:center;gap:12px;text-align:left;border:var(--bw) solid var(--line);background:var(--surf);border-radius:var(--r);padding:9px 12px;color:var(--ink);min-height:54px;box-shadow:var(--sh);box-sizing:border-box}
+  .pn{font-family:var(--fd);font-size:24px;line-height:1;color:var(--line2);min-width:30px;font-weight:var(--fdw)}
+  .pt{flex:1;min-width:0;font-size:12.5px;font-weight:600;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .pk{flex:none;width:22px;height:22px;border-radius:50%;border:1.5px solid var(--line2);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--acink);box-sizing:border-box}
+  .pr.on{border-color:var(--selb);background:var(--sel);color:var(--selink)}
+  .pr.on .pn{color:var(--selpn)}
+  .pr.on .pk{background:var(--ac);border-color:var(--ac)}
+  .pr.on .pk::after{content:"✓"}
+  .a2-side{display:none}
+  .vp-d .a2-side{display:flex;flex-direction:column;gap:14px;background:var(--surf);border:var(--bw) solid var(--line);border-radius:var(--r);padding:18px;align-self:start;box-shadow:var(--sh)}
+  .lab{font-size:11px;font-weight:800;letter-spacing:.12em;color:var(--mut)}
+  .big-n{font-family:var(--fd);font-weight:var(--fdw);font-size:64px;line-height:.9;display:flex;align-items:baseline;gap:8px}
+  .big-n span{font-family:var(--fb);font-size:14px;font-weight:700;color:var(--mut)}
+  .chips{display:flex;gap:6px;flex-wrap:wrap}
+  .chp{min-width:30px;height:30px;border-radius:var(--rs);background:var(--acs);color:var(--acsink);font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;padding:0 6px;box-sizing:border-box}
+  .stack{position:relative;height:84px}
+  .stack i{position:absolute;width:62px;height:80px;background:#fff;border:1px solid var(--line2);border-radius:4px;display:block}
+  .stack i:nth-child(1){left:0;top:6px;transform:rotate(-6deg)}
+  .stack i:nth-child(2){left:26px;top:2px;transform:rotate(-1deg)}
+  .stack i:nth-child(3){left:52px;top:6px;transform:rotate(5deg)}
+  .bar{position:absolute;z-index:6;left:12px;right:12px;bottom:26px;display:flex;align-items:center;justify-content:space-between;background:var(--barbg);color:var(--barink);border-radius:var(--r);padding:9px 9px 9px 18px;font-size:13px;font-weight:700;border:var(--bw) solid var(--cb);box-shadow:var(--shb)}
+  .bar button{height:40px;border:var(--bw) solid var(--cb);border-radius:var(--rb);background:var(--cta);color:var(--ctaink);font-size:13px;font-weight:700;padding:0 16px}
+  .vp-d .bar{display:none}
+  .vp-m .fade{position:absolute;z-index:5;left:0;right:0;bottom:0;height:130px;background:linear-gradient(to top,var(--bg) 45%,transparent)}
+  .vp-d .fade{display:none}
+
+  .sheet{box-sizing:border-box;width:100%;aspect-ratio:1/1.414;background:#fff;border:1px solid #d9d9d9;padding:1.9em 1.7em;font-family:'Times New Roman',Georgia,serif;font-size:var(--fs,7px);color:#222;overflow:hidden;text-transform:none;letter-spacing:0;font-weight:400;line-height:1.25}
+  .sheet p{margin:0 0 1.05em;display:flex;flex-wrap:wrap;gap:0 .5em;align-items:baseline;border-bottom:1px solid #d6d6d6;padding-bottom:.3em}
+  .sheet span{color:#555}
+  .sheet u{text-decoration:none;font-style:italic;font-weight:700;color:var(--hw);margin-right:.7em}
+  .sh-t{text-align:center;margin-bottom:1.3em}
+  .sh-t small{display:block;font-size:.78em;letter-spacing:.04em;color:#444}
+  .sh-t b{font-size:1.5em;letter-spacing:.06em;font-family:'Times New Roman',Georgia,serif}
+  .sheet p.ex{display:block}
+  .sheet p.ex u{display:block;margin-top:.2em;line-height:1.35}
+
+  .a4{position:absolute;inset:0}
+  .vp-m .a4{display:flex;flex-direction:column;align-items:center;gap:12px;padding:10px 18px 0}
+  .vp-d .a4{display:flex;align-items:center;justify-content:center;gap:48px;padding:0 40px}
+  .a4-stage{width:210px;flex:none}
+  .vp-d .a4-stage{width:280px}
+  .prn{position:relative;z-index:3;background:var(--prn);color:var(--prnink);border:var(--bw) solid var(--prnl);border-radius:var(--r);padding:12px 14px 22px;box-shadow:var(--sh);display:flex;justify-content:space-between;align-items:flex-start}
+  .prn b{display:block;font-size:10.5px;font-weight:800;letter-spacing:.14em;font-family:var(--fd)}
+  .prn em{display:block;font-style:normal;font-size:11px;opacity:.8;margin-top:2px}
+  .leds{display:flex;gap:5px;margin-top:2px}
+  .leds i{width:8px;height:8px;border-radius:50%;background:var(--prnink);opacity:.3;display:block}
+  .leds i.g{background:var(--led);opacity:1;animation:blink 1s step-end infinite}
+  .prn-slot{position:absolute;left:14px;right:14px;bottom:9px;height:7px;border-radius:99px;background:var(--prns)}
+  .pwin{position:relative;z-index:1;margin:-8px 10px 0;height:236px;overflow:hidden;--fs:5px}
+  .vp-d .pwin{height:340px;--fs:6.8px}
+  .sheet-w{position:absolute;left:0;right:0;top:0;opacity:0;box-shadow:0 8px 20px rgba(0,0,0,.18);animation:sheetcyc 12s cubic-bezier(.4,0,.2,1) var(--d,0s) infinite}
+  .d0{--d:0s}.d1{--d:3s}.d2{--d:6s}.d3{--d:9s}
+  .a4-side{width:100%;max-width:324px;display:flex;flex-direction:column;gap:10px}
+  .a4-h{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .vp-m .a4-h .disp2{font-size:calc(var(--fs2) - 4px)}
+  .sc-chip{position:relative;display:inline-grid;font-size:12px;font-weight:700;color:var(--acsink);background:var(--acs);border-radius:var(--rp);padding:5px 12px;white-space:nowrap}
+  .sc-chip span{grid-area:1/1;opacity:0;text-align:center;animation:pgc 12s var(--d,0s) infinite}
+  .films{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:6px 2px 16px}
+  .film{position:relative;--fs:2.2px;border-radius:5px;animation:filmact 12s cubic-bezier(.3,1.3,.5,1) var(--d,0s) infinite}
+  .film .sheet{border-radius:4px;padding:1.9em 1.6em}
+  .film .fl{position:absolute;left:0;right:0;bottom:-16px;text-align:center;font-size:10px;font-weight:800;color:var(--mut)}
+  .again{display:block;text-align:center;font-size:13px;font-weight:700;text-decoration:none;padding:4px;color:var(--hl)}
+  .vp-m .a4-side .again{display:none}
+
+  @keyframes blink{0%,49%{opacity:1}50%,100%{opacity:.25}}
+  @keyframes sheetcyc{0%{transform:translateY(-102%);opacity:1}6%,22%{transform:translateY(0);opacity:1}28%{transform:translateY(104%);opacity:1}28.1%,100%{transform:translateY(-102%);opacity:0}}
+  @keyframes filmact{0%{transform:none;box-shadow:0 0 0 0 transparent}2%,24%{transform:translateY(-5px) scale(1.05);box-shadow:0 0 0 2px var(--hl),0 8px 16px rgba(0,0,0,.25)}28%,100%{transform:none;box-shadow:0 0 0 0 transparent}}
+  @keyframes pgc{0%{opacity:0}2%,24%{opacity:1}28%,100%{opacity:0}}
+
+  .a3{position:absolute;inset:0;padding:14px 16px 0}
+  .vp-d .a3{display:grid;grid-template-columns:1fr 262px;gap:28px;padding:20px 28px}
+  .form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 10px;margin-top:8px}
+  .vp-d .form{grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}
+  .fld{display:flex;flex-direction:column;gap:5px;min-width:0}
+  .fld>span{font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--mut)}
+  .fld input{width:100%;height:40px;border:var(--bw) solid var(--line2);background:var(--surf);border-radius:var(--rs);padding:0 12px;font-size:13px;font-weight:600;color:var(--ink);outline:0;box-sizing:border-box;min-width:0}
+  .fld.act input{border-color:var(--ac);box-shadow:0 0 0 3px var(--acs)}
+  .c4{grid-column:span 2}
+  .vp-d .c2{grid-column:span 2}
+  .vp-d .c4{grid-column:span 4}
+  .auto{font-size:10px;font-weight:800;color:var(--acsink);background:var(--acs);border-radius:var(--rp);padding:2px 8px;margin-left:6px;letter-spacing:0;display:inline-block}
+  .a3-prev{display:none}
+  .vp-d .a3-prev{display:block;align-self:start;background:var(--surf);border:var(--bw) solid var(--line);border-radius:var(--r);padding:12px;box-shadow:var(--sh)}
+  .a3-prev .lab{display:block;margin:2px 2px 10px}
+  .live{--fs:6.3px}
+.th-k{--rp:4px;--fs2:34px;--fdlh:.95;--emst:normal;--fdt:none;--fdls:0;--cb:transparent;--shb:none;--sh:0 1px 0 #e6e0cf,0 6px 14px rgba(60,50,20,.08);--bw:1px;--fl:#d9d6c8;--bg:#fffef9;--bg2:#f7f3e6;--surf:#ffffff;--hdbg:#fffef9;--ink:#1f2a44;--mut:#55607a;--line:#d9d6c8;--line2:#b9b5a2;--ac:#2547c9;--acink:#ffffff;--acs:#e3eafc;--acsink:#1b358f;--hl:#2547c9;--ok:#2f7a4a;--oks:#e6f4ea;--r:4px;--rs:4px;--rb:4px;--fd:'Caveat',cursive;--fb:'Inter',sans-serif;--fdw:700;--fs1:42px;--fs1d:64px;--cta:#2547c9;--ctaink:#ffffff;--sel:#fff3a8;--selb:#d9bd2a;--selink:#1f2a44;--selpn:#1f2a44;--prn:#ffffff;--prnink:#1f2a44;--prnl:#1f2a44;--prns:#1f2a44;--led:#d33d3d;--barbg:#1f2a44;--barink:#fffef9;--hw:#2547c9}
+
+  .th-k .frame{background-image:linear-gradient(#cfe0f3 1px,transparent 1px);background-size:100% 28px;background-position:0 10px}
+  .th-k .frame::before{content:"";position:absolute;left:34px;top:0;bottom:0;width:2px;background:#e8a3a3;z-index:0}
+  .th-k .vp-d .frame::before{left:56px}
+  .th-k .hd{background:#fffef9}
+  .th-k .brand b{font-family:'Caveat',cursive;font-size:22px;font-weight:700}
+  .th-k .disp em{font-style:normal;background:linear-gradient(transparent 58%,#ffe66d 58%);padding:0 .08em}
+  .th-k .disp2{font-size:36px}
+  .th-k .eyebrow{font-family:'Caveat',cursive;font-size:18px;letter-spacing:0;font-weight:700;color:#d33d3d}
+  .th-k .slot,.th-k .pr,.th-k .a2-side,.th-k .a3-prev,.th-k .prn{border-color:#d9d6c8}
+  .th-k .pr{box-shadow:0 1px 0 #e6e0cf}
+  .th-k .pr.on{border-color:#d9bd2a}
+  .th-k .pn{font-family:'Caveat',cursive;font-size:26px;font-weight:700}
+  .th-k .pk{border-radius:3px}
+  .th-k .pr.on .pk{background:#2547c9;border-color:#2547c9}
+  .th-k .cta{font-weight:700}
+  .th-k .st i{border-radius:4px}
+  .th-k .prn b{font-family:'Caveat',cursive;font-size:17px;letter-spacing:0}
+  .th-k .a4-h .disp2{font-size:32px}
+  
+</style>
+</helmet>
+<div class="page"><section class="sec th-k"><div class="sec-h"><span class="num">K</span><span class="ttl" style="color:#15151b">Notebook</span><span class="swatches"><i style="background:#fffef9"></i><i style="background:#cfe0f3"></i><i style="background:#e8a3a3"></i><i style="background:#2547c9"></i></span><span class="sub">Ruled notebook paper with a red margin line, blue-pen ink, yellow highlighter and a handwritten heading. Student-ish without being cute. Warm, familiar and quiet.</span></div><div class="row"><div class="vp vp-m"><p class="cap">1 · FILES · PHONE · 360</p><div class="frame"><div class="chrome"><i></i><i></i><i></i><b>termworkforge.onrender.com</b></div><div class="hd"><div class="brand"><span class="logo"><svg width="16" height="16" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 7h-3a2 2 0 0 1-2-2V2"></path><path d="M9 18a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h7l4 4v10a2 2 0 0 1-2 2Z"></path><path d="M3 7.6v12.8A1.6 1.6 0 0 0 4.6 22h9.8"></path></svg></span><b>TermWorkForge</b></div><span class="pill">Step 1 of 4</span><div class="steps"><div class="st on"><i>1</i>Files</div><span class="st-l"></span><div class="st "><i>2</i>Practicals</div><span class="st-l"></span><div class="st "><i>3</i>Details</div><span class="st-l"></span><div class="st "><i>4</i>Print</div></div><span class="hd-r" aria-hidden="true"><svg width="16" height="16" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"></path></svg></span></div><div class="pg"><i style="width:25%"></i></div><div class="home"></div><div class="scr"><div class="a1"><div><p class="eyebrow">today's to-do ✓</p><h1 class="disp">Get term work <em>off your list</em>.</h1><p class="lead">Hand over the index and a blank form. We fill every page so you can get back to studying.</p><ul class="a1-feats"><li><i>1</i>Reads your index for you</li><li><i>2</i>Fills every page neatly</li><li><i>3</i>One PDF, ready to submit</li></ul></div><div><div class="slots"><div class="slot"><div class="slot-h"><span class="slot-n">1</span><div><b>Practical index</b><em>PDF with selectable text</em></div></div><div class="file"><svg width="20" height="20" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><path d="m22 4-10 10-3-3"></path></svg><div><b>252_OS_PRACTICAL_INDEX.pdf</b><em>10 practicals · Operating Systems (1CS)</em></div></div></div><div class="slot"><div class="slot-h"><span class="slot-n">2</span><div><b>Blank term work form</b><em>PDF, JPG, PNG, WEBP or DOCX</em></div></div><div class="drop"><svg width="24" height="24" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4"></path><path d="m7 9 5-5 5 5"></path><path d="M5 20h14"></path></svg><div><b>Tap to upload</b><em>or drag and drop</em></div></div><button type="button" class="tpl"><span class="mini"><i></i><i></i><i></i></span><div><b>R.N.G. Patel Institute of Technology</b><em>Use the ready-made form</em></div><span class="vfy">Verified</span></button></div></div><div class="cta-wrap"><button type="button" class="cta">Continue</button><p class="hint">Using the R.N.G. Patel template</p></div></div></div></div></div></div><div class="vp vp-d"><p class="cap">1 · FILES · DESKTOP · 880</p><div class="frame"><div class="chrome"><i></i><i></i><i></i><b>termworkforge.onrender.com</b></div><div class="hd"><div class="brand"><span class="logo"><svg width="16" height="16" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 7h-3a2 2 0 0 1-2-2V2"></path><path d="M9 18a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h7l4 4v10a2 2 0 0 1-2 2Z"></path><path d="M3 7.6v12.8A1.6 1.6 0 0 0 4.6 22h9.8"></path></svg></span><b>TermWorkForge</b></div><span class="pill">Step 1 of 4</span><div class="steps"><div class="st on"><i>1</i>Files</div><span class="st-l"></span><div class="st "><i>2</i>Practicals</div><span class="st-l"></span><div class="st "><i>3</i>Details</div><span class="st-l"></span><div class="st "><i>4</i>Print</div></div><span class="hd-r" aria-hidden="true"><svg width="16" height="16" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"></path></svg></span></div><div class="pg"><i style="width:25%"></i></div><div class="home"></div><div class="scr"><div class="a1"><div><p class="eyebrow">today's to-do ✓</p><h1 class="disp">Get term work <em>off your list</em>.</h1><p class="lead">Hand over the index and a blank form. We fill every page so you can get back to studying.</p><ul class="a1-feats"><li><i>1</i>Reads your index for you</li><li><i>2</i>Fills every page neatly</li><li><i>3</i>One PDF, ready to submit</li></ul></div><div><div class="slots"><div class="slot"><div class="slot-h"><span class="slot-n">1</span><div><b>Practical index</b><em>PDF with selectable text</em></div></div><div class="file"><svg width="20" height="20" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><path d="m22 4-10 10-3-3"></path></svg><div><b>252_OS_PRACTICAL_INDEX.pdf</b><em>10 practicals · Operating Systems (1CS)</em></div></div></div><div class="slot"><div class="slot-h"><span class="slot-n">2</span><div><b>Blank term work form</b><em>PDF, JPG, PNG, WEBP or DOCX</em></div></div><div class="drop"><svg width="24" height="24" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4"></path><path d="m7 9 5-5 5 5"></path><path d="M5 20h14"></path></svg><div><b>Tap to upload</b><em>or drag and drop</em></div></div><button type="button" class="tpl"><span class="mini"><i></i><i></i><i></i></span><div><b>R.N.G. Patel Institute of Technology</b><em>Use the ready-made form</em></div><span class="vfy">Verified</span></button></div></div><div class="cta-wrap"><button type="button" class="cta">Continue</button><p class="hint">Using the R.N.G. Patel template</p></div></div></div></div></div></div></div><div class="row"><div class="vp vp-m"><p class="cap">2 · PRACTICALS · PHONE · 360</p><div class="frame"><div class="chrome"><i></i><i></i><i></i><b>termworkforge.onrender.com</b></div><div class="hd"><div class="brand"><span class="logo"><svg width="16" height="16" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 7h-3a2 2 0 0 1-2-2V2"></path><path d="M9 18a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h7l4 4v10a2 2 0 0 1-2 2Z"></path><path d="M3 7.6v12.8A1.6 1.6 0 0 0 4.6 22h9.8"></path></svg></span><b>TermWorkForge</b></div><span class="pill">Step 2 of 4</span><div class="steps"><div class="st done"><i>✓</i>Files</div><span class="st-l"></span><div class="st on"><i>2</i>Practicals</div><span class="st-l"></span><div class="st "><i>3</i>Details</div><span class="st-l"></span><div class="st "><i>4</i>Print</div></div><span class="hd-r" aria-hidden="true"><svg width="16" height="16" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"></path></svg></span></div><div class="pg"><i style="width:50%"></i></div><div class="home"></div><div class="scr"><div class="a2"><div><div class="a2-top"><div><h2 class="disp2">What did you finish?</h2><span class="subj">Operating Systems (1CS) · from your index</span></div><div class="tools"><button type="button" class="chip-btn">Select all</button><button type="button" class="chip-btn">Clear</button></div></div><div class="plist"><button type="button" class="pr "><span class="pn">01</span><span class="pt">Study of various features of O.S and its types.</span><span class="pk"></span></button><button type="button" class="pr on"><span class="pn">02</span><span class="pt">Demonstrate basic and advanced Linux commands.</span><span class="pk"></span></button><button type="button" class="pr on"><span class="pn">03</span><span class="pt">Write a shell script using control structures and looping statements.</span><span class="pk"></span></button><button type="button" class="pr on"><span class="pn">04</span><span class="pt">Write a C program to create child processes using fork() and exec().</span><span class="pk"></span></button><button type="button" class="pr on"><span class="pn">05</span><span class="pt">Write a C program to create two threads for addition and subtraction of large arrays.</span><span class="pk"></span></button><button type="button" class="pr "><span class="pn">06</span><span class="pt">Demonstrate interprocess communication using shared memory and semaphores.</span><span class="pk"></span></button><button type="button" class="pr "><span class="pn">07</span><span class="pt">Write a shell script to find the max, min and average of a set of numbers.</span><span class="pk"></span></button><button type="button" class="pr "><span class="pn">08</span><span class="pt">Write shell scripts to manage users and files.</span><span class="pk"></span></button><button type="button" class="pr "><span class="pn">09</span><span class="pt">Write C programs to implement the Linux commands ls and who.</span><span class="pk"></span></button><button type="button" class="pr "><span class="pn">10</span><span class="pt">Write shell scripts for file handling and text processing.</span><span class="pk"></span></button></div></div><aside class="a2-side"><span class="lab">YOUR BATCH</span><div class="big-n">4<span>pages</span></div><div class="chips"><span class="chp">2</span><span class="chp">3</span><span class="chp">4</span><span class="chp">5</span></div><div class="stack"><i></i><i></i><i></i></div><button type="button" class="cta">Continue to details</button></aside></div><div class="fade"></div><div class="bar"><span>4 selected</span><button type="button">Continue</button></div></div></div></div><div class="vp vp-d"><p class="cap">2 · PRACTICALS · DESKTOP · 880</p><div class="frame"><div class="chrome"><i></i><i></i><i></i><b>termworkforge.onrender.com</b></div><div class="hd"><div class="brand"><span class="logo"><svg width="16" height="16" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 7h-3a2 2 0 0 1-2-2V2"></path><path d="M9 18a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h7l4 4v10a2 2 0 0 1-2 2Z"></path><path d="M3 7.6v12.8A1.6 1.6 0 0 0 4.6 22h9.8"></path></svg></span><b>TermWorkForge</b></div><span class="pill">Step 2 of 4</span><div class="steps"><div class="st done"><i>✓</i>Files</div><span class="st-l"></span><div class="st on"><i>2</i>Practicals</div><span class="st-l"></span><div class="st "><i>3</i>Details</div><span class="st-l"></span><div class="st "><i>4</i>Print</div></div><span class="hd-r" aria-hidden="true"><svg width="16" height="16" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"></path></svg></span></div><div class="pg"><i style="width:50%"></i></div><div class="home"></div><div class="scr"><div class="a2"><div><div class="a2-top"><div><h2 class="disp2">What did you finish?</h2><span class="subj">Operating Systems (1CS) · from your index</span></div><div class="tools"><button type="button" class="chip-btn">Select all</button><button type="button" class="chip-btn">Clear</button></div></div><div class="plist"><button type="button" class="pr "><span class="pn">01</span><span class="pt">Study of various features of O.S and its types.</span><span class="pk"></span></button><button type="button" class="pr on"><span class="pn">02</span><span class="pt">Demonstrate basic and advanced Linux commands.</span><span class="pk"></span></button><button type="button" class="pr on"><span class="pn">03</span><span class="pt">Write a shell script using control structures and looping statements.</span><span class="pk"></span></button><button type="button" class="pr on"><span class="pn">04</span><span class="pt">Write a C program to create child processes using fork() and exec().</span><span class="pk"></span></button><button type="button" class="pr on"><span class="pn">05</span><span class="pt">Write a C program to create two threads for addition and subtraction of large arrays.</span><span class="pk"></span></button><button type="button" class="pr "><span class="pn">06</span><span class="pt">Demonstrate interprocess communication using shared memory and semaphores.</span><span class="pk"></span></button><button type="button" class="pr "><span class="pn">07</span><span class="pt">Write a shell script to find the max, min and average of a set of numbers.</span><span class="pk"></span></button><button type="button" class="pr "><span class="pn">08</span><span class="pt">Write shell scripts to manage users and files.</span><span class="pk"></span></button><button type="button" class="pr "><span class="pn">09</span><span class="pt">Write C programs to implement the Linux commands ls and who.</span><span class="pk"></span></button><button type="button" class="pr "><span class="pn">10</span><span class="pt">Write shell scripts for file handling and text processing.</span><span class="pk"></span></button></div></div><aside class="a2-side"><span class="lab">YOUR BATCH</span><div class="big-n">4<span>pages</span></div><div class="chips"><span class="chp">2</span><span class="chp">3</span><span class="chp">4</span><span class="chp">5</span></div><div class="stack"><i></i><i></i><i></i></div><button type="button" class="cta">Continue to details</button></aside></div><div class="fade"></div><div class="bar"><span>4 selected</span><button type="button">Continue</button></div></div></div></div></div><div class="row"><div class="vp vp-m"><p class="cap">3 · DETAILS · PHONE · 360</p><div class="frame"><div class="chrome"><i></i><i></i><i></i><b>termworkforge.onrender.com/form</b></div><div class="hd"><div class="brand"><span class="logo"><svg width="16" height="16" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 7h-3a2 2 0 0 1-2-2V2"></path><path d="M9 18a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h7l4 4v10a2 2 0 0 1-2 2Z"></path><path d="M3 7.6v12.8A1.6 1.6 0 0 0 4.6 22h9.8"></path></svg></span><b>TermWorkForge</b></div><span class="pill">Step 3 of 4</span><div class="steps"><div class="st done"><i>✓</i>Files</div><span class="st-l"></span><div class="st done"><i>✓</i>Practicals</div><span class="st-l"></span><div class="st on"><i>3</i>Details</div><span class="st-l"></span><div class="st "><i>4</i>Print</div></div><span class="hd-r" aria-hidden="true"><svg width="16" height="16" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"></path></svg></span></div><div class="pg"><i style="width:75%"></i></div><div class="home"></div><div class="scr"><div class="a3"><div><h2 class="disp2">Your details</h2><div class="form"><label class="fld c4 act"><span>Student name</span><input type="text" value="Aarav Mehta"></label><label class="fld c2 "><span>PEN</span><input type="text" value="2301234567"></label><label class="fld c2 "><span>Class</span><input type="text" value="TY CSE"></label><label class="fld c2 "><span>Batch</span><input type="text" value="A2"></label><label class="fld c2 "><span>Semester</span><input type="text" value="5"></label><label class="fld c2 "><span>Term</span><input type="text" value="Aug – Dec 2026"></label><label class="fld c4 "><span>Subject<b class="auto">from index</b></span><input type="text" value="Operating Systems (1CS)"></label><label class="fld c4 "><span>Checked by</span><input type="text" value="Prof. S. Desai"></label><label class="fld c2 "><span>Marks</span><input type="text" value="10"></label><label class="fld c2 "><span>Conducted on</span><input type="text" value="12/08/2026"></label><label class="fld c2 "><span>Submission</span><input type="text" value="19/08/2026"></label><label class="fld c2 "><span>Actual submission</span><input type="text" value="19/08/2026"></label></div></div><aside class="a3-prev"><span class="lab">LIVE PREVIEW · PRACTICAL 2</span><div class="live"><div class="sheet"><div class="sh-t"><small>R.N.G. PATEL INSTITUTE OF TECHNOLOGY</small><b>TERM WORK</b></div><p><span>Subject</span><u>Operating Systems (1CS)</u></p><p><span>PEN</span><u>2301234567</u><span>Sem</span><u>5</u></p><p><span>Name</span><u>Aarav Mehta</u></p><p><span>Class</span><u>TY CSE</u><span>Batch</span><u>A2</u></p><p class="ex"><span>Experiment</span><u>Demonstrate basic and advanced Linux commands.</u></p><p><span>Practical No.</span><u>2</u></p><p><span>Conducted</span><u>12/08/2026</u><span>Submitted</span><u>19/08/2026</u></p><p><span>Checked by</span><u>Prof. S. Desai</u><span>Marks</span><u>10</u></p></div></div></aside></div><div class="fade"></div><div class="bar"><span>9 of 12 filled</span><button type="button">Preview pages</button></div></div></div></div><div class="vp vp-d"><p class="cap">3 · DETAILS · DESKTOP · 880</p><div class="frame"><div class="chrome"><i></i><i></i><i></i><b>termworkforge.onrender.com/form</b></div><div class="hd"><div class="brand"><span class="logo"><svg width="16" height="16" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 7h-3a2 2 0 0 1-2-2V2"></path><path d="M9 18a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h7l4 4v10a2 2 0 0 1-2 2Z"></path><path d="M3 7.6v12.8A1.6 1.6 0 0 0 4.6 22h9.8"></path></svg></span><b>TermWorkForge</b></div><span class="pill">Step 3 of 4</span><div class="steps"><div class="st done"><i>✓</i>Files</div><span class="st-l"></span><div class="st done"><i>✓</i>Practicals</div><span class="st-l"></span><div class="st on"><i>3</i>Details</div><span class="st-l"></span><div class="st "><i>4</i>Print</div></div><span class="hd-r" aria-hidden="true"><svg width="16" height="16" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"></path></svg></span></div><div class="pg"><i style="width:75%"></i></div><div class="home"></div><div class="scr"><div class="a3"><div><h2 class="disp2">Your details</h2><div class="form"><label class="fld c4 act"><span>Student name</span><input type="text" value="Aarav Mehta"></label><label class="fld c2 "><span>PEN</span><input type="text" value="2301234567"></label><label class="fld c2 "><span>Class</span><input type="text" value="TY CSE"></label><label class="fld c2 "><span>Batch</span><input type="text" value="A2"></label><label class="fld c2 "><span>Semester</span><input type="text" value="5"></label><label class="fld c2 "><span>Term</span><input type="text" value="Aug – Dec 2026"></label><label class="fld c4 "><span>Subject<b class="auto">from index</b></span><input type="text" value="Operating Systems (1CS)"></label><label class="fld c4 "><span>Checked by</span><input type="text" value="Prof. S. Desai"></label><label class="fld c2 "><span>Marks</span><input type="text" value="10"></label><label class="fld c2 "><span>Conducted on</span><input type="text" value="12/08/2026"></label><label class="fld c2 "><span>Submission</span><input type="text" value="19/08/2026"></label><label class="fld c2 "><span>Actual submission</span><input type="text" value="19/08/2026"></label></div></div><aside class="a3-prev"><span class="lab">LIVE PREVIEW · PRACTICAL 2</span><div class="live"><div class="sheet"><div class="sh-t"><small>R.N.G. PATEL INSTITUTE OF TECHNOLOGY</small><b>TERM WORK</b></div><p><span>Subject</span><u>Operating Systems (1CS)</u></p><p><span>PEN</span><u>2301234567</u><span>Sem</span><u>5</u></p><p><span>Name</span><u>Aarav Mehta</u></p><p><span>Class</span><u>TY CSE</u><span>Batch</span><u>A2</u></p><p class="ex"><span>Experiment</span><u>Demonstrate basic and advanced Linux commands.</u></p><p><span>Practical No.</span><u>2</u></p><p><span>Conducted</span><u>12/08/2026</u><span>Submitted</span><u>19/08/2026</u></p><p><span>Checked by</span><u>Prof. S. Desai</u><span>Marks</span><u>10</u></p></div></div></aside></div><div class="fade"></div><div class="bar"><span>9 of 12 filled</span><button type="button">Preview pages</button></div></div></div></div></div><div class="row"><div class="vp vp-m"><p class="cap">4 · PRINT (PREVIEW + DOWNLOAD) · PHONE · 360</p><div class="frame"><div class="chrome"><i></i><i></i><i></i><b>termworkforge.onrender.com/print</b></div><div class="hd"><div class="brand"><span class="logo"><svg width="16" height="16" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 7h-3a2 2 0 0 1-2-2V2"></path><path d="M9 18a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h7l4 4v10a2 2 0 0 1-2 2Z"></path><path d="M3 7.6v12.8A1.6 1.6 0 0 0 4.6 22h9.8"></path></svg></span><b>TermWorkForge</b></div><span class="pill">Step 4 of 4</span><div class="steps"><div class="st done"><i>✓</i>Files</div><span class="st-l"></span><div class="st done"><i>✓</i>Practicals</div><span class="st-l"></span><div class="st done"><i>✓</i>Details</div><span class="st-l"></span><div class="st on"><i>4</i>Print</div></div><span class="hd-r" aria-hidden="true"><svg width="16" height="16" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"></path></svg></span></div><div class="pg"><i style="width:100%"></i></div><div class="home"></div><div class="scr"><div class="a4"><div class="a4-stage"><div class="prn"><div><b>Printer</b><em>Printing your term work</em></div><div class="leds"><i class="g"></i><i></i></div><div class="prn-slot"></div></div><div class="pwin"><div class="sheet-w d0"><div class="sheet"><div class="sh-t"><small>R.N.G. PATEL INSTITUTE OF TECHNOLOGY</small><b>TERM WORK</b></div><p><span>Subject</span><u>Operating Systems (1CS)</u></p><p><span>PEN</span><u>2301234567</u><span>Sem</span><u>5</u></p><p><span>Name</span><u>Aarav Mehta</u></p><p><span>Class</span><u>TY CSE</u><span>Batch</span><u>A2</u></p><p class="ex"><span>Experiment</span><u>Demonstrate basic and advanced Linux commands.</u></p><p><span>Practical No.</span><u>2</u></p><p><span>Conducted</span><u>12/08/2026</u><span>Submitted</span><u>19/08/2026</u></p><p><span>Checked by</span><u>Prof. S. Desai</u><span>Marks</span><u>10</u></p></div></div><div class="sheet-w d1"><div class="sheet"><div class="sh-t"><small>R.N.G. PATEL INSTITUTE OF TECHNOLOGY</small><b>TERM WORK</b></div><p><span>Subject</span><u>Operating Systems (1CS)</u></p><p><span>PEN</span><u>2301234567</u><span>Sem</span><u>5</u></p><p><span>Name</span><u>Aarav Mehta</u></p><p><span>Class</span><u>TY CSE</u><span>Batch</span><u>A2</u></p><p class="ex"><span>Experiment</span><u>Write a shell script using control structures and looping statements.</u></p><p><span>Practical No.</span><u>3</u></p><p><span>Conducted</span><u>12/08/2026</u><span>Submitted</span><u>19/08/2026</u></p><p><span>Checked by</span><u>Prof. S. Desai</u><span>Marks</span><u>10</u></p></div></div><div class="sheet-w d2"><div class="sheet"><div class="sh-t"><small>R.N.G. PATEL INSTITUTE OF TECHNOLOGY</small><b>TERM WORK</b></div><p><span>Subject</span><u>Operating Systems (1CS)</u></p><p><span>PEN</span><u>2301234567</u><span>Sem</span><u>5</u></p><p><span>Name</span><u>Aarav Mehta</u></p><p><span>Class</span><u>TY CSE</u><span>Batch</span><u>A2</u></p><p class="ex"><span>Experiment</span><u>Write a C program to create child processes using fork() and exec().</u></p><p><span>Practical No.</span><u>4</u></p><p><span>Conducted</span><u>12/08/2026</u><span>Submitted</span><u>19/08/2026</u></p><p><span>Checked by</span><u>Prof. S. Desai</u><span>Marks</span><u>10</u></p></div></div><div class="sheet-w d3"><div class="sheet"><div class="sh-t"><small>R.N.G. PATEL INSTITUTE OF TECHNOLOGY</small><b>TERM WORK</b></div><p><span>Subject</span><u>Operating Systems (1CS)</u></p><p><span>PEN</span><u>2301234567</u><span>Sem</span><u>5</u></p><p><span>Name</span><u>Aarav Mehta</u></p><p><span>Class</span><u>TY CSE</u><span>Batch</span><u>A2</u></p><p class="ex"><span>Experiment</span><u>Write a C program to create two threads for addition and subtraction of large arrays.</u></p><p><span>Practical No.</span><u>5</u></p><p><span>Conducted</span><u>12/08/2026</u><span>Submitted</span><u>19/08/2026</u></p><p><span>Checked by</span><u>Prof. S. Desai</u><span>Marks</span><u>10</u></p></div></div></div></div><div class="a4-side"><div class="a4-h"><h2 class="disp2">All done, take a look</h2><span class="sc-chip" aria-hidden="true"><span class="d0">Page 1 of 4</span><span class="d1">Page 2 of 4</span><span class="d2">Page 3 of 4</span><span class="d3">Page 4 of 4</span></span></div><div class="films"><div class="film d0"><div class="sheet"><div class="sh-t"><small>R.N.G. PATEL INSTITUTE OF TECHNOLOGY</small><b>TERM WORK</b></div><p><span>Subject</span><u>Operating Systems (1CS)</u></p><p><span>Name</span><u>Aarav Mehta</u></p><p class="ex"><span>Experiment</span><u>Demonstrate basic and advanced Linux commands.</u></p><p><span>Practical No.</span><u>2</u></p></div><span class="fl">P2</span></div><div class="film d1"><div class="sheet"><div class="sh-t"><small>R.N.G. PATEL INSTITUTE OF TECHNOLOGY</small><b>TERM WORK</b></div><p><span>Subject</span><u>Operating Systems (1CS)</u></p><p><span>Name</span><u>Aarav Mehta</u></p><p class="ex"><span>Experiment</span><u>Write a shell script using control structures and looping statements.</u></p><p><span>Practical No.</span><u>3</u></p></div><span class="fl">P3</span></div><div class="film d2"><div class="sheet"><div class="sh-t"><small>R.N.G. PATEL INSTITUTE OF TECHNOLOGY</small><b>TERM WORK</b></div><p><span>Subject</span><u>Operating Systems (1CS)</u></p><p><span>Name</span><u>Aarav Mehta</u></p><p class="ex"><span>Experiment</span><u>Write a C program to create child processes using fork() and exec().</u></p><p><span>Practical No.</span><u>4</u></p></div><span class="fl">P4</span></div><div class="film d3"><div class="sheet"><div class="sh-t"><small>R.N.G. PATEL INSTITUTE OF TECHNOLOGY</small><b>TERM WORK</b></div><p><span>Subject</span><u>Operating Systems (1CS)</u></p><p><span>Name</span><u>Aarav Mehta</u></p><p class="ex"><span>Experiment</span><u>Write a C program to create two threads for addition and subtraction of large arrays.</u></p><p><span>Practical No.</span><u>5</u></p></div><span class="fl">P5</span></div></div><div class="namebox"><input type="text" aria-label="File name" value="termworkforge_practicals_2-5"><span>.pdf</span><button type="button" aria-label="Rename file"><svg width="14" height="14" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"></path></svg></button></div><button type="button" class="cta"><svg width="16" height="16" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"></path><path d="m7 10 5 5 5-5"></path><path d="M5 21h14"></path></svg> Download PDF · 4 pages</button><a href="#" class="again">Generate more</a></div></div></div></div></div><div class="vp vp-d"><p class="cap">4 · PRINT (PREVIEW + DOWNLOAD) · DESKTOP · 880</p><div class="frame"><div class="chrome"><i></i><i></i><i></i><b>termworkforge.onrender.com/print</b></div><div class="hd"><div class="brand"><span class="logo"><svg width="16" height="16" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 7h-3a2 2 0 0 1-2-2V2"></path><path d="M9 18a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h7l4 4v10a2 2 0 0 1-2 2Z"></path><path d="M3 7.6v12.8A1.6 1.6 0 0 0 4.6 22h9.8"></path></svg></span><b>TermWorkForge</b></div><span class="pill">Step 4 of 4</span><div class="steps"><div class="st done"><i>✓</i>Files</div><span class="st-l"></span><div class="st done"><i>✓</i>Practicals</div><span class="st-l"></span><div class="st done"><i>✓</i>Details</div><span class="st-l"></span><div class="st on"><i>4</i>Print</div></div><span class="hd-r" aria-hidden="true"><svg width="16" height="16" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"></path></svg></span></div><div class="pg"><i style="width:100%"></i></div><div class="home"></div><div class="scr"><div class="a4"><div class="a4-stage"><div class="prn"><div><b>Printer</b><em>Printing your term work</em></div><div class="leds"><i class="g"></i><i></i></div><div class="prn-slot"></div></div><div class="pwin"><div class="sheet-w d0"><div class="sheet"><div class="sh-t"><small>R.N.G. PATEL INSTITUTE OF TECHNOLOGY</small><b>TERM WORK</b></div><p><span>Subject</span><u>Operating Systems (1CS)</u></p><p><span>PEN</span><u>2301234567</u><span>Sem</span><u>5</u></p><p><span>Name</span><u>Aarav Mehta</u></p><p><span>Class</span><u>TY CSE</u><span>Batch</span><u>A2</u></p><p class="ex"><span>Experiment</span><u>Demonstrate basic and advanced Linux commands.</u></p><p><span>Practical No.</span><u>2</u></p><p><span>Conducted</span><u>12/08/2026</u><span>Submitted</span><u>19/08/2026</u></p><p><span>Checked by</span><u>Prof. S. Desai</u><span>Marks</span><u>10</u></p></div></div><div class="sheet-w d1"><div class="sheet"><div class="sh-t"><small>R.N.G. PATEL INSTITUTE OF TECHNOLOGY</small><b>TERM WORK</b></div><p><span>Subject</span><u>Operating Systems (1CS)</u></p><p><span>PEN</span><u>2301234567</u><span>Sem</span><u>5</u></p><p><span>Name</span><u>Aarav Mehta</u></p><p><span>Class</span><u>TY CSE</u><span>Batch</span><u>A2</u></p><p class="ex"><span>Experiment</span><u>Write a shell script using control structures and looping statements.</u></p><p><span>Practical No.</span><u>3</u></p><p><span>Conducted</span><u>12/08/2026</u><span>Submitted</span><u>19/08/2026</u></p><p><span>Checked by</span><u>Prof. S. Desai</u><span>Marks</span><u>10</u></p></div></div><div class="sheet-w d2"><div class="sheet"><div class="sh-t"><small>R.N.G. PATEL INSTITUTE OF TECHNOLOGY</small><b>TERM WORK</b></div><p><span>Subject</span><u>Operating Systems (1CS)</u></p><p><span>PEN</span><u>2301234567</u><span>Sem</span><u>5</u></p><p><span>Name</span><u>Aarav Mehta</u></p><p><span>Class</span><u>TY CSE</u><span>Batch</span><u>A2</u></p><p class="ex"><span>Experiment</span><u>Write a C program to create child processes using fork() and exec().</u></p><p><span>Practical No.</span><u>4</u></p><p><span>Conducted</span><u>12/08/2026</u><span>Submitted</span><u>19/08/2026</u></p><p><span>Checked by</span><u>Prof. S. Desai</u><span>Marks</span><u>10</u></p></div></div><div class="sheet-w d3"><div class="sheet"><div class="sh-t"><small>R.N.G. PATEL INSTITUTE OF TECHNOLOGY</small><b>TERM WORK</b></div><p><span>Subject</span><u>Operating Systems (1CS)</u></p><p><span>PEN</span><u>2301234567</u><span>Sem</span><u>5</u></p><p><span>Name</span><u>Aarav Mehta</u></p><p><span>Class</span><u>TY CSE</u><span>Batch</span><u>A2</u></p><p class="ex"><span>Experiment</span><u>Write a C program to create two threads for addition and subtraction of large arrays.</u></p><p><span>Practical No.</span><u>5</u></p><p><span>Conducted</span><u>12/08/2026</u><span>Submitted</span><u>19/08/2026</u></p><p><span>Checked by</span><u>Prof. S. Desai</u><span>Marks</span><u>10</u></p></div></div></div></div><div class="a4-side"><div class="a4-h"><h2 class="disp2">All done, take a look</h2><span class="sc-chip" aria-hidden="true"><span class="d0">Page 1 of 4</span><span class="d1">Page 2 of 4</span><span class="d2">Page 3 of 4</span><span class="d3">Page 4 of 4</span></span></div><div class="films"><div class="film d0"><div class="sheet"><div class="sh-t"><small>R.N.G. PATEL INSTITUTE OF TECHNOLOGY</small><b>TERM WORK</b></div><p><span>Subject</span><u>Operating Systems (1CS)</u></p><p><span>Name</span><u>Aarav Mehta</u></p><p class="ex"><span>Experiment</span><u>Demonstrate basic and advanced Linux commands.</u></p><p><span>Practical No.</span><u>2</u></p></div><span class="fl">P2</span></div><div class="film d1"><div class="sheet"><div class="sh-t"><small>R.N.G. PATEL INSTITUTE OF TECHNOLOGY</small><b>TERM WORK</b></div><p><span>Subject</span><u>Operating Systems (1CS)</u></p><p><span>Name</span><u>Aarav Mehta</u></p><p class="ex"><span>Experiment</span><u>Write a shell script using control structures and looping statements.</u></p><p><span>Practical No.</span><u>3</u></p></div><span class="fl">P3</span></div><div class="film d2"><div class="sheet"><div class="sh-t"><small>R.N.G. PATEL INSTITUTE OF TECHNOLOGY</small><b>TERM WORK</b></div><p><span>Subject</span><u>Operating Systems (1CS)</u></p><p><span>Name</span><u>Aarav Mehta</u></p><p class="ex"><span>Experiment</span><u>Write a C program to create child processes using fork() and exec().</u></p><p><span>Practical No.</span><u>4</u></p></div><span class="fl">P4</span></div><div class="film d3"><div class="sheet"><div class="sh-t"><small>R.N.G. PATEL INSTITUTE OF TECHNOLOGY</small><b>TERM WORK</b></div><p><span>Subject</span><u>Operating Systems (1CS)</u></p><p><span>Name</span><u>Aarav Mehta</u></p><p class="ex"><span>Experiment</span><u>Write a C program to create two threads for addition and subtraction of large arrays.</u></p><p><span>Practical No.</span><u>5</u></p></div><span class="fl">P5</span></div></div><div class="namebox"><input type="text" aria-label="File name" value="termworkforge_practicals_2-5"><span>.pdf</span><button type="button" aria-label="Rename file"><svg width="14" height="14" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"></path></svg></button></div><button type="button" class="cta"><svg width="16" height="16" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"></path><path d="m7 10 5 5 5-5"></path><path d="M5 21h14"></path></svg> Download PDF · 4 pages</button><a href="#" class="again">Generate more</a></div></div></div></div></div></div></section></div>
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;$preview&quot;:{&quot;width&quot;:1400,&quot;height&quot;:3500}}">
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+
+
+</body></html>
