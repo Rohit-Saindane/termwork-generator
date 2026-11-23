@@ -334,13 +334,15 @@ def build_pdf(pdf_b_bytes: bytes, title: str, form: dict) -> bytes:
     packet.seek(0)
 
     overlay = PdfReader(packet).pages[0]
-    reader_b = PdfReader(io.BytesIO(pdf_b_bytes))
-    writer = PdfWriter()
-    page = reader_b.pages[0]
-    page.merge_page(overlay)
-    writer.add_page(page)
-    for i in range(1, len(reader_b.pages)):
-        writer.add_page(reader_b.pages[i])
+    try:
+        writer = PdfWriter(clone_from=io.BytesIO(pdf_b_bytes))
+        writer.pages[0].merge_page(overlay)
+    except Exception:
+        reader_b = PdfReader(io.BytesIO(pdf_b_bytes))
+        writer = PdfWriter()
+        for p in reader_b.pages:
+            writer.add_page(p)
+        writer.pages[0].merge_page(overlay)
     out = io.BytesIO()
     writer.write(out)
     return out.getvalue()

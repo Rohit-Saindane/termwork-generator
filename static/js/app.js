@@ -69,6 +69,82 @@
     drawerPickedPages: new Set()
   };
 
+  // ── HTML Escape Helper ──
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  // ── Resolve Merged Practical Data (Overrides + Base Form) ──
+  function getPracticalData(pno) {
+    const overrides = S.overrides[pno] || {};
+    return {
+      student_name: overrides.student_name !== undefined ? overrides.student_name : (S.formData.student_name || ''),
+      pen: overrides.pen !== undefined ? overrides.pen : (S.formData.pen || ''),
+      class_name: overrides.class_name !== undefined ? overrides.class_name : (S.formData.class_name || ''),
+      batch: overrides.batch !== undefined ? overrides.batch : (S.formData.batch || ''),
+      semester: overrides.semester !== undefined ? overrides.semester : (S.formData.semester || ''),
+      term: overrides.term !== undefined ? overrides.term : (S.formData.term || ''),
+      subject: overrides.subject !== undefined ? overrides.subject : (S.formData.subject || ''),
+      checked_by: overrides.checked_by !== undefined ? overrides.checked_by : (S.formData.checked_by || ''),
+      marks: overrides.marks !== undefined ? overrides.marks : (S.formData.marks || '10'),
+      conducted_on: overrides.conducted_on !== undefined ? overrides.conducted_on : (S.formData.conducted_on || ''),
+      date_of_sub: overrides.date_of_sub !== undefined ? overrides.date_of_sub : (S.formData.date_of_sub || ''),
+      actual_sub: overrides.actual_sub !== undefined ? overrides.actual_sub : (S.formData.actual_sub || ''),
+      title: S.practicals[pno] || (pno ? `Practical ${pno}` : '')
+    };
+  }
+
+  // ── Unified Sheet Renderer: Keeps all miniatures 100% consistent ──
+  function renderTwSheet(container, pno) {
+    if (!container) return;
+    const d = getPracticalData(pno);
+
+    const setT = (sel, val) => {
+      const el = container.querySelector(sel);
+      if (el) el.textContent = val || '';
+    };
+
+    setT('.tw-student, .print-tw-student, .rev-tw-student, .fs-tw-student, .drw-tw-student', d.student_name);
+    setT('.tw-pen, .print-tw-pen, .rev-tw-pen, .fs-tw-pen, .drw-tw-pen', d.pen);
+    setT('.tw-class, .print-tw-class, .rev-tw-class, .fs-tw-class, .drw-tw-class', d.class_name);
+    setT('.tw-batch, .print-tw-batch, .rev-tw-batch, .fs-tw-batch, .drw-tw-batch', d.batch);
+    setT('.tw-semester, .print-tw-sem, .rev-tw-sem, .fs-tw-sem, .drw-tw-sem', d.semester);
+    setT('.tw-term, .print-tw-term, .rev-tw-term, .fs-tw-term, .drw-tw-term', d.term);
+    setT('.tw-subject, .print-tw-subj, .rev-tw-subj, .fs-tw-subj, .drw-tw-subj', d.subject);
+    setT('.tw-faculty, .print-tw-faculty, .rev-tw-faculty, .fs-tw-faculty, .drw-tw-faculty', d.checked_by);
+    setT('.tw-pno, .print-tw-pno, .rev-tw-pno, .fs-tw-pno, .drw-tw-pno, #drawer-tw-pno', pno ? String(pno) : '');
+    setT('.tw-marks, .print-tw-marks, .rev-tw-marks, .fs-tw-marks, .drw-tw-marks, #drawer-tw-marks', d.marks);
+
+    if (d.title.length > 36) {
+      setT('.tw-title, .print-tw-title, .rev-tw-title, .fs-tw-title, .drw-tw-title, #drawer-tw-title', d.title.slice(0, 34));
+      setT('.tw-title2, .print-tw-title2, .rev-tw-title2, .fs-tw-title2, .drw-tw-title2', d.title.slice(34));
+    } else {
+      setT('.tw-title, .print-tw-title, .rev-tw-title, .fs-tw-title, .drw-tw-title, #drawer-tw-title', d.title);
+      setT('.tw-title2, .print-tw-title2, .rev-tw-title2, .fs-tw-title2, .drw-tw-title2', '');
+    }
+
+    const [cd, cm, cy] = splitDate(d.conducted_on);
+    setT('.tw-cond-d, .print-tw-cond-d, .rev-tw-cond-d, .fs-tw-cond-d, .drw-tw-cond-d', cd);
+    setT('.tw-cond-m, .print-tw-cond-m, .rev-tw-cond-m, .fs-tw-cond-m, .drw-tw-cond-m', cm);
+    setT('.tw-cond-y, .print-tw-cond-y, .rev-tw-cond-y, .fs-tw-cond-y, .drw-tw-cond-y', cy);
+
+    const [sd, sm, sy] = splitDate(d.date_of_sub);
+    setT('.tw-sub-d, .print-tw-sub-d, .rev-tw-sub-d, .fs-tw-sub-d, .drw-tw-sub-d', sd);
+    setT('.tw-sub-m, .print-tw-sub-m, .rev-tw-sub-m, .fs-tw-sub-m, .drw-tw-sub-m', sm);
+    setT('.tw-sub-y, .print-tw-sub-y, .rev-tw-sub-y, .fs-tw-sub-y, .drw-tw-sub-y', sy);
+
+    const [ad, am, ay] = splitDate(d.actual_sub);
+    setT('.tw-actsub-d, .print-tw-actsub-d, .rev-tw-actsub-d, .fs-tw-actsub-d, .drw-tw-actsub-d', ad);
+    setT('.tw-actsub-m, .print-tw-actsub-m, .rev-tw-actsub-m, .fs-tw-actsub-m, .drw-tw-actsub-m', am);
+    setT('.tw-actsub-y, .print-tw-actsub-y, .rev-tw-actsub-y, .fs-tw-actsub-y, .drw-tw-actsub-y', ay);
+  }
+
   // ── Toast Notifications ──
   function showToast(message, type = 'info') {
     const container = $('toast-container');
@@ -735,22 +811,23 @@
   function initPrintStep() {
     const sorted = Array.from(S.selected).sort((a, b) => a - b);
     const total = sorted.length;
+    if (total === 0) return;
 
-    // Animated LCD text
+    // Immediately render printer emerging sheet with the first practical
+    const currentEmergingPno = sorted[0];
+    const printerSheet = $('printer-miniature-sheet');
+    if (printerSheet) {
+      renderTwSheet(printerSheet, currentEmergingPno);
+    }
+
+    // Animated LCD text & status chip
     const lcd = $('printer-lcd-text');
+    const chip = $('printer-status-chip');
     let currentIdx = 0;
     if (printInterval) clearInterval(printInterval);
 
-    printInterval = setInterval(() => {
-      currentIdx = (currentIdx + 1) % (total + 1);
-      if (lcd) {
-        lcd.textContent = currentIdx < total ? `PRINTING ${currentIdx + 1}/${total}` : 'READY';
-      }
-      const chip = $('printer-status-chip');
-      if (chip) {
-        chip.textContent = currentIdx < total ? `Page ${currentIdx + 1} of ${total}` : `Page ${total} of ${total}`;
-      }
-    }, 1800);
+    if (lcd) lcd.textContent = `PRINTING 1/${total}`;
+    if (chip) chip.textContent = `Page 1 of ${total}`;
 
     // Filmstrip
     const filmstrip = $('printer-filmstrip');
@@ -758,42 +835,61 @@
       filmstrip.innerHTML = '';
       sorted.forEach((pno, i) => {
         const item = document.createElement('div');
-        item.className = `film ${i === 2 ? 'cur' : ''}`;
+        item.className = `film ${i === 0 ? 'cur' : ''}`;
+        const d = getPracticalData(pno);
         item.innerHTML = `
           <div class="tw">
-            <span class="t" style="--x:200;--y:381;">${S.formData.student_name}</span>
-            <span class="t" style="--x:123;--y:351;">${S.formData.pen}</span>
-            <span class="t" style="--x:142;--y:322;">${S.formData.subject}</span>
+            <span class="t" style="--x:200;--y:381;">${escapeHtml(d.student_name)}</span>
+            <span class="t" style="--x:123;--y:351;">${escapeHtml(d.pen)}</span>
+            <span class="t" style="--x:142;--y:322;">${escapeHtml(d.subject)}</span>
             <span class="t" style="--x:514;--y:545;">${pno}</span>
-            <span class="t" style="--x:604;--y:928;">${S.formData.marks}</span>
+            <span class="t" style="--x:604;--y:928;">${escapeHtml(d.marks)}</span>
           </div>
           <span class="flb">P${pno}</span>
         `;
         item.addEventListener('click', () => {
+          if (printInterval) clearInterval(printInterval);
           $$('.film', filmstrip).forEach(f => f.classList.remove('cur'));
           item.classList.add('cur');
-          const chip = $('printer-status-chip');
+          currentIdx = i;
           if (chip) chip.textContent = `Page ${i + 1} of ${total}`;
-          const lcd = $('printer-lcd-text');
           if (lcd) lcd.textContent = `P${pno} READY`;
 
-          // Update emerging sheet preview
-          const pTitle = S.practicals[pno] || `Practical ${pno}`;
-          const pnoEl = document.querySelector('.print-tw-pno');
-          const titleEl = document.querySelector('.print-tw-title');
-          if (pnoEl) pnoEl.textContent = String(pno);
-          if (titleEl) titleEl.textContent = pTitle.length > 28 ? pTitle.slice(0, 26) + '…' : pTitle;
+          if (printerSheet) {
+            renderTwSheet(printerSheet, pno);
+          }
         });
         filmstrip.appendChild(item);
       });
     }
 
+    // Loop printing animation
+    printInterval = setInterval(() => {
+      currentIdx = (currentIdx + 1) % total;
+      const pno = sorted[currentIdx];
+      if (lcd) {
+        lcd.textContent = `PRINTING ${currentIdx + 1}/${total}`;
+      }
+      if (chip) {
+        chip.textContent = `Page ${currentIdx + 1} of ${total}`;
+      }
+      if (printerSheet) {
+        renderTwSheet(printerSheet, pno);
+      }
+      if (filmstrip) {
+        const films = $$('.film', filmstrip);
+        films.forEach((f, idx) => {
+          f.classList.toggle('cur', idx === currentIdx);
+        });
+      }
+    }, 2200);
+
     // Default Filename
     const renameInput = $('pdf-rename-input');
     if (renameInput) {
-      const minP = sorted[0] || 2;
-      const maxP = sorted[sorted.length - 1] || 5;
-      renameInput.value = `termworkforge_practicals_${minP}-${maxP}`;
+      const minP = sorted[0] || 1;
+      const maxP = sorted[sorted.length - 1] || total;
+      renameInput.value = `termworkforge_practicals_${minP === maxP ? minP : `${minP}-${maxP}`}`;
     }
   }
 
@@ -947,7 +1043,7 @@
   function initReviewStep() {
     const sorted = Array.from(S.selected).sort((a, b) => a - b);
     if (!sorted.includes(S.reviewPage)) {
-      S.reviewPage = sorted[0] || 2;
+      S.reviewPage = sorted[0] || 1;
     }
 
     // Populate Left Thumbnail Filmstrip
@@ -958,12 +1054,14 @@
         const isCurrent = pno === S.reviewPage;
         const th = document.createElement('div');
         th.className = `th ${isCurrent ? 'cur' : ''}`;
+        const d = getPracticalData(pno);
         th.innerHTML = `
           <div class="thc">
             <div class="tw">
-              <span class="t" style="--x:200;--y:381;">${S.formData.student_name}</span>
+              <span class="t" style="--x:200;--y:381;">${escapeHtml(d.student_name)}</span>
+              <span class="t" style="--x:142;--y:322;">${escapeHtml(d.subject)}</span>
               <span class="t" style="--x:514;--y:545;">${pno}</span>
-              <span class="t" style="--x:604;--y:928;">${S.formData.marks}</span>
+              <span class="t" style="--x:604;--y:928;">${escapeHtml(d.marks)}</span>
             </div>
           </div>
           <span class="tl">P${pno}</span>
@@ -984,22 +1082,7 @@
     // Update Inspected Sheet
     const sheet = $('review-inspected-sheet');
     if (sheet) {
-      const pTitle = S.practicals[S.reviewPage] || `Practical ${S.reviewPage}`;
-      const revTitle = sheet.querySelector('.rev-tw-title');
-      const revTitle2 = sheet.querySelector('.rev-tw-title2');
-      const revPno = sheet.querySelector('.rev-tw-pno');
-      const revMarks = sheet.querySelector('.rev-tw-marks');
-
-      if (revPno) revPno.textContent = String(S.reviewPage);
-      if (revMarks) revMarks.textContent = S.formData.marks;
-
-      if (pTitle.length > 36) {
-        if (revTitle) revTitle.textContent = pTitle.slice(0, 34);
-        if (revTitle2) revTitle2.textContent = pTitle.slice(34);
-      } else {
-        if (revTitle) revTitle.textContent = pTitle;
-        if (revTitle2) revTitle2.textContent = '';
-      }
+      renderTwSheet(sheet, S.reviewPage);
     }
 
     // Metadata
@@ -1119,12 +1202,10 @@
     if ($('drawer-input-marks')) $('drawer-input-marks').value = ov.marks || S.formData.marks || '10';
 
     // Update Live Drawer Sheet
-    const twTitle = $('drawer-tw-title');
-    if (twTitle) twTitle.textContent = curTitle;
-    const twPno = $('drawer-tw-pno');
-    if (twPno) twPno.textContent = String(curPno);
-    const twMarks = $('drawer-tw-marks');
-    if (twMarks) twMarks.textContent = ov.marks || S.formData.marks || '10';
+    const drawerTw = $('drawer-preview-tw');
+    if (drawerTw) {
+      renderTwSheet(drawerTw, curPno);
+    }
 
     updateDrawerScopeUi();
   }
@@ -1302,58 +1383,10 @@
     if (btnFsNext) btnFsNext.disabled = sorted.length <= 1 || idx >= sorted.length - 1;
 
     // Populate sheet values
-    const overrides = S.overrides[pno] || {};
-    const student = overrides.student_name !== undefined ? overrides.student_name : S.formData.student_name;
-    const pen = overrides.pen !== undefined ? overrides.pen : S.formData.pen;
-    const cls = overrides.class_name !== undefined ? overrides.class_name : S.formData.class_name;
-    const batch = overrides.batch !== undefined ? overrides.batch : S.formData.batch;
-    const sem = overrides.semester !== undefined ? overrides.semester : S.formData.semester;
-    const term = overrides.term !== undefined ? overrides.term : S.formData.term;
-    const subj = overrides.subject !== undefined ? overrides.subject : S.formData.subject;
-    const cond = overrides.conducted_on !== undefined ? overrides.conducted_on : S.formData.conducted_on;
-    const sub = overrides.date_of_sub !== undefined ? overrides.date_of_sub : S.formData.date_of_sub;
-    const act = overrides.actual_sub !== undefined ? overrides.actual_sub : S.formData.actual_sub;
-    const faculty = overrides.checked_by !== undefined ? overrides.checked_by : S.formData.checked_by;
-    const marks = overrides.marks !== undefined ? overrides.marks : S.formData.marks;
-
-    const setT = (sel, val) => {
-      const el = document.querySelector(sel);
-      if (el) el.textContent = val || '';
-    };
-
-    setT('.fs-tw-student', student);
-    setT('.fs-tw-pen', pen);
-    setT('.fs-tw-class', cls);
-    setT('.fs-tw-batch', batch);
-    setT('.fs-tw-sem', sem);
-    setT('.fs-tw-term', term);
-    setT('.fs-tw-subj', subj);
-    setT('.fs-tw-faculty', faculty);
-    setT('.fs-tw-pno', String(pno || 1));
-    setT('.fs-tw-marks', marks);
-
-    if (pTitle.length > 38) {
-      setT('.fs-tw-title', pTitle.slice(0, 36));
-      setT('.fs-tw-title2', pTitle.slice(36));
-    } else {
-      setT('.fs-tw-title', pTitle);
-      setT('.fs-tw-title2', '');
+    const fsTw = $('fs-inspected-sheet');
+    if (fsTw) {
+      renderTwSheet(fsTw, pno);
     }
-
-    const [cd, cm, cy] = splitDate(cond);
-    setT('.fs-tw-cond-d', cd);
-    setT('.fs-tw-cond-m', cm);
-    setT('.fs-tw-cond-y', cy);
-
-    const [sd, sm, sy] = splitDate(sub);
-    setT('.fs-tw-sub-d', sd);
-    setT('.fs-tw-sub-m', sm);
-    setT('.fs-tw-sub-y', sy);
-
-    const [ad, am, ay] = splitDate(act);
-    setT('.fs-tw-actsub-d', ad);
-    setT('.fs-tw-actsub-m', am);
-    setT('.fs-tw-actsub-y', ay);
   }
 
   if (btnCloseFsModal) btnCloseFsModal.addEventListener('click', closeFullscreenPreview);
