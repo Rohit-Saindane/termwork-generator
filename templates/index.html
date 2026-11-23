@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
   <title>TermWorkForge — College Term Work Generator</title>
   <meta name="description" content="Generate complete, perfectly aligned student term work and practical PDFs in seconds."/>
   
@@ -14,7 +14,7 @@
   <link rel="icon" type="image/png" sizes="192x192" href="/static/favicon-192.png">
   <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
   
-  <link rel="stylesheet" href="/static/css/notebook.css?v=3.4"/>
+  <link rel="stylesheet" href="/static/css/notebook.css?v=3.5"/>
 </head>
 <body class="nb-l">
 
@@ -402,21 +402,21 @@
                   </div>
                 </label>
 
-                <label class="fl" style="--sp:2">
+                <label class="fl date-fl" style="--sp:2">
                   <span class="fn">Conducted on</span>
                   <div class="in date-in">
                     <input type="date" id="f-cond" autocomplete="off"/>
                   </div>
                 </label>
 
-                <label class="fl" style="--sp:2">
+                <label class="fl date-fl" style="--sp:2">
                   <span class="fn">Date of submission</span>
                   <div class="in date-in">
                     <input type="date" id="f-sub" autocomplete="off"/>
                   </div>
                 </label>
 
-                <label class="fl" style="--sp:2">
+                <label class="fl date-fl" style="--sp:2">
                   <span class="fn">Actual submission</span>
                   <div class="in date-in">
                     <input type="date" id="f-actsub" autocomplete="off"/>
@@ -491,7 +491,7 @@
             </div>
 
             <!-- Step 3 Bottom Action Bar -->
-            <div class="sbar">
+            <div class="sbar" id="step3-action-sbar">
               <span><b id="step3-filled-counter">0</b> of 12 filled</span>
               <button type="button" class="go sm" id="btn-step3-generate">
                 Make my pages 
@@ -906,6 +906,6 @@
     </div>
   </div>
 
-  <script src="/static/js/app.js?v=3.4"></script>
+  <script src="/static/js/app.js?v=3.5"></script>
 </body>
 </html>
