@@ -29,9 +29,9 @@ class TestTermWorkForge(unittest.TestCase):
         self.assertIn('id="btn-trigger-fullscreen-preview"', html)
         self.assertIn('id="fullscreen-modal"', html)
         
-        # Check asset versioning v=3.4
-        self.assertIn('notebook.css?v=3.4', html)
-        self.assertIn('app.js?v=3.4', html)
+        # Check asset versioning v=3.5
+        self.assertIn('notebook.css?v=3.5', html)
+        self.assertIn('app.js?v=3.5', html)
         print("✓ Homepage HTML checks passed!")
 
     def test_static_files(self):
